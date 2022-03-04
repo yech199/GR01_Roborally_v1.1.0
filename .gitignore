@@ -7,3 +7,4 @@ target/*
 .idea/*
 roborally/src/main/java/dk/dtu/compute/se/pisd/designpatterns/observer/package.html
 roborally/src/main/java/dk/dtu/compute/se/pisd/overview.html
+roborally/roborally.iml

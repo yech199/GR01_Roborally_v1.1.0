@@ -196,8 +196,17 @@ public class GameController {
     }
 
     // TODO Assignment V2
-    public void moveForward(@NotNull Player player) {
+    public void moveForward(@NotNull Player player)
+    {
+        // Get Player Value
+        int x_value = player.getSpace().x;
+        int y_value = player.getSpace().y;
 
+        // Set Current space to be empty
+        board.getSpace(x_value,y_value).setPlayer(null);
+
+        // Move East
+        board.getSpace(x_value+1,y_value).setPlayer(player);
     }
 
     // TODO Assignment V2
@@ -206,13 +215,43 @@ public class GameController {
     }
 
     // TODO Assignment V2
-    public void turnRight(@NotNull Player player) {
-
+    public void turnRight(@NotNull Player player)
+    {
+        switch (player.getHeading())
+        {
+            case SOUTH:
+                player.setHeading(Heading.WEST);
+                break;
+            case NORTH:
+                player.setHeading(Heading.EAST);
+                break;
+            case EAST:
+                player.setHeading(Heading.SOUTH);
+                break;
+            case WEST:
+                player.setHeading(Heading.NORTH);
+            break;
+        }
     }
 
     // TODO Assignment V2
-    public void turnLeft(@NotNull Player player) {
-
+    public void turnLeft(@NotNull Player player)
+    {
+        switch (player.getHeading())
+        {
+            case SOUTH:
+                player.setHeading(Heading.EAST);
+            break;
+            case NORTH:
+                player.setHeading(Heading.WEST);
+            break;
+            case EAST:
+                player.setHeading(Heading.NORTH);
+            break;
+            case WEST:
+                player.setHeading(Heading.SOUTH);
+            break;
+        }
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {

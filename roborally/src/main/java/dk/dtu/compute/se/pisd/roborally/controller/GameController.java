@@ -220,12 +220,19 @@ public class GameController {
                 x_modifier = -1;
                 break;
         }
+        // If modifier would move out of the board
+        if (y_value + y_modifier < 0 || y_value + y_modifier > 8){y_modifier=0;}
+        if (x_value + x_modifier < 0 || x_value + x_modifier > 8){x_modifier=0;}
 
-        // Set Current space to be empty
-        board.getSpace(x_value,y_value).setPlayer(null);
+        // Move if possible
+        if (board.getSpace(x_value + x_modifier,y_value + y_modifier).getPlayer() == null)
+        {
+            // Set Current space to be empty
+            board.getSpace(x_value,y_value).setPlayer(null);
 
-        // Move East
-        board.getSpace(x_value + x_modifier,y_value + y_modifier).setPlayer(player);
+            // Move East
+            board.getSpace(x_value + x_modifier,y_value + y_modifier).setPlayer(player);
+        }
     }
 
     // TODO Assignment V2

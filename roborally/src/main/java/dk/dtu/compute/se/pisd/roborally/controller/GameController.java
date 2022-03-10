@@ -201,12 +201,31 @@ public class GameController {
         // Get Player Value
         int x_value = player.getSpace().x;
         int y_value = player.getSpace().y;
+        int x_modifier = 0;
+        int y_modifier = 0;
+
+        // Calculate modifier
+        switch (player.getHeading())
+        {
+            case SOUTH:
+                y_modifier = 1;
+                break;
+            case NORTH:
+                y_modifier = -1;
+                break;
+            case EAST:
+                x_modifier = 1;
+                break;
+            case WEST:
+                x_modifier = -1;
+                break;
+        }
 
         // Set Current space to be empty
         board.getSpace(x_value,y_value).setPlayer(null);
 
         // Move East
-        board.getSpace(x_value+1,y_value).setPlayer(player);
+        board.getSpace(x_value + x_modifier,y_value + y_modifier).setPlayer(player);
     }
 
     // TODO Assignment V2

@@ -236,8 +236,12 @@ public class GameController {
     }
 
     // TODO Assignment V2
-    public void fastForward(@NotNull Player player) {
-
+    public void fastForward(@NotNull Player player)
+    {
+        for (int i=0; i < 2; i++)
+        {
+            moveForward(player);
+        };
     }
 
     // TODO Assignment V2

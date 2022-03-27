@@ -53,6 +53,15 @@ public class GameController {
         //   - the counter of moves in the game should be increased by one
         //     if the player is moved
 
+        if (space != null && space.board == board) {
+            Player currentPlayer = board.getCurrentPlayer();
+            if (currentPlayer != null && space.getPlayer() == null) {
+                currentPlayer.setSpace(space);
+                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
+                board.setCurrentPlayer(board.getPlayer(playerNumber));
+            }
+        }
+
     }
 
     // XXX: V2
@@ -195,92 +204,38 @@ public class GameController {
         }
     }
 
-    // TODO Assignment V2
-    public void moveForward(@NotNull Player player)
-    {
-        // Get Player Value
-        int x_value = player.getSpace().x;
-        int y_value = player.getSpace().y;
-        int x_modifier = 0;
-        int y_modifier = 0;
-
-        // Calculate modifier
-        switch (player.getHeading())
-        {
-            case SOUTH:
-                y_modifier = 1;
-                break;
-            case NORTH:
-                y_modifier = -1;
-                break;
-            case EAST:
-                x_modifier = 1;
-                break;
-            case WEST:
-                x_modifier = -1;
-                break;
-        }
-        // If modifier would move out of the board
-        if (y_value + y_modifier < 0 || y_value + y_modifier > 8){y_modifier=0;}
-        if (x_value + x_modifier < 0 || x_value + x_modifier > 8){x_modifier=0;}
-
-        // Move if possible
-        if (board.getSpace(x_value + x_modifier,y_value + y_modifier).getPlayer() == null)
-        {
-            // Set Current space to be empty
-            board.getSpace(x_value,y_value).setPlayer(null);
-
-            // Move East
-            board.getSpace(x_value + x_modifier,y_value + y_modifier).setPlayer(player);
+    // TODO: V2
+    public void moveForward(@NotNull Player player) {
+        Space space = player.getSpace();
+        if (player != null && player.board == board && space != null) {
+            Heading heading = player.getHeading();
+            Space target = board.getNeighbour(space, heading);
+            if (target != null) {
+                // XXX note that this removes an other player from the space, when there
+                //     is another player on the target. Eventually, this needs to be
+                //     implemented in a way so that other players are pushed away!
+                target.setPlayer(player);
+            }
         }
     }
 
-    // TODO Assignment V2
-    public void fastForward(@NotNull Player player)
-    {
-        for (int i=0; i < 2; i++)
-        {
-            moveForward(player);
-        };
+    // TODO: V2
+    public void fastForward(@NotNull Player player) {
+        moveForward(player);
+        moveForward(player);
     }
 
-    // TODO Assignment V2
-    public void turnRight(@NotNull Player player)
-    {
-        switch (player.getHeading())
-        {
-            case SOUTH:
-                player.setHeading(Heading.WEST);
-                break;
-            case NORTH:
-                player.setHeading(Heading.EAST);
-                break;
-            case EAST:
-                player.setHeading(Heading.SOUTH);
-                break;
-            case WEST:
-                player.setHeading(Heading.NORTH);
-            break;
+    // TODO: V2
+    public void turnRight(@NotNull Player player) {
+        if (player != null && player.board == board) {
+            player.setHeading(player.getHeading().next());
         }
     }
 
-    // TODO Assignment V2
-    public void turnLeft(@NotNull Player player)
-    {
-        switch (player.getHeading())
-        {
-            case SOUTH:
-                player.setHeading(Heading.EAST);
-            break;
-            case NORTH:
-                player.setHeading(Heading.WEST);
-            break;
-            case EAST:
-                player.setHeading(Heading.NORTH);
-            break;
-            case WEST:
-                player.setHeading(Heading.SOUTH);
-            break;
+    // TODO: V2
+    public void turnLeft(@NotNull Player player) {
+        if (player != null && player.board == board) {
+            player.setHeading(player.getHeading().prev());
         }
     }
 

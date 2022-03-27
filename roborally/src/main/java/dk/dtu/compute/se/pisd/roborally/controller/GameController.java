@@ -227,6 +227,7 @@ public class GameController {
                 startProgrammingPhase();
             }
         }
+        continuePrograms();
     }
 
     // TODO: V2

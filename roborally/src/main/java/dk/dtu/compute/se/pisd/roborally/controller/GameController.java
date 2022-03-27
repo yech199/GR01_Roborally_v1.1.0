@@ -152,6 +152,10 @@ public class GameController {
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
+                    if (card.command == Command.OPTION_LEFT_RIGHT) {
+                        board.setPhase(Phase.PLAYER_INTERACTION);
+                        return;
+                    }
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
                 }

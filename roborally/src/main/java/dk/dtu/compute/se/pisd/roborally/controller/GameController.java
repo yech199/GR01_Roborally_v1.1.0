@@ -208,6 +208,27 @@ public class GameController {
         }
     }
 
+    public void executeCommandOptionAndContinue(Command option) {
+        board.setPhase(Phase.ACTIVATION);
+        Player currentPlayer = board.getCurrentPlayer();
+        executeCommand(currentPlayer, option);
+        int step = board.getStep();
+
+        int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+        if (nextPlayerNumber < board.getPlayersNumber()) {
+            board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+        } else {
+            step++;
+            if (step < Player.NO_REGISTERS) {
+                makeProgramFieldsVisible(step);
+                board.setStep(step);
+                board.setCurrentPlayer(board.getPlayer(0));
+            } else {
+                startProgrammingPhase();
+            }
+        }
+    }
+
     // TODO: V2
     public void moveForward(@NotNull Player player) {
         Space space = player.getSpace();

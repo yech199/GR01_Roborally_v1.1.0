@@ -55,7 +55,7 @@ public class Board extends Subject {
 
     private int step = 0;
 
-    private final int checkPointAmount = 1;
+    private final int checkPointAmount = 3;
 
     private boolean stepMode;
 
@@ -71,7 +71,7 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
-        setupCheckpoints();
+        setupCheckpoints(checkPointAmount);
     }
 
     public Board(int width, int height) {
@@ -218,20 +218,26 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
-    public void setupCheckpoints() {
+    public void setupCheckpoints(int checkPointAmount) {
 
         int x = 2;
         int y = 2;
-        int checkPointAmount=1;
         int curCheckPoint=1;
 
         // Create a checkpoints
         /*
          * Added dummy checkpoints (2,2), (2,4) & (2,6)
          */
-        spaces[x][y].checkpointNumber = 1;
-        spaces[x][y+2].checkpointNumber = 2;
-        spaces[x][y+4].checkpointNumber = 3;
+        switch (checkPointAmount)
+        {
+            case 3:
+            spaces[x][y + 4].checkpointNumber = 1;
+            case 2:
+            spaces[x][y + 2].checkpointNumber = 2;
+            case 1:
+            spaces[x][y].checkpointNumber = 3;
+            break;
+        }
         //spaces[x][y].setStyle();
     }
 

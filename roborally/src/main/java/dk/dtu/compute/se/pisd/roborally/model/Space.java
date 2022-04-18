@@ -27,7 +27,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Space extends Subject {
 

@@ -21,6 +21,9 @@ class GameControllerTest {
             Player player = new Player(board, null, "Player " + i);
             board.addPlayer(player);
             player.setSpace(board.getSpace(i, i));
+            // Player 0: 0 % 4 = 0      Player 1: 1 % 4 = 1     Player 2: 2 % 4 = 2
+            // Player 3: 3 % 4 = 3      Player 4: 4 % 4 = 0     Player 5: 5 % 4 = 1
+            // 0 = SOUTH    1 = WEST    2 = NORTH   3 = EAST
             player.setHeading(Heading.values()[i % Heading.values().length]);
         }
         board.setCurrentPlayer(board.getPlayer(0));
@@ -29,6 +32,19 @@ class GameControllerTest {
     @AfterEach
     void tearDown() {
         gameController = null;
+    }
+
+    @Test
+    void moveCurrentPlayerToSpace() {
+        Board board = gameController.board;
+        Player player1 = board.getPlayer(0);
+        Player player2 = board.getPlayer(1);
+
+        gameController.moveCurrentPlayerToSpace(board.getSpace(0, 4));
+
+        Assertions.assertEquals(player1, board.getSpace(0, 4).getPlayer(), "Player " + player1.getName() + " should be Space (0,4)!");
+        Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
+        Assertions.assertEquals(player2, board.getCurrentPlayer(), "Current player should be " + player2.getName() + "!");
     }
 
     @Test
@@ -130,18 +146,55 @@ class GameControllerTest {
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
         Assertions.assertEquals(Phase.PROGRAMMING, board.getPhase(), "It should be in PROGRAMMING Phase!");
     }
-
     @Test
-    void moveCurrentPlayerToSpace() {
+    void testExecuteCommandOptionAndContinue() {
         Board board = gameController.board;
-        Player player1 = board.getPlayer(0);
-        Player player2 = board.getPlayer(1);
+        Player player = board.getPlayer(0);
 
-        gameController.moveCurrentPlayerToSpace(board.getSpace(0, 4));
+        gameController.executeCommandOptionAndContinue(Command.FORWARD);
 
-        Assertions.assertEquals(player1, board.getSpace(0, 4).getPlayer(), "Player " + player1.getName() + " should be Space (0,4)!");
+        Assertions.assertEquals(player, board.getSpace(0, 1).getPlayer(), "Player " + player.getName()
+                + " should be Space (0,1)!");
+        Assertions.assertEquals(Heading.SOUTH, player.getHeading(), "Player 0 should be heading SOUTH!");
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
-        Assertions.assertEquals(player2, board.getCurrentPlayer(), "Current player should be " + player2.getName() + "!");
+        Assertions.assertEquals(Phase.PROGRAMMING, board.getPhase(), "It should be in PROGRAMMING Phase!");
+
+        gameController.executeCommandOptionAndContinue(Command.RIGHT);
+
+        Assertions.assertEquals(player, board.getSpace(0, 1).getPlayer(), "Player "
+                + player.getName() + " should be Space (0,1)!");
+        Assertions.assertEquals(Heading.WEST, player.getHeading(), "Player 0 should be heading WEST!");
+        Assertions.assertEquals(Phase.PROGRAMMING, board.getPhase(), "It should be in PROGRAMMING Phase!");
+
+        gameController.executeCommandOptionAndContinue(Command.LEFT);
+
+        Assertions.assertEquals(player, board.getSpace(0, 1).getPlayer(), "Player "
+                + player.getName() + " should be Space (0,1)!");
+        Assertions.assertEquals(Heading.SOUTH, player.getHeading(), "Player 0 should be heading SOUTH!");
+        Assertions.assertEquals(Phase.PROGRAMMING, board.getPhase(), "It should be in PROGRAMMING Phase!");
+
+        gameController.executeCommandOptionAndContinue(Command.FAST_FORWARD);
+
+        Assertions.assertEquals(player, board.getSpace(0, 3).getPlayer(), "Player "
+                + player.getName() + " should be Space (0,3)!");
+        Assertions.assertEquals(Heading.SOUTH, player.getHeading(), "Player 0 should be heading SOUTH!");
+        Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
+        Assertions.assertEquals(Phase.PROGRAMMING, board.getPhase(), "It should be in PROGRAMMING Phase!");
+
+        board.setCurrentPlayer(board.getPlayer(5));
+        player = board.getPlayer(5);
+        Assertions.assertEquals(player, board.getSpace(5, 5).getPlayer(), "Player " + player.getName() + " should be Space (0,2)!");
+        Assertions.assertEquals(Heading.WEST, player.getHeading(), "Player 5 should be heading WEST!");
+
+        gameController.executeCommandOptionAndContinue(Command.FAST_FORWARD);
+
+        Assertions.assertEquals(player, board.getSpace(3, 5).getPlayer(), "Player "
+                + player.getName() + " should be Space (3,5)!");
+        Assertions.assertEquals(Heading.WEST, player.getHeading(), "Player 0 should be heading WEST!");
+        Assertions.assertNull(board.getSpace(5, 5).getPlayer(), "Space (0,0) should be empty!");
+        Assertions.assertEquals(Phase.PROGRAMMING, board.getPhase(), "It should be in PROGRAMMING Phase!");
+        Assertions.assertEquals(board.getPlayer(0), board.getCurrentPlayer(), "The current Player should be: "
+                + player.getName());
     }
 
     @Test

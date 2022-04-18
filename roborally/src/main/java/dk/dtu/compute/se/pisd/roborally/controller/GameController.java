@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -219,7 +220,7 @@ public class GameController {
                 // Player has won
                 System.out.println(player.getName() + " har vundet");
                 JOptionPane.showMessageDialog(null, player.getName() + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
-                System.exit(0);
+                Platform.exit();
             }
         }
     }

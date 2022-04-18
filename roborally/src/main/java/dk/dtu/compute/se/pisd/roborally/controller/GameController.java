@@ -66,7 +66,11 @@ public class GameController {
 
     }
 
-    // XXX: V2
+    /**
+     * Generates a set number of players (given by the user),
+     * generates a fixed number of holders for the cards the player chooses
+     * and autogenerate a number of cards the player can choose from.
+     */
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));

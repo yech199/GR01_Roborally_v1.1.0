@@ -205,6 +205,18 @@ public class GameController {
                 default:
                     // DO NOTHING (for now)
             }
+
+            // Check if player is on top of checkpoint
+            if (player.getSpace().checkpointNumber == player.getNextCheckPoint())
+            {
+                player.setNextCheckPoint(player.getNextCheckPoint()+1);
+            }
+            // Check if player has won
+            if (player.getNextCheckPoint() > board.getCheckPointAmount())
+            {
+                // Player has won
+                System.out.println("En Spiller har vundet");
+            }
         }
     }
 

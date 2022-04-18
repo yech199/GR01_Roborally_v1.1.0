@@ -55,6 +55,8 @@ public class Board extends Subject {
 
     private int step = 0;
 
+    private final int checkPointAmount = 1;
+
     private boolean stepMode;
 
     public Board(int width, int height, @NotNull String boardName) {
@@ -69,6 +71,7 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
+        setupCheckpoints();
     }
 
     public Board(int width, int height) {
@@ -200,6 +203,10 @@ public class Board extends Subject {
         return getSpace(x, y);
     }
 
+    public int getCheckPointAmount(){
+        return checkPointAmount;
+    }
+
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current
@@ -209,6 +216,19 @@ public class Board extends Subject {
         return "Phase: " + getPhase().name() +
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
+    }
+
+    public void setupCheckpoints() {
+
+        int x = 4;
+        int y = 4;
+        int checkPointAmount=1;
+        int curCheckPoint=1;
+
+        // Create a checkpoints
+        spaces[x][y].checkpointNumber = 1;
+        //spaces[x][y].setStyle();
+
     }
 
 

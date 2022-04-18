@@ -37,6 +37,8 @@ public class Player extends Subject {
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
 
+    private int nextCheckPoint = 1;
+
     final public Board board;
 
     private String name;
@@ -95,6 +97,10 @@ public class Player extends Subject {
     public Space getSpace() {
         return space;
     }
+    public int getNextCheckPoint() {
+        return nextCheckPoint;
+    }
+    public void setNextCheckPoint(int value) {nextCheckPoint = value;}
 
     public void setSpace(Space space) {
         Space oldSpace = this.space;

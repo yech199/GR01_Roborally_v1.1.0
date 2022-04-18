@@ -35,6 +35,7 @@ public class Space extends Subject {
 
     public final int x;
     public final int y;
+    public int checkpointNumber = 0;
 
     private Player player;
 

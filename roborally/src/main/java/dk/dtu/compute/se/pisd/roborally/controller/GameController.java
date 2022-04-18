@@ -215,7 +215,7 @@ public class GameController {
             if (player.getNextCheckPoint() > board.getCheckPointAmount())
             {
                 // Player has won
-                System.out.println("En Spiller har vundet");
+                System.out.println(player.getName() + " har vundet");
             }
         }
     }

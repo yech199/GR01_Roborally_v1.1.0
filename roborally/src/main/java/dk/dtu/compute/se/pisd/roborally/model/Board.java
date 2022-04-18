@@ -220,15 +220,19 @@ public class Board extends Subject {
 
     public void setupCheckpoints() {
 
-        int x = 4;
-        int y = 4;
+        int x = 2;
+        int y = 2;
         int checkPointAmount=1;
         int curCheckPoint=1;
 
         // Create a checkpoints
+        /*
+         * Added dummy checkpoints (2,2), (2,4) & (2,6)
+         */
         spaces[x][y].checkpointNumber = 1;
+        spaces[x][y+2].checkpointNumber = 2;
+        spaces[x][y+4].checkpointNumber = 3;
         //spaces[x][y].setStyle();
-
     }
 
 

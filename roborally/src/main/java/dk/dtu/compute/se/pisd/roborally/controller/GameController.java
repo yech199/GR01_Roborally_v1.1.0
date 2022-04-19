@@ -31,7 +31,6 @@ import javax.swing.*;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class GameController {
 
@@ -47,7 +46,7 @@ public class GameController {
      *
      * @param space the space to which the current player should move
      */
-    public void moveCurrentPlayerToSpace(@NotNull Space space)  {
+    public void moveCurrentPlayerToSpace(@NotNull Space space) {
         // TODO Assignment V1: method should be implemented by the students:
         //   - the current player should be moved to the given space
         //     (if it is free()
@@ -67,7 +66,11 @@ public class GameController {
 
     }
 
-    // XXX: V2
+    /**
+     * Generates a set number of players (given by the user),
+     * generates a fixed number of holders for the cards the player chooses
+     * and autogenerate a number of cards the player can choose from.
+     */
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
@@ -165,21 +168,25 @@ public class GameController {
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-                } else {
+                }
+                else {
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
-                    } else {
+                    }
+                    else {
                         startProgrammingPhase();
                     }
                 }
-            } else {
+            }
+            else {
                 // this should not happen
                 assert false;
             }
-        } else {
+        }
+        else {
             // this should not happen
             assert false;
         }
@@ -192,10 +199,8 @@ public class GameController {
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
-
             switch (command) {
                 case FORWARD:
-
                     this.moveForward(player);
                     break;
                 case RIGHT:
@@ -212,19 +217,17 @@ public class GameController {
             }
 
             // Check if player is on top of checkpoint
-            if (player.getSpace().checkpointNumber == player.getNextCheckPoint())
-            {
-                player.setNextCheckPoint(player.getNextCheckPoint()+1);
+            if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
+                player.setNextCheckPoint(player.getNextCheckPoint() + 1);
             }
             // Check if player has won
-            if (player.getNextCheckPoint() > board.getCheckPointAmount())
-            {
+            if (player.getNextCheckPoint() > board.getCheckPointAmount()) {
                 // Player has won
                 System.out.println(player.getName() + " har vundet");
-                JOptionPane.showMessageDialog(null, player.getName() + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, player.getName()
+                        + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
                 Platform.exit();
             }
-
         }
     }
 
@@ -237,13 +240,15 @@ public class GameController {
         int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
         if (nextPlayerNumber < board.getPlayersNumber()) {
             board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-        } else {
+        }
+        else {
             step++;
             if (step < Player.NO_REGISTERS) {
                 makeProgramFieldsVisible(step);
                 board.setStep(step);
                 board.setCurrentPlayer(board.getPlayer(0));
-            } else {
+            }
+            else {
                 startProgrammingPhase();
             }
         }

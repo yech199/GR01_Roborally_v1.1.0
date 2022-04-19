@@ -192,8 +192,10 @@ public class GameController {
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
+
             switch (command) {
                 case FORWARD:
+
                     this.moveForward(player);
                     break;
                 case RIGHT:
@@ -222,6 +224,7 @@ public class GameController {
                 JOptionPane.showMessageDialog(null, player.getName() + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
                 Platform.exit();
             }
+
         }
     }
 
@@ -255,16 +258,18 @@ public class GameController {
             Space target = board.getNeighbour(space, heading);
             if (target != null)
             {
-                if (target.getPlayer() == null)
-                {
-                    // Move player
-                    target.setPlayer(player);
-                }
-                else
-                {
-                    // Push other Player
-                    board.getNeighbour(target, heading).setPlayer(target.getPlayer());
-                    target.setPlayer(player);
+                if (!target.isWall) {
+                    if (target.getPlayer() == null)
+                    {
+                        // Move player
+                        target.setPlayer(player);
+                    }
+                    else
+                    {
+                        // Push other Player
+                        board.getNeighbour(target, heading).setPlayer(target.getPlayer());
+                        target.setPlayer(player);
+                    }
                 }
             }
         }

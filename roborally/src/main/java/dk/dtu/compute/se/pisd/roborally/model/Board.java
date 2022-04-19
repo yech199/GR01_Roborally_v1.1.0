@@ -33,6 +33,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ *
  */
 public class Board extends Subject {
 
@@ -56,6 +57,8 @@ public class Board extends Subject {
 
     private final int checkPointAmount = 3; // How many checkpoint are there in total
 
+    private final int wallAmount = 3;
+
     private boolean stepMode;
 
     public Board(int width, int height, @NotNull String boardName) {
@@ -71,6 +74,7 @@ public class Board extends Subject {
         }
         this.stepMode = false;
         setupCheckpoints(checkPointAmount);
+        setupWalls(wallAmount);
     }
 
     public Board(int width, int height) {
@@ -238,8 +242,21 @@ public class Board extends Subject {
                 spaces[x][y].checkpointNumber = 1;
                 break;
         }
-        //spaces[x][y].setStyle();
     }
 
-
+    public void setupWalls(int wallAmount) {
+        int x = 4;
+        int y = 1;
+        // create walls at (2,1) (2,3) (2,5)
+        switch (wallAmount)
+        {
+            case 3:
+                spaces[x][y + 4].isWall = true;
+            case 2:
+                spaces[x][y + 2].isWall = true;
+            case 1:
+                spaces[x][y].isWall = true;
+                break;
+        }
+    }
 }

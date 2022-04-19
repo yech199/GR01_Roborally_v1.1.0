@@ -58,9 +58,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
         else {
             this.setStyle("-fx-background-color: black;");
-        }
-        if (space.checkpointNumber > 0) {
+        }   if (space.checkpointNumber > 0) { //changes colour of checkpoints to blue
             this.setStyle("-fx-background-color: lightblue;");
+        }   if (space.isWall) { //changes colour of walls to grey
+            this.setStyle("-fx-background-color: grey;");
         }
 
 

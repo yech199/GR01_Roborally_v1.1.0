@@ -44,6 +44,9 @@ public class Space extends Subject {
     public final int y;
     public int checkpointNumber = 0; // What number of checkpoint are you? 0 = not a checkpoint.
     public boolean isWall = false; //tells if space is a wall
+    public boolean isPit = false; //tells if space is a pit
+    public boolean isGreenConveyor = false; //tells if space is a conveyor that pushes one space
+    public Heading conveyorDirection;
 
     private Player player;
 

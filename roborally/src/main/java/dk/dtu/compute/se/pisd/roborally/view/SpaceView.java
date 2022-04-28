@@ -62,6 +62,8 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-color: lightblue;");
         }   if (space.isWall) { //changes colour of walls to grey
             this.setStyle("-fx-background-color: grey;");
+        }   if (space.isGreenConveyor) { //changes colour of walls to grey
+            this.setStyle("-fx-background-color: lightgreen;");
         }
 
 

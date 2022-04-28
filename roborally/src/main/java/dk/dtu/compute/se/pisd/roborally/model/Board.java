@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
 /**
@@ -75,6 +76,7 @@ public class Board extends Subject {
         this.stepMode = false;
         setupCheckpoints(checkPointAmount);
         setupWalls(wallAmount);
+        setupConveyor(3);
     }
 
     public Board(int width, int height) {
@@ -256,6 +258,25 @@ public class Board extends Subject {
                 spaces[x][y + 2].isWall = true;
             case 1:
                 spaces[x][y].isWall = true;
+                break;
+        }
+    }
+
+    public void setupConveyor(int wallAmount) {
+        int x = 3;
+        int y = 1;
+        // create walls at (2,1) (2,3) (2,5)
+        switch (wallAmount)
+        {
+            case 3:
+                spaces[x][y + 4].isGreenConveyor = true;
+                spaces[x][y + 4].conveyorDirection = EAST;
+            case 2:
+                spaces[x + 1][y + 4].isGreenConveyor = true;
+                spaces[x + 1][y + 4].conveyorDirection = EAST;
+            case 1:
+                spaces[x + 2][y + 4].isGreenConveyor = true;
+                spaces[x + 2][y + 4].conveyorDirection = EAST;
                 break;
         }
     }

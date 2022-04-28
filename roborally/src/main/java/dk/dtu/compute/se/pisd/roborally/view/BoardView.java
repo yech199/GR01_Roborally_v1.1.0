@@ -25,7 +25,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -38,7 +37,6 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class BoardView extends VBox implements ViewObserver {
 

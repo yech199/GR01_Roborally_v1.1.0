@@ -22,22 +22,17 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
@@ -45,7 +40,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_WIDTH = 60; // 75;
 
     public final Space space;
-
 
     public SpaceView(@NotNull Space space) {
         this.space = space;
@@ -61,9 +55,15 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         if ((space.x + space.y) % 2 == 0) {
             this.setStyle("-fx-background-color: white;");
-        } else {
-            this.setStyle("-fx-background-color: black;");
         }
+        else {
+            this.setStyle("-fx-background-color: black;");
+        }   if (space.checkpointNumber > 0) { //changes colour of checkpoints to blue
+            this.setStyle("-fx-background-color: lightblue;");
+        }   if (space.isWall) { //changes colour of walls to grey
+            this.setStyle("-fx-background-color: grey;");
+        }
+
 
         // updatePlayer();
 
@@ -79,14 +79,14 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
                     10.0, 20.0,
-                    20.0, 0.0 );
+                    20.0, 0.0);
             try {
                 arrow.setFill(Color.valueOf(player.getColor()));
             } catch (Exception e) {
                 arrow.setFill(Color.MEDIUMPURPLE);
             }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
+            arrow.setRotate((90 * player.getHeading().ordinal()) % 360);
             this.getChildren().add(arrow);
         }
     }

@@ -55,6 +55,10 @@ public class Board extends Subject {
 
     private int step = 0;
 
+    private final int checkPointAmount = 3; // How many checkpoint are there in total
+
+    private final int wallAmount = 3;
+
     private boolean stepMode;
 
     public Board(int width, int height, @NotNull String boardName) {
@@ -63,12 +67,14 @@ public class Board extends Subject {
         this.height = height;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
         }
         this.stepMode = false;
+        setupCheckpoints(checkPointAmount);
+        setupWalls(wallAmount);
     }
 
     public Board(int width, int height) {
@@ -82,7 +88,8 @@ public class Board extends Subject {
     public void setGameId(int gameId) {
         if (this.gameId == null) {
             this.gameId = gameId;
-        } else {
+        }
+        else {
             if (!this.gameId.equals(gameId)) {
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
@@ -93,7 +100,8 @@ public class Board extends Subject {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {
             return spaces[x][y];
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -112,7 +120,8 @@ public class Board extends Subject {
     public Player getPlayer(int i) {
         if (i >= 0 && i < players.size()) {
             return players.get(i);
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -164,7 +173,8 @@ public class Board extends Subject {
     public int getPlayerNumber(@NotNull Player player) {
         if (player.board == this) {
             return players.indexOf(player);
-        } else {
+        }
+        else {
             return -1;
         }
     }
@@ -175,7 +185,7 @@ public class Board extends Subject {
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
-     * @param space the space for which the neighbour should be computed
+     * @param space   the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
@@ -200,6 +210,10 @@ public class Board extends Subject {
         return getSpace(x, y);
     }
 
+    public int getCheckPointAmount() {
+        return checkPointAmount;
+    }
+
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current
@@ -211,5 +225,38 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
+    public void setupCheckpoints(int checkPointAmount) {
 
+        int x = 2;
+        int y = 2;
+        // Create checkpoints
+        /*
+         * Added dummy checkpoints (2,2), (2,4) & (2,6)
+         */
+        switch (checkPointAmount) {
+            case 3:
+                spaces[x][y + 4].checkpointNumber = 3;
+            case 2:
+                spaces[x][y + 2].checkpointNumber = 2;
+            case 1:
+                spaces[x][y].checkpointNumber = 1;
+                break;
+        }
+    }
+
+    public void setupWalls(int wallAmount) {
+        int x = 4;
+        int y = 1;
+        // create walls at (2,1) (2,3) (2,5)
+        switch (wallAmount)
+        {
+            case 3:
+                spaces[x][y + 4].isWall = true;
+            case 2:
+                spaces[x][y + 2].isWall = true;
+            case 1:
+                spaces[x][y].isWall = true;
+                break;
+        }
+    }
 }

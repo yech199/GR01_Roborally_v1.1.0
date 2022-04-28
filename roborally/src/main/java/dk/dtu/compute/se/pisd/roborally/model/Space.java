@@ -32,7 +32,6 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Space extends Subject {
 
@@ -43,6 +42,8 @@ public class Space extends Subject {
 
     public final int x;
     public final int y;
+    public int checkpointNumber = 0; // What number of checkpoint are you? 0 = not a checkpoint.
+    public boolean isWall = false; //tells if space is a wall
 
     private Player player;
 

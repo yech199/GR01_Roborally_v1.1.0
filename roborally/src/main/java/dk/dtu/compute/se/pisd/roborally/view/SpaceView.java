@@ -53,15 +53,27 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
+        //sets the color of the board fields to black and white
         if ((space.x + space.y) % 2 == 0) {
             this.setStyle("-fx-background-color: white;");
         }
         else {
             this.setStyle("-fx-background-color: black;");
-        }   if (space.checkpointNumber > 0) { //changes colour of checkpoints to blue
+        }
+
+        if (space.checkpointNumber > 0) { //changes color of checkpoints to blue
             this.setStyle("-fx-background-color: lightblue;");
-        }   if (space.isWall) { //changes colour of walls to grey
+        }
+        if (space.isWall) { //changes colur of walls to grey
             this.setStyle("-fx-background-color: grey;");
+        }
+        if (space.isGreenConveyor) { //changes colour of walls to grey
+            this.setStyle("-fx-background-color: lightgreen;");
+        } if (space.isGear) { //changes colour of walls to grey
+            this.setStyle("-fx-background-color: lightgrey;");
+        }
+        if (space.isPushPanel) { //changes colour of walls to grey
+            this.setStyle("-fx-background-color: red;");
         }
 
 

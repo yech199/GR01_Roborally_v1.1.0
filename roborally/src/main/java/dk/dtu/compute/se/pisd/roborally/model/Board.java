@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
 /**
@@ -75,6 +76,9 @@ public class Board extends Subject {
         this.stepMode = false;
         setupCheckpoints(checkPointAmount);
         setupWalls(wallAmount);
+        setupGears(wallAmount);
+        setupConveyor(3);
+        setupPushPanels(3);
     }
 
     public Board(int width, int height) {
@@ -251,12 +255,72 @@ public class Board extends Subject {
         switch (wallAmount)
         {
             case 3:
-                spaces[x][y + 4].isWall = true;
+                spaces[x][y + 5].isWall = true;
             case 2:
                 spaces[x][y + 2].isWall = true;
             case 1:
                 spaces[x][y].isWall = true;
                 break;
         }
+    }
+    public void setupPushPanels(int pushPanelAmount) {
+        int x = 5;
+        int y = 1;
+        // create push panels at (5,1) (5,3) (5,5)
+        switch (pushPanelAmount)
+        {
+            case 3:
+                spaces[x][y + 2].isPushPanel = true;
+                spaces[x][y + 2].pushPanelDirection = SOUTH;
+            case 2:
+                spaces[x + 1][y + 1].isPushPanel = true;
+                spaces[x + 1][y + 1].pushPanelDirection = EAST;
+            case 1:
+                spaces[x + 2][y + 4].isPushPanel = true;
+                spaces[x + 2][y + 4].pushPanelDirection = WEST;
+                break;
+        }
+    }
+
+    public void setupGears(int gearAmount) {
+        int x = 6;
+        int y = 1;
+        // create walls at (2,1) (2,3) (2,5)
+        switch (wallAmount)
+        {
+            case 3:
+                spaces[x][y].isGear = true;
+                spaces[x][y].gearDirection = true;
+            case 2:
+                spaces[x][y + 2].isGear = true;
+                spaces[x][y + 2].gearDirection = false;
+            case 1:
+                spaces[x][y + 4].isGear = true;
+                spaces[x][y + 4].gearDirection = true;
+                break;
+        }
+    }
+
+    public void setupConveyor(int wallAmount) {
+        int x = 3;
+        int y = 1;
+        // create walls at (2,1) (2,3) (2,5)
+        switch (wallAmount)
+        {
+            case 3:
+                spaces[x][y + 4].isGreenConveyor = true;
+                spaces[x][y + 4].conveyorDirection = EAST;
+            case 2:
+                spaces[x + 1][y + 4].isGreenConveyor = true;
+                spaces[x + 1][y + 4].conveyorDirection = EAST;
+            case 1:
+                spaces[x + 2][y + 4].isGreenConveyor = true;
+                spaces[x + 2][y + 4].conveyorDirection = EAST;
+                break;
+        }
+    }
+
+    public int getSpaceAmount() {
+        return spaces.length;
     }
 }

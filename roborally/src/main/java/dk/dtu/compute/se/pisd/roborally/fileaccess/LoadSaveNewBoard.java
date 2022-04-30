@@ -172,5 +172,48 @@ public class LoadSaveNewBoard {
             }
         }
     }
+    public static Board newBoard(int numOfPlayers) {
+        Board newBoard;
+        
+        ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + DEFAULTBOARD + "." + JSON_EXT);
+
+        if (inputStream == null){
+            System.out.println("Does not exists");
+        }
+
+        GsonBuilder simpleBuilder = new GsonBuilder().registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+
+        try {
+
+            JsonReader reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+
+            newBoard = new Board(template.width, template.height);
+
+            for (SpaceTemplate spaceTemplate: template.spaces) {
+                Space space = newBoard.getSpace(spaceTemplate.x, spaceTemplate.y);
+                if (space != null) {
+                    space.getActions().addAll(spaceTemplate.actions);
+                    space.getWalls().addAll(spaceTemplate.walls);
+                    space.setPlayer(null);
+                }
+            }
+
+            for (int i = 0; i < numOfPlayers; i++) {
+                Player player = new Player(newBoard, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                newBoard.addPlayer(player);
+                player.setSpace(newBoard.getSpace(i % newBoard.width, i));
+            }
+
+            reader.close();
+
+        } catch (Exception e) {
+            System.out.println("Failed loading board");
+            newBoard = new Board(8,8);
+        }
+        return newBoard;
+    }
 
 }

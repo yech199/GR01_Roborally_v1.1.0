@@ -40,16 +40,22 @@ public class Space extends Subject {
     private List<Heading> walls = new ArrayList<>();
     private List<FieldAction> actions = new ArrayList<>();
 
+    // Game Basics
     public final int x;
     public final int y;
+    private Player player;
+
+    // Field Types
     public int checkpointNumber = 0; // What number of checkpoint are you? 0 = not a checkpoint.
+    public boolean isPushPanel = false;
+    public Heading pushPanelDirection;
+    public boolean isGear = false;
+    public boolean gearDirection = false; //What rotation direction, True = Clockwise, False = Anti-Clockwise
     public boolean isWall = false; //tells if space is a wall
     public boolean isPit = false; //tells if space is a pit
     public boolean isGreenConveyor = false; //tells if space is a conveyor that pushes one space
     public boolean isBlueConveyor = false; //tells if space is a conveyor that pushes two space
     public Heading conveyorDirection;
-
-    private Player player;
 
     public Space(Board board, int x, int y) {
         this.board = board;

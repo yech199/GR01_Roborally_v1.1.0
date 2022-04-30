@@ -164,6 +164,7 @@ public class GameController {
                     }
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
+                    doFieldEffect(currentPlayer);
                 }
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -192,7 +193,7 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    // Executes Commands of cards
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
@@ -214,44 +215,6 @@ public class GameController {
                     break;
                 default:
                     // DO NOTHING (for now)
-            }
-
-            // Check if player is on top of a conveyor belt
-            if (player.getSpace().isGreenConveyor || player.getSpace().isBlueConveyor)
-            {
-                // Set Variables
-                Heading heading = player.getSpace().conveyorDirection;
-                Space target = board.getNeighbour(player.getSpace(), heading);
-
-                // Green: Move once
-                if (player.getSpace().isGreenConveyor) {
-                    if (!target.isWall && target.getPlayer() == null) {
-                        target.setPlayer(player);
-                    }
-                }
-                // Blue: Move Twice
-                if (player.getSpace().isBlueConveyor) {
-                    for (int i = 0; i < 2; i++) {
-                        heading = player.getSpace().conveyorDirection;
-                        target = board.getNeighbour(player.getSpace(), heading);
-                        if (!target.isWall && target.getPlayer() == null) {
-                            target.setPlayer(player);
-                        }
-                    }
-                }
-            }
-
-            // Check if player is on top of checkpoint
-            if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
-                player.setNextCheckPoint(player.getNextCheckPoint() + 1);
-            }
-            // Check if player has won
-            if (player.getNextCheckPoint() > board.getCheckPointAmount()) {
-                // Player has won
-                System.out.println(player.getName() + " har vundet");
-                JOptionPane.showMessageDialog(null, player.getName()
-                        + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
-                Platform.exit();
             }
         }
     }
@@ -360,6 +323,71 @@ public class GameController {
     public void notImplemented() {
         // XXX just for now to indicate that the actual method is not yet implemented
         assert false;
+    }
+
+    public void doFieldEffect (Player player){
+        // Check if player is on top of a conveyor belt
+        if (player.getSpace().isGreenConveyor || player.getSpace().isBlueConveyor)
+        {
+            // Set Variables
+            Heading heading = player.getSpace().conveyorDirection;
+            Space target = board.getNeighbour(player.getSpace(), heading);
+
+            // Green: Move once
+            if (player.getSpace().isGreenConveyor) {
+                if (!target.isWall && target.getPlayer() == null) {
+                    target.setPlayer(player);
+                }
+            }
+            // Blue: Move Twice
+            if (player.getSpace().isBlueConveyor) {
+                for (int i = 0; i < 2; i++) {
+                    heading = player.getSpace().conveyorDirection;
+                    target = board.getNeighbour(player.getSpace(), heading);
+                    if (!target.isWall && target.getPlayer() == null) {
+                        target.setPlayer(player);
+                    }
+                }
+            }
+        }
+
+        // Check if player is on top of Gear
+        if (player.getSpace().isGear) {
+            // Clockwise
+            if (player.getSpace().gearDirection)
+            {
+                turnRight(player);
+            }
+            // Counter Clockwise
+            if (!player.getSpace().gearDirection)
+            {
+                turnLeft(player);
+            }
+        }
+
+        // Check if player is on top of checkpoint
+        if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
+            player.setNextCheckPoint(player.getNextCheckPoint() + 1);
+        }
+
+        // Check if player is on a push panel
+        if (player.getSpace().isPushPanel) {
+            Heading heading = player.getSpace().pushPanelDirection;
+            Space target = board.getNeighbour(player.getSpace(), heading);
+
+            if (!target.isWall && target.getPlayer() == null) {
+                target.setPlayer(player);
+            }
+        }
+
+        // Check if player has won
+        if (player.getNextCheckPoint() > board.getCheckPointAmount()) {
+            // Player has won
+            System.out.println(player.getName() + " har vundet");
+            JOptionPane.showMessageDialog(null, player.getName()
+                    + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
+            Platform.exit();
+        }
     }
 
 }

@@ -331,7 +331,7 @@ public class GameController {
         Platform.exit();
     }
 
-    public void doFieldEffect (Player player){
+    /*public void doFieldEffect (Player player){
 
         // Check if player is on top of checkpoint
         /*if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
@@ -346,8 +346,8 @@ public class GameController {
             if (!target.isWall && target.getPlayer() == null && player.getSpace().getPushPanelLabel()[board.getStep()]) {
                 target.setPlayer(player);
             }
-        }*/
+        }
 
-    }
+    }*/
 
 }

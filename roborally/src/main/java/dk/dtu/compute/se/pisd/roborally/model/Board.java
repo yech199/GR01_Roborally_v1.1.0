@@ -229,7 +229,7 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
-    public void setupCheckpoints(int checkPointAmount) {
+    /*public void setupCheckpoints(int checkPointAmount) {
 
         int x = 2;
         int y = 2;
@@ -237,7 +237,7 @@ public class Board extends Subject {
         /*
          * Added dummy checkpoints (2,2), (2,4) & (2,6)
          */
-        switch (checkPointAmount) {
+        /*switch (checkPointAmount) {
             case 3:
                 spaces[x][y + 4].checkpointNumber = 3;
             case 2:
@@ -324,7 +324,7 @@ public class Board extends Subject {
                 spaces[x + 2][y + 4].conveyorDirection = EAST;
                 break;
         }
-    }
+    }*/
 
     public int getSpaceAmount() {
         return spaces.length;

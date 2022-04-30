@@ -26,10 +26,9 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.fileaccess.IOUtil;
+import dk.dtu.compute.se.pisd.roborally.util.ResourcesUtil;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadSaveNewBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -40,7 +39,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -50,7 +48,6 @@ import java.util.Optional;
  *
  */
 public class AppController implements Observer {
-
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
 
     final private RoboRally roboRally;
@@ -96,12 +93,6 @@ public class AppController implements Observer {
             roboRally.createBoardView(gameController);*/
         }
     }
-    private void setupGameController(Board board) {
-        gameController = new GameController(board);
-        board.setCurrentPlayer(board.getPlayer(0));
-        gameController.startProgrammingPhase();
-        roboRally.createBoardView(gameController);
-    }
 
     public void saveGame() {
         // XXX needs to be implemented eventually
@@ -111,9 +102,31 @@ public class AppController implements Observer {
 
     public void loadGame() {
         if (gameController == null) {
-            Board board = LoadSaveNewBoard.loadBoard("testboard");
-            setupGameController(board);
+
+            final List<String> BOARD_NAMES = ResourcesUtil.getBoardFileNames();
+
+            ChoiceDialog<String> dialogL = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
+            dialogL.setTitle("Load game");
+            dialogL.setHeaderText("Select a game to load");
+            Optional<String> result = dialogL.showAndWait();
+
+            if (result.isPresent()) {
+                String boardname = result.get();
+                Board board = LoadSaveNewBoard.loadBoard(boardname);
+                setupGameController(board);
+            }  else {
+                // The UI should not allow this, but in case this happens anyway.
+                // give the user the option to save the game or abort this operation!
+                return;
+            }
         }
+    }
+
+    private void setupGameController(Board board) {
+        gameController = new GameController(board);
+        board.setCurrentPlayer(board.getPlayer(0));
+        gameController.startProgrammingPhase();
+        roboRally.createBoardView(gameController);
     }
 
     /**
@@ -160,7 +173,6 @@ public class AppController implements Observer {
     public boolean isGameRunning() {
         return gameController != null;
     }
-
 
     @Override
     public void update(Subject subject) {

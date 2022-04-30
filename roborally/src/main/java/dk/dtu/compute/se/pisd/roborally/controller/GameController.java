@@ -216,6 +216,31 @@ public class GameController {
                     // DO NOTHING (for now)
             }
 
+            // Check if player is on top of a conveyor belt
+            if (player.getSpace().isGreenConveyor || player.getSpace().isBlueConveyor)
+            {
+                // Set Variables
+                Heading heading = player.getSpace().conveyorDirection;
+                Space target = board.getNeighbour(player.getSpace(), heading);
+
+                // Green: Move once
+                if (player.getSpace().isGreenConveyor) {
+                    if (!target.isWall && target.getPlayer() == null) {
+                        target.setPlayer(player);
+                    }
+                }
+                // Blue: Move Twice
+                if (player.getSpace().isBlueConveyor) {
+                    for (int i = 0; i < 2; i++) {
+                        heading = player.getSpace().conveyorDirection;
+                        target = board.getNeighbour(player.getSpace(), heading);
+                        if (!target.isWall && target.getPlayer() == null) {
+                            target.setPlayer(player);
+                        }
+                    }
+                }
+            }
+
             // Check if player is on top of checkpoint
             if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
                 player.setNextCheckPoint(player.getNextCheckPoint() + 1);

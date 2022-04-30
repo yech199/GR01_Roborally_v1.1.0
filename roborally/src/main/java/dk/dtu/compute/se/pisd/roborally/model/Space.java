@@ -46,6 +46,7 @@ public class Space extends Subject {
     public boolean isWall = false; //tells if space is a wall
     public boolean isPit = false; //tells if space is a pit
     public boolean isGreenConveyor = false; //tells if space is a conveyor that pushes one space
+    public boolean isBlueConveyor = false; //tells if space is a conveyor that pushes two space
     public Heading conveyorDirection;
 
     private Player player;

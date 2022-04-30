@@ -112,7 +112,5 @@ public class BoardView extends VBox implements ViewObserver {
                 }
             }
         }
-
     }
-
 }

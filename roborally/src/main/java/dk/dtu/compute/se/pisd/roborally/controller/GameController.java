@@ -164,7 +164,8 @@ public class GameController {
                     }
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
-                    doFieldEffect(currentPlayer);
+                    //doFieldEffect(currentPlayer);
+                    currentPlayer.getSpace().getActions().get(0).doAction(this, currentPlayer.getSpace());
                 }
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -201,20 +202,13 @@ public class GameController {
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
             switch (command) {
-                case FORWARD:
-                    this.moveForward(player);
-                    break;
-                case RIGHT:
-                    this.turnRight(player);
-                    break;
-                case LEFT:
-                    this.turnLeft(player);
-                    break;
-                case FAST_FORWARD:
-                    this.fastForward(player);
-                    break;
-                default:
-                    // DO NOTHING (for now)
+                case FORWARD -> this.moveForward(player);
+                case RIGHT -> this.turnRight(player);
+                case LEFT -> this.turnLeft(player);
+                case FAST_FORWARD -> this.fastForward(player, 2);
+                default -> {
+                }
+                // DO NOTHING (for now)
             }
         }
     }
@@ -246,19 +240,16 @@ public class GameController {
     // TODO: V2
     public void moveForward(@NotNull Player player) {
         Space space = player.getSpace();
+
         if (player != null && player.board == board && space != null) {
             Heading heading = player.getHeading();
             Space target = board.getNeighbour(space, heading);
-            if (target != null)
-            {
+            if (target != null) {
                 if (!target.isWall) {
-                    if (target.getPlayer() == null)
-                    {
+                    if (target.getPlayer() == null) {
                         // Move player
                         target.setPlayer(player);
-                    }
-                    else
-                    {
+                    } else {
                         // Push other Player
                         board.getNeighbour(target, heading).setPlayer(target.getPlayer());
                         target.setPlayer(player);
@@ -269,21 +260,22 @@ public class GameController {
     }
 
     // TODO: V2
-    public void fastForward(@NotNull Player player) {
-        moveForward(player);
-        moveForward(player);
+    public void fastForward(@NotNull Player player, int moves) {
+        for (int i = 0; i < moves; i++) {
+            moveForward(player);
+        }
     }
 
     // TODO: V2
     public void turnRight(@NotNull Player player) {
-        if (player != null && player.board == board) {
+        if (player.board == board) {
             player.setHeading(player.getHeading().next());
         }
     }
 
     // TODO: V2
     public void turnLeft(@NotNull Player player) {
-        if (player != null && player.board == board) {
+        if (player.board == board) {
             player.setHeading(player.getHeading().prev());
         }
     }
@@ -326,30 +318,7 @@ public class GameController {
     }
 
     public void doFieldEffect (Player player){
-        // Check if player is on top of a conveyor belt
-        if (player.getSpace().isGreenConveyor || player.getSpace().isBlueConveyor)
-        {
-            // Set Variables
-            Heading heading = player.getSpace().conveyorDirection;
-            Space target = board.getNeighbour(player.getSpace(), heading);
 
-            // Green: Move once
-            if (player.getSpace().isGreenConveyor) {
-                if (!target.isWall && target.getPlayer() == null) {
-                    target.setPlayer(player);
-                }
-            }
-            // Blue: Move Twice
-            if (player.getSpace().isBlueConveyor) {
-                for (int i = 0; i < 2; i++) {
-                    heading = player.getSpace().conveyorDirection;
-                    target = board.getNeighbour(player.getSpace(), heading);
-                    if (!target.isWall && target.getPlayer() == null) {
-                        target.setPlayer(player);
-                    }
-                }
-            }
-        }
 
         // Check if player is on top of Gear
         if (player.getSpace().isGear) {

@@ -47,8 +47,52 @@ public class ConveyorBelt extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        // TODO needs to be implemented
-        return false;
-    }
+        if (space.getActions().size() > 0) {
+            ConveyorBelt action = (ConveyorBelt) space.getActions().get(0);
 
+            Player player = space.getPlayer();
+
+            if (player != null) {
+                // Move in direction of player
+                Heading heading = player.getHeading();
+                player.setHeading(action.heading);
+                FieldAction actiontest = space.getActions().get(0);
+                if (true) {
+                    gameController.moveForward(player);
+                } else {
+                    gameController.fastForward(player, 2);
+                }
+
+                player.setHeading(heading);
+            } else {
+                // No player on space
+                return false;
+            }
+
+
+            // Set Variables
+            /*Heading heading = player.getSpace().conveyorDirection;
+            Space target = board.getNeighbour(player.getSpace(), heading);
+
+            // Green: Move once
+            if (player.getSpace().isGreenConveyor) {
+                if (!target.isWall && target.getPlayer() == null) {
+                    target.setPlayer(player);
+                }
+            }
+            // Blue: Move Twice
+            if (player.getSpace().isBlueConveyor) {
+                for (int i = 0; i < 2; i++) {
+                    heading = player.getSpace().conveyorDirection;
+                    target = board.getNeighbour(player.getSpace(), heading);
+                    if (!target.isWall && target.getPlayer() == null) {
+                        target.setPlayer(player);
+                    }
+                }
+            }
+        }
+        return false;*/
+        }
+        return true;
+    }
 }

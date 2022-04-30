@@ -335,6 +335,20 @@ public class GameController {
             }
         }
 
+        // Check if player is on top of Gear
+        if (player.getSpace().isGear) {
+            // Clockwise
+            if (player.getSpace().gearDirection)
+            {
+                turnRight(player);
+            }
+            // Counter Clockwise
+            if (!player.getSpace().gearDirection)
+            {
+                turnLeft(player);
+            }
+        }
+
         // Check if player is on top of checkpoint
         if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
             player.setNextCheckPoint(player.getNextCheckPoint() + 1);

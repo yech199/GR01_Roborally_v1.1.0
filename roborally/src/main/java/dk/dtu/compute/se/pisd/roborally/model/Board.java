@@ -76,6 +76,7 @@ public class Board extends Subject {
         this.stepMode = false;
         setupCheckpoints(checkPointAmount);
         setupWalls(wallAmount);
+        setupGears(wallAmount);
         setupConveyor(3);
     }
 
@@ -253,11 +254,30 @@ public class Board extends Subject {
         switch (wallAmount)
         {
             case 3:
-                spaces[x][y + 4].isWall = true;
+                spaces[x][y + 5].isWall = true;
             case 2:
                 spaces[x][y + 2].isWall = true;
             case 1:
                 spaces[x][y].isWall = true;
+                break;
+        }
+    }
+
+    public void setupGears(int gearAmount) {
+        int x = 6;
+        int y = 1;
+        // create walls at (2,1) (2,3) (2,5)
+        switch (wallAmount)
+        {
+            case 3:
+                spaces[x][y].isGear = true;
+                spaces[x][y].gearDirection = true;
+            case 2:
+                spaces[x][y + 2].isGear = true;
+                spaces[x][y + 2].gearDirection = false;
+            case 1:
+                spaces[x][y + 4].isGear = true;
+                spaces[x][y + 4].gearDirection = true;
                 break;
         }
     }

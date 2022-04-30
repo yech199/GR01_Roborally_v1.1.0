@@ -164,6 +164,7 @@ public class GameController {
                     }
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
+                    doFieldEffect(currentPlayer);
                 }
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -192,7 +193,7 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    // Executes Commands of cards
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
@@ -214,18 +215,6 @@ public class GameController {
                     break;
                 default:
                     // DO NOTHING (for now)
-            }
-
-            // Field Effects
-            doFieldEffect(player);
-
-            // Check if player has won
-            if (player.getNextCheckPoint() > board.getCheckPointAmount()) {
-                // Player has won
-                System.out.println(player.getName() + " har vundet");
-                JOptionPane.showMessageDialog(null, player.getName()
-                        + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
-                Platform.exit();
             }
         }
     }
@@ -349,6 +338,15 @@ public class GameController {
         // Check if player is on top of checkpoint
         if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
             player.setNextCheckPoint(player.getNextCheckPoint() + 1);
+        }
+
+        // Check if player has won
+        if (player.getNextCheckPoint() > board.getCheckPointAmount()) {
+            // Player has won
+            System.out.println(player.getName() + " har vundet");
+            JOptionPane.showMessageDialog(null, player.getName()
+                    + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
+            Platform.exit();
         }
     }
 

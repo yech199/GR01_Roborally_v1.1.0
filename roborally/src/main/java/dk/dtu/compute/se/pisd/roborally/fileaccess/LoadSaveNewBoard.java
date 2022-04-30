@@ -86,6 +86,18 @@ public class LoadSaveNewBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
+
+            // Loading players
+            for (PlayerTemplate player : template.players) {
+                Player newPlayer = new Player(result, player.color, player.name);
+                result.addPlayer(newPlayer);
+                newPlayer.setSpace(result.getSpace(player.spaceX, player.spaceY));
+                newPlayer.setHeading(Heading.valueOf(player.heading));
+            }
+
+            // Set current player
+            result.setCurrentPlayer(result.getPlayer(template.currentPlayer));
+
 			reader.close();
 			return result;
 		} catch (IOException e1) {

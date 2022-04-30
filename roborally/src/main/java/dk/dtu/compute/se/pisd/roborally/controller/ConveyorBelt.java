@@ -19,11 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally.fileaccess.model;
+package dk.dtu.compute.se.pisd.roborally.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * ...
@@ -31,14 +33,22 @@ import java.util.List;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class BoardTemplate {
+public class ConveyorBelt extends FieldAction {
 
-    public int width;
-    public int height;
+    private Heading heading;
 
-    public List<PlayerTemplate> players = new ArrayList<>();
-    public int currentPlayer;
+    public Heading getHeading() {
+        return heading;
+    }
 
-    public List<SpaceTemplate> spaces = new ArrayList<>();
+    public void setHeading(Heading heading) {
+        this.heading = heading;
+    }
+
+    @Override
+    public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+        // TODO needs to be implemented
+        return false;
+    }
 
 }

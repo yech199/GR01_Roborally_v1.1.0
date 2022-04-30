@@ -26,19 +26,26 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class LoadBoard {
+public class LoadSaveNewBoard {
+
+    final private static List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     private static final String BOARDSFOLDER = "boards";
     private static final String DEFAULTBOARD = "defaultboard";
@@ -49,27 +56,29 @@ public class LoadBoard {
             boardname = DEFAULTBOARD;
         }
 
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
+        ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
             return new Board(8,8);
         }
 
-		// In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
 
 		Board result;
-		// FileReader fileReader = null;
         JsonReader reader = null;
 		try {
-			// fileReader = new FileReader(filename);
+
 			reader = gson.newJsonReader(new InputStreamReader(inputStream));
 			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
 
-			result = new Board(template.width, template.height);
+			result = new Board(template.width, template.height, boardname);
+
+            // TODO: Add loading of phase, stepmode and step
+            // Loading spaces
 			for (SpaceTemplate spaceTemplate: template.spaces) {
 			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
 			    if (space != null) {
@@ -77,6 +86,18 @@ public class LoadBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
+
+            // Loading players
+            for (PlayerTemplate player : template.players) {
+                Player newPlayer = new Player(result, player.color, player.name);
+                result.addPlayer(newPlayer);
+                newPlayer.setSpace(result.getSpace(player.spaceX, player.spaceY));
+                newPlayer.setHeading(Heading.valueOf(player.heading));
+            }
+
+            // Set current player
+            result.setCurrentPlayer(result.getPlayer(template.currentPlayer));
+
 			reader.close();
 			return result;
 		} catch (IOException e1) {
@@ -96,10 +117,12 @@ public class LoadBoard {
     }
 
     public static void saveBoard(Board board, String name) {
+        // Set up the board template
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
 
+        // Add all spaces
         for (int i=0; i<board.width; i++) {
             for (int j=0; j<board.height; j++) {
                 Space space = board.getSpace(i,j);
@@ -114,20 +137,15 @@ public class LoadBoard {
             }
         }
 
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
+        // TODO: set up players in template
+
+        ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
         // TODO: this is not very defensive, and will result in a NullPointerException
         //       when the folder "resources" does not exist! But, it does not need
         //       the file "simpleCards.json" to exist!
         String filename =
                 classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
 
-        // In simple cases, we can create a Gson object with new:
-        //
-        //   Gson gson = new Gson();
-        //
-        // But, if you need to configure it, it is better to create it from
-        // a builder (here, we want to configure the JSON serialisation with
-        // a pretty printer):
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
                 setPrettyPrinting();
@@ -153,6 +171,49 @@ public class LoadBoard {
                 } catch (IOException e2) {}
             }
         }
+    }
+    public static Board newBoard(int numOfPlayers) {
+        Board newBoard;
+        
+        ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + DEFAULTBOARD + "." + JSON_EXT);
+
+        if (inputStream == null){
+            System.out.println("Does not exists");
+        }
+
+        GsonBuilder simpleBuilder = new GsonBuilder().registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+
+        try {
+
+            JsonReader reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+
+            newBoard = new Board(template.width, template.height);
+
+            for (SpaceTemplate spaceTemplate: template.spaces) {
+                Space space = newBoard.getSpace(spaceTemplate.x, spaceTemplate.y);
+                if (space != null) {
+                    space.getActions().addAll(spaceTemplate.actions);
+                    space.getWalls().addAll(spaceTemplate.walls);
+                    space.setPlayer(null);
+                }
+            }
+
+            for (int i = 0; i < numOfPlayers; i++) {
+                Player player = new Player(newBoard, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                newBoard.addPlayer(player);
+                player.setSpace(newBoard.getSpace(i % newBoard.width, i));
+            }
+
+            reader.close();
+
+        } catch (Exception e) {
+            System.out.println("Failed loading board");
+            newBoard = new Board(8,8);
+        }
+        return newBoard;
     }
 
 }

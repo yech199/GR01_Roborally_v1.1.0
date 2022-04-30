@@ -326,4 +326,8 @@ public class Board extends Subject {
                 break;
         }
     }
+
+    public int getSpaceAmount() {
+        return spaces.length;
+    }
 }

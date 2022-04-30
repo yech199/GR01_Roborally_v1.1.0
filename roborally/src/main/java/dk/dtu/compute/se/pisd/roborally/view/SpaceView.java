@@ -74,7 +74,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-color: lightgrey;");
         }
         if (space.isPushPanel) { //changes colour of walls to grey
-            this.setStyle("-fx-background-color: red;");
+            this.setStyle("-fx-background-color: pink;");
         }
 
 

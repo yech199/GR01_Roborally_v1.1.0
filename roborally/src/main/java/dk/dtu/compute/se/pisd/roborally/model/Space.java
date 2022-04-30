@@ -49,6 +49,7 @@ public class Space extends Subject {
     public int checkpointNumber = 0; // What number of checkpoint are you? 0 = not a checkpoint.
     public boolean isPushPanel = false;
     public Heading pushPanelDirection;
+    //public boolean[] pushPanelLabel = {true, true, false, true, true};
     public boolean[] pushPanelLabel = new boolean[5];
     public boolean isGear = false;
     public boolean gearDirection = false; //What rotation direction, True = Clockwise, False = Anti-Clockwise

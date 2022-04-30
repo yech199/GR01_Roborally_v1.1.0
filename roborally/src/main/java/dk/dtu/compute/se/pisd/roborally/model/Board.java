@@ -273,18 +273,17 @@ public class Board extends Subject {
                 spaces[x][y + 2].isPushPanel = true;
                 boolean[] values1 = {false, true, false, true, false};
                 spaces[x][y + 2].setPushPanelLabel(values1);
-
                 spaces[x][y + 2].pushPanelDirection = SOUTH;
             case 2:
                 spaces[x + 1][y + 1].isPushPanel = true;
                 boolean[] values2 = {false, false, false, true, true};
-                spaces[x][y + 2].setPushPanelLabel(values2);
+                spaces[x + 1][y + 1].setPushPanelLabel(values2);
                 spaces[x + 1][y + 1].pushPanelDirection = EAST;
             case 1:
-                spaces[x + 2][y + 4].isPushPanel = true;
+                spaces[x + 2][y + 3].isPushPanel = true;
                 boolean[] values3 = {true, false, false, false, true};
-                spaces[x][y + 2].setPushPanelLabel(values3);
-                spaces[x + 2][y + 4].pushPanelDirection = WEST;
+                spaces[x + 2][y + 3].setPushPanelLabel(values3);
+                spaces[x + 2][y + 3].pushPanelDirection = WEST;
                 break;
         }
     }

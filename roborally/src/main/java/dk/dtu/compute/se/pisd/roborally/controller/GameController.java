@@ -300,7 +300,7 @@ public class GameController {
     }
 
     public void reboot(Player player, Board board) {
-        int checkpoint = player.getNextCheckPoint();
+        int checkpoint = player.getCheckPoints();
         for (int x = 0; x < 8; x++) {
             for (int y =0; y < 8; y++) {
                 if (checkpoint == 1) {
@@ -333,23 +333,8 @@ public class GameController {
 
     public void doFieldEffect (Player player){
 
-
-        // Check if player is on top of Gear
-        if (player.getSpace().isGear) {
-            // Clockwise
-            if (player.getSpace().gearDirection)
-            {
-                turnRight(player);
-            }
-            // Counter Clockwise
-            if (!player.getSpace().gearDirection)
-            {
-                turnLeft(player);
-            }
-        }
-
         // Check if player is on top of checkpoint
-        if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
+        /*if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
             player.setNextCheckPoint(player.getNextCheckPoint() + 1);
         }
 
@@ -361,16 +346,8 @@ public class GameController {
             if (!target.isWall && target.getPlayer() == null && player.getSpace().getPushPanelLabel()[board.getStep()]) {
                 target.setPlayer(player);
             }
-        }
+        }*/
 
-        // Check if player has won
-        if (player.getNextCheckPoint() > board.getCheckPointAmount()) {
-            // Player has won
-            System.out.println(player.getName() + " har vundet");
-            JOptionPane.showMessageDialog(null, player.getName()
-                    + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
-            Platform.exit();
-        }
     }
 
 }

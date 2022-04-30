@@ -102,7 +102,9 @@ public class Player extends Subject {
         return nextCheckPoint;
     }
 
-    public void setNextCheckPoint(int value) {nextCheckPoint = value;}
+    public void setNextCheckPoint(int value) {
+        nextCheckPoint = value;
+    }
 
     public void setSpace(Space space) {
         Space oldSpace = this.space;

@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
 /**
@@ -78,6 +78,7 @@ public class Board extends Subject {
         setupWalls(wallAmount);
         setupGears(wallAmount);
         setupConveyor(3);
+        setupPushPanels(3);
     }
 
     public Board(int width, int height) {
@@ -259,6 +260,24 @@ public class Board extends Subject {
                 spaces[x][y + 2].isWall = true;
             case 1:
                 spaces[x][y].isWall = true;
+                break;
+        }
+    }
+    public void setupPushPanels(int pushPanelAmount) {
+        int x = 5;
+        int y = 1;
+        // create push panels at (5,1) (5,3) (5,5)
+        switch (pushPanelAmount)
+        {
+            case 3:
+                spaces[x][y + 2].isPushPanel = true;
+                spaces[x][y + 2].pushPanelDirection = SOUTH;
+            case 2:
+                spaces[x + 1][y + 1].isPushPanel = true;
+                spaces[x + 1][y + 1].pushPanelDirection = EAST;
+            case 1:
+                spaces[x + 2][y + 4].isPushPanel = true;
+                spaces[x + 2][y + 4].pushPanelDirection = WEST;
                 break;
         }
     }

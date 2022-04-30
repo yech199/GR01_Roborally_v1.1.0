@@ -354,6 +354,16 @@ public class GameController {
             player.setNextCheckPoint(player.getNextCheckPoint() + 1);
         }
 
+        // Check if player is on a push panel
+        if (player.getSpace().isPushPanel) {
+            Heading heading = player.getSpace().pushPanelDirection;
+            Space target = board.getNeighbour(player.getSpace(), heading);
+
+            if (!target.isWall && target.getPlayer() == null) {
+                target.setPlayer(player);
+            }
+        }
+
         // Check if player has won
         if (player.getNextCheckPoint() > board.getCheckPointAmount()) {
             // Player has won

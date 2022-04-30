@@ -337,6 +337,22 @@ public class GameController {
         }
     }
 
+    public void reboot(Player player, Board board) {
+        int checkpoint = player.getNextCheckPoint();
+        for (int x = 0; x < 8; x++) {
+            for (int y =0; y < 8; y++) {
+                if (checkpoint == 1) {
+                    player.setSpace(board.getSpace(0, 0));
+                } else {
+                    if (board.getSpace(x, y).checkpointNumber == checkpoint - 1) {
+                        player.setSpace(board.getSpace(x, y));
+
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.

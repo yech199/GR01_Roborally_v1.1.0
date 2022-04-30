@@ -37,7 +37,7 @@ public class Player extends Subject {
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
 
-    private int nextCheckPoint = 1;
+    private int checkPoints = 1;
 
     final public Board board;
 
@@ -98,12 +98,18 @@ public class Player extends Subject {
         return space;
     }
 
-    public int getNextCheckPoint() {
-        return nextCheckPoint;
+    public int getCheckPoints() {
+        return checkPoints;
     }
 
-    public void setNextCheckPoint(int value) {
-        nextCheckPoint = value;
+    public void setCheckPoints(int value) {
+        checkPoints = value;
+    }
+    public void nextCheckPoint() {
+        checkPoints++;
+    }
+    public boolean isWinner() {
+        return board.checkPointAmount == checkPoints;
     }
 
     public void setSpace(Space space) {

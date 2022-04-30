@@ -56,7 +56,7 @@ public class Board extends Subject {
 
     private int step = 0;
 
-    private final int checkPointAmount = 3; // How many checkpoint are there in total
+    public int checkPointAmount; // How many checkpoint are there in total
 
     private final int wallAmount = 3;
 

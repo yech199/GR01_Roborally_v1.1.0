@@ -165,7 +165,14 @@ public class GameController {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
                     //doFieldEffect(currentPlayer);
+                    // Implement field effects in their own classes extending FieldAction
                     currentPlayer.getSpace().getActions().get(0).doAction(this, currentPlayer.getSpace());
+
+                    //Check winner
+                    if (currentPlayer.isWinner()) {
+                        Winner(currentPlayer);
+                    }
+
                 }
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -315,6 +322,13 @@ public class GameController {
     public void notImplemented() {
         // XXX just for now to indicate that the actual method is not yet implemented
         assert false;
+    }
+    public void Winner(Player player) {
+        // Player has won
+        System.out.println(player.getName() + " har vundet");
+        JOptionPane.showMessageDialog(null, player.getName()
+                + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
+        Platform.exit();
     }
 
     public void doFieldEffect (Player player){

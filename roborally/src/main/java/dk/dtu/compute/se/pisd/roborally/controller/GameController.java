@@ -375,7 +375,7 @@ public class GameController {
             Heading heading = player.getSpace().pushPanelDirection;
             Space target = board.getNeighbour(player.getSpace(), heading);
 
-            if (!target.isWall && target.getPlayer() == null) {
+            if (!target.isWall && target.getPlayer() == null && player.getSpace().getPushPanelLabel()[board.getStep()]) {
                 target.setPlayer(player);
             }
         }

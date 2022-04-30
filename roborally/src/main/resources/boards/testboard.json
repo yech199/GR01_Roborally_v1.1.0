@@ -55,9 +55,9 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
           "INSTANCE": {
-            "heading": "NORTH"
+            "direction": "RIGHT"
           }
         }
       ],
@@ -68,9 +68,9 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
           "INSTANCE": {
-            "heading": "NORTH"
+            "direction": "LEFT"
           }
         }
       ],

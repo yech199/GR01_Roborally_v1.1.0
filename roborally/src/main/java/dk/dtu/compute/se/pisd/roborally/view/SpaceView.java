@@ -22,12 +22,19 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.Gear;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
 
 /**
  * ...
@@ -53,31 +60,28 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
-        //sets the color of the board fields to black and white
-        if ((space.x + space.y) % 2 == 0) {
-            this.setStyle("-fx-background-color: white;");
-        }
-        else {
-            this.setStyle("-fx-background-color: black;");
-        }
+        this.setStyle("-fx-background-image: url('graphics/DefaultTile.png'); -fx-background-size: "
+                + SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
 
-        if (space.checkpointNumber > 0) { //changes color of checkpoints to blue
-            this.setStyle("-fx-background-color: lightblue;");
+        if (space.getActions().size() > 0 && space.getActions().get(0) instanceof ConveyorBelt conveyorBelt) {
+            switch (conveyorBelt.getHeading()) {
+                case SOUTH -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                case WEST -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 90;");
+                case NORTH -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 180;");
+                case EAST -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
+            }
+        } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Gear gear) {
+            switch (gear.getDirection()) {
+                case LEFT -> this.setStyle("-fx-background-image: url('graphics/GearLeft.PNG'); -fx-background-size: " +
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                case RIGHT -> this.setStyle("-fx-background-image: url('graphics/GearRight.PNG'); -fx-background-size: " +
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+            }
         }
-        if (space.isWall) { //changes colur of walls to grey
-            this.setStyle("-fx-background-color: grey;");
-        }
-        if (space.isGreenConveyor) { //changes colour of walls to grey
-            this.setStyle("-fx-background-color: lightgreen;");
-        }
-        if (space.isGear) { //changes colour of walls to grey
-            this.setStyle("-fx-background-color: lightgrey;");
-        }
-        if (space.isPushPanel) { //changes colour of walls to grey
-            this.setStyle("-fx-background-color: pink;");
-        }
-
-
         // updatePlayer();
 
         // This space view should listen to changes of the space

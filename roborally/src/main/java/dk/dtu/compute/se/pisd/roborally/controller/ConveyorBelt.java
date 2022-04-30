@@ -56,7 +56,6 @@ public class ConveyorBelt extends FieldAction {
                 // Move in direction of player
                 Heading heading = player.getHeading();
                 player.setHeading(action.heading);
-                FieldAction actiontest = space.getActions().get(0);
                 if (true) {
                     gameController.moveForward(player);
                 } else {

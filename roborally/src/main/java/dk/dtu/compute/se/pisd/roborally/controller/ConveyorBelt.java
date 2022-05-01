@@ -35,7 +35,22 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ConveyorBelt extends FieldAction {
 
+    public enum ConveyorBeltColor {
+        green,
+        blue
+    }
+
+    private ConveyorBeltColor color;
+
     private Heading heading;
+
+    public ConveyorBeltColor getConveyorBeltColor() {
+        return color;
+    }
+
+    public void setConveyorBeltColor(ConveyorBeltColor color) {
+        this.color = color;
+    }
 
     public Heading getHeading() {
         return heading;
@@ -55,8 +70,8 @@ public class ConveyorBelt extends FieldAction {
             if (player != null) {
                 // Move in direction of player
                 Heading heading = player.getHeading();
-                player.setHeading(action.heading);
-                if (true) {
+                //player.setHeading(action.heading);
+                if (color == ConveyorBeltColor.green) {
                     gameController.moveForward(player);
                 } else {
                     gameController.fastForward(player, 2);

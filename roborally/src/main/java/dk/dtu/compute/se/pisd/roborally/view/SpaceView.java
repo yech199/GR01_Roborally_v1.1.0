@@ -64,16 +64,30 @@ public class SpaceView extends StackPane implements ViewObserver {
                 + SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
 
         if (space.getActions().size() > 0 && space.getActions().get(0) instanceof ConveyorBelt conveyorBelt) {
-            switch (conveyorBelt.getHeading()) {
-                case SOUTH -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
-                case WEST -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 90;");
-                case NORTH -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 180;");
-                case EAST -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
+            if (conveyorBelt.getConveyorBeltColor() == ConveyorBelt.ConveyorBeltColor.green) {
+                switch (conveyorBelt.getHeading()) {
+                    case SOUTH -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                            SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                    case WEST -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 90;");
+                    case NORTH -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 180;");
+                    case EAST -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
+                }
+            } else {
+                    switch (conveyorBelt.getHeading()) {
+                        case SOUTH -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                                SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                        case WEST -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                                SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 90;");
+                        case NORTH -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                                SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 180;");
+                        case EAST -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                                SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
+                }
             }
+
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Gear gear) {
             switch (gear.getDirection()) {
                 case LEFT -> this.setStyle("-fx-background-image: url('graphics/GearLeft.PNG'); -fx-background-size: " +

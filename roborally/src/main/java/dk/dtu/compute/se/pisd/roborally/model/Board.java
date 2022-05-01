@@ -67,6 +67,7 @@ public class Board extends Subject {
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
@@ -127,6 +128,16 @@ public class Board extends Subject {
         }
         else {
             return null;
+        }
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> newPlayerList) {
+        for (int i = 0; i < players.size(); i++) {
+            this.players.set(i, newPlayerList.get(i));
         }
     }
 
@@ -263,6 +274,7 @@ public class Board extends Subject {
                 break;
         }
     }
+
     public void setupPushPanels(int pushPanelAmount) {
         int x = 5;
         int y = 1;

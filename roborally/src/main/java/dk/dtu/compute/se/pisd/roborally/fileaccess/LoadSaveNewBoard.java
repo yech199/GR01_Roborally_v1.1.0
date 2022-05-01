@@ -25,16 +25,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,6 +54,7 @@ public class LoadSaveNewBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
+
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
@@ -61,27 +65,29 @@ public class LoadSaveNewBoard {
 
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
-            return new Board(8,8);
+            return new Board(8, 8);
         }
 
+        // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
 
-		Board result;
+        Board result;
+        // FileReader fileReader = null;
         JsonReader reader = null;
-		try {
+        try {
 
-			reader = gson.newJsonReader(new InputStreamReader(inputStream));
-			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
 
-			result = new Board(template.width, template.height, boardname);
+            result = new Board(template.width, template.height, boardname);
 
             // TODO: Add loading of phase, stepmode and step
             // Loading spaces
-			for (SpaceTemplate spaceTemplate: template.spaces) {
-			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-			    if (space != null) {
+            for (SpaceTemplate spaceTemplate : template.spaces) {
+                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
@@ -98,22 +104,24 @@ public class LoadSaveNewBoard {
             // Set current player
             result.setCurrentPlayer(result.getPlayer(template.currentPlayer));
 
-			reader.close();
-			return result;
-		} catch (IOException e1) {
+            reader.close();
+            return result;
+        } catch (IOException e1) {
             if (reader != null) {
                 try {
                     reader.close();
                     inputStream = null;
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
             if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e2) {}
-			}
-		}
-		return null;
+                try {
+                    inputStream.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
+        return null;
     }
 
     public static void saveBoard(Board board, String name) {
@@ -123,9 +131,9 @@ public class LoadSaveNewBoard {
         template.height = board.height;
 
         // Add all spaces
-        for (int i=0; i<board.width; i++) {
-            for (int j=0; j<board.height; j++) {
-                Space space = board.getSpace(i,j);
+        for (int i = 0; i < board.width; i++) {
+            for (int j = 0; j < board.height; j++) {
+                Space space = board.getSpace(i, j);
                 if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
                     SpaceTemplate spaceTemplate = new SpaceTemplate();
                     spaceTemplate.x = space.x;
@@ -163,22 +171,25 @@ public class LoadSaveNewBoard {
                 try {
                     writer.close();
                     fileWriter = null;
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
         }
     }
+
     public static Board newBoard(int numOfPlayers) {
         Board newBoard;
-        
+
         ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + DEFAULTBOARD + "." + JSON_EXT);
 
-        if (inputStream == null){
+        if (inputStream == null) {
             System.out.println("Does not exists");
         }
 
@@ -192,7 +203,7 @@ public class LoadSaveNewBoard {
 
             newBoard = new Board(template.width, template.height);
 
-            for (SpaceTemplate spaceTemplate: template.spaces) {
+            for (SpaceTemplate spaceTemplate : template.spaces) {
                 Space space = newBoard.getSpace(spaceTemplate.x, spaceTemplate.y);
                 if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
@@ -211,7 +222,7 @@ public class LoadSaveNewBoard {
 
         } catch (Exception e) {
             System.out.println("Failed loading board");
-            newBoard = new Board(8,8);
+            newBoard = new Board(8, 8);
         }
         return newBoard;
     }

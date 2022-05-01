@@ -33,7 +33,6 @@ import javax.swing.*;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class GameController {
-
     final public Board board;
 
     public GameController(@NotNull Board board) {
@@ -67,8 +66,7 @@ public class GameController {
     }
 
     /**
-     * Generates a set number of players (given by the user),
-     * generates a fixed number of holders for the cards the player chooses
+     * Generates a fixed number of holders for the cards the player chooses
      * and autogenerate a number of cards the player can choose from.
      */
     public void startProgrammingPhase() {
@@ -305,7 +303,7 @@ public class GameController {
     public void reboot(Player player, Board board) {
         int checkpoint = player.getCheckPoints();
         for (int x = 0; x < 8; x++) {
-            for (int y =0; y < 8; y++) {
+            for (int y = 0; y < 8; y++) {
                 if (checkpoint == 1) {
                     player.setSpace(board.getSpace(0, 0));
                 } else {

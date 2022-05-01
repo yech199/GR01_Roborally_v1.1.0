@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
 /**
@@ -75,6 +74,7 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
+
         /*setupCheckpoints(checkPointAmount);
         setupWalls(wallAmount);
         setupGears(wallAmount);
@@ -109,6 +109,10 @@ public class Board extends Subject {
         else {
             return null;
         }
+    }
+
+    public Space[][] getSpaces() {
+        return spaces;
     }
 
     public int getPlayersNumber() {

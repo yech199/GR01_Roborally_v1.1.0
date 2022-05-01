@@ -34,9 +34,26 @@ import javax.swing.*;
  */
 public class GameController {
     final public Board board;
+    private Antenna antenna;
+    private Space antennaSpace;
 
     public GameController(@NotNull Board board) {
         this.board = board;
+
+        // Finds antenna if it exists
+        for (var x : board.getSpaces()) {
+            if (antenna != null) break;
+            for (var y : x) {
+                if (antenna != null) break;
+                for (var action : y.getActions()) {
+                    if (action instanceof Antenna antenna) {
+                        this.antenna = antenna;
+                        this.antennaSpace = y;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -143,7 +160,10 @@ public class GameController {
     // XXX: V2
     private void continuePrograms() {
         do {
-
+            if (antenna != null && board.getPlayerNumber(board.getCurrentPlayer()) == 0) {
+                antenna.doAction(this, antennaSpace);
+                board.setCurrentPlayer(board.getPlayer(0));
+            }
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
@@ -165,8 +185,8 @@ public class GameController {
                     //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
                     // executing the actions on the space a player moves to
                     Space space = currentPlayer.getSpace();
-                    for (FieldAction action: space.getActions()) {
-                        action.doAction(this,space);
+                    for (FieldAction action : space.getActions()) {
+                        action.doAction(this, space);
                     }
 
                     //Check winner
@@ -177,7 +197,8 @@ public class GameController {
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-                } else {
+                }
+                else {
 
 
                     step++;
@@ -257,7 +278,8 @@ public class GameController {
                     if (target.getPlayer() == null) {
                         // Move player
                         target.setPlayer(player);
-                    } else {
+                    }
+                    else {
                         // Push other Player
                         board.getNeighbour(target, heading).setPlayer(target.getPlayer());
                         target.setPlayer(player);
@@ -295,7 +317,8 @@ public class GameController {
             target.setCard(sourceCard);
             source.setCard(null);
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -306,7 +329,8 @@ public class GameController {
             for (int y = 0; y < 8; y++) {
                 if (checkpoint == 1) {
                     player.setSpace(board.getSpace(0, 0));
-                } else {
+                }
+                else {
                     if (board.getSpace(x, y).checkpointNumber == checkpoint - 1) {
                         player.setSpace(board.getSpace(x, y));
 
@@ -324,6 +348,7 @@ public class GameController {
         // XXX just for now to indicate that the actual method is not yet implemented
         assert false;
     }
+
     public void Winner(Player player) {
         // Player has won
         System.out.println(player.getName() + " har vundet");

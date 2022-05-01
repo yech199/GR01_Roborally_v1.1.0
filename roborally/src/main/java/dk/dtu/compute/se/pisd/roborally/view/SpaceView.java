@@ -22,19 +22,15 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.Antenna;
 import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.Gear;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
-
-import java.awt.*;
 
 /**
  * ...
@@ -76,15 +72,15 @@ public class SpaceView extends StackPane implements ViewObserver {
                             SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
                 }
             } else {
-                    switch (conveyorBelt.getHeading()) {
-                        case SOUTH -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                                SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
-                        case WEST -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                                SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 90;");
-                        case NORTH -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                                SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 180;");
-                        case EAST -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                                SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
+                switch (conveyorBelt.getHeading()) {
+                    case SOUTH -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                            SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                    case WEST -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 90;");
+                    case NORTH -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 180;");
+                    case EAST -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
                 }
             }
 
@@ -95,6 +91,16 @@ public class SpaceView extends StackPane implements ViewObserver {
                 case RIGHT -> this.setStyle("-fx-background-image: url('graphics/GearRight.PNG'); -fx-background-size: " +
                         SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
             }
+        }
+        else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Antenna antenna) {
+            int angle = switch (antenna.getHeading()) {
+                case NORTH -> 0;
+                case EAST -> 90;
+                case WEST -> 180;
+                case SOUTH -> 270;
+            };
+            this.setStyle("-fx-background-image: url('graphics/Antenna.png'); -fx-background-size: " +
+                    SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + angle + ";");
         }
         // updatePlayer();
 

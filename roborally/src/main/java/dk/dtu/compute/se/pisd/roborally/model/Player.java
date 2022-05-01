@@ -104,9 +104,11 @@ public class Player extends Subject {
     public void setCheckPoints(int value) {
         checkPoints = value;
     }
+
     public void nextCheckPoint() {
         checkPoints++;
     }
+
     public boolean isWinner() {
         return board.checkPointAmount == checkPoints;
     }

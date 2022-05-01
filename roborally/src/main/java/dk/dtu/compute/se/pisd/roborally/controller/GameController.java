@@ -62,7 +62,6 @@ public class GameController {
                 board.setCurrentPlayer(board.getPlayer(playerNumber));
             }
         }
-
     }
 
     /**
@@ -144,6 +143,7 @@ public class GameController {
     // XXX: V2
     private void continuePrograms() {
         do {
+
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }

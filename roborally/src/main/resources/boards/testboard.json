@@ -20,6 +20,19 @@
   "currentPlayer": 0,
   "spaces": [
     {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Antenna",
+          "INSTANCE": {
+            "heading": "EAST"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 1
+    },
+    {
       "walls": [
         "SOUTH"
       ],

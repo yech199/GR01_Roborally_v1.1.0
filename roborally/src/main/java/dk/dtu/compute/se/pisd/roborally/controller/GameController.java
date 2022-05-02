@@ -26,6 +26,8 @@ import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 /**
  * ...
@@ -251,11 +253,13 @@ public class GameController {
     public void moveForward(@NotNull Player player) {
         Space space = player.getSpace();
 
-        if (player != null && player.board == board && space != null) {
+        if (player.board == board && space != null) {
             Heading heading = player.getHeading();
+
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
-                if (!target.isWall) {
+                List<Heading> walls = target.getWalls();
+                if (!walls.contains(heading)) {
                     if (target.getPlayer() == null) {
                         // Move player
                         target.setPlayer(player);

@@ -34,7 +34,6 @@ import java.util.List;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Space extends Subject {
-
     public final Board board;
 
     private List<Heading> walls = new ArrayList<>();
@@ -85,11 +84,13 @@ public class Space extends Subject {
             notifyChange();
         }
     }
+
     public void setPushPanelLabel(boolean[] values) {
         for (int i = 0; i < 5; i++) {
             pushPanelLabel[i] = values[i];
         }
     }
+
     public boolean[] getPushPanelLabel() {
         return pushPanelLabel;
     }

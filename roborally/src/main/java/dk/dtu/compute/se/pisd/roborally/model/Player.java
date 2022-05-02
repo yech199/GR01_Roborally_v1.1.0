@@ -35,7 +35,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 public class Player extends Subject {
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 8;
+    final public static int NO_CARDS = 9;
 
     private int checkPoints = 1;
 
@@ -54,7 +54,6 @@ public class Player extends Subject {
         this.board = board;
         this.name = name;
         this.color = color;
-
         this.space = null;
 
         program = new CommandCardField[NO_REGISTERS];
@@ -105,9 +104,11 @@ public class Player extends Subject {
     public void setCheckPoints(int value) {
         checkPoints = value;
     }
+
     public void nextCheckPoint() {
         checkPoints++;
     }
+
     public boolean isWinner() {
         return board.checkPointAmount == checkPoints;
     }

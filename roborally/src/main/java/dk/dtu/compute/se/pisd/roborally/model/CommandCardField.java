@@ -29,11 +29,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class CommandCardField extends Subject {
-
     final public Player player;
-
     private CommandCard card;
-
     private boolean visible;
 
     public CommandCardField(Player player) {

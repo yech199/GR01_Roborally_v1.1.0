@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
 /**
@@ -67,6 +66,7 @@ public class Board extends Subject {
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
@@ -74,6 +74,7 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
+
         /*setupCheckpoints(checkPointAmount);
         setupWalls(wallAmount);
         setupGears(wallAmount);
@@ -110,6 +111,10 @@ public class Board extends Subject {
         }
     }
 
+    public Space[][] getSpaces() {
+        return spaces;
+    }
+
     public int getPlayersNumber() {
         return players.size();
     }
@@ -127,6 +132,16 @@ public class Board extends Subject {
         }
         else {
             return null;
+        }
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> newPlayerList) {
+        for (int i = 0; i < players.size(); i++) {
+            this.players.set(i, newPlayerList.get(i));
         }
     }
 
@@ -263,6 +278,7 @@ public class Board extends Subject {
                 break;
         }
     }
+
     public void setupPushPanels(int pushPanelAmount) {
         int x = 5;
         int y = 1;

@@ -344,15 +344,6 @@ public class GameController {
         }
     }
 
-    /**
-     * A method called when no corresponding controller operation is implemented yet. This
-     * should eventually be removed.
-     */
-    public void notImplemented() {
-        // XXX just for now to indicate that the actual method is not yet implemented
-        assert false;
-    }
-
     public void Winner(Player player) {
         // Player has won
         System.out.println(player.getName() + " har vundet");

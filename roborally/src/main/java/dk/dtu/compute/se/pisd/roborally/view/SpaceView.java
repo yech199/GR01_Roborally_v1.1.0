@@ -30,9 +30,12 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
@@ -132,7 +135,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Draws the walls on the gameboard.
      */
     private void updateWalls() {
-        for (Heading heading: space.getWalls()) {
+        /*for (Heading heading: space.getWalls()) {
             Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.setStroke(Color.RED);
@@ -145,6 +148,24 @@ public class SpaceView extends StackPane implements ViewObserver {
                 case EAST -> gc.strokeLine(SPACE_HEIGHT, SPACE_HEIGHT - 2, SPACE_WIDTH, SPACE_HEIGHT - 58);
             }
             this.getChildren().add(canvas);
+        }*/
+        for (Heading wall : space.getWalls()) {
+            Pane pane = new Pane();
+            Rectangle rectangle =
+                    new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+            rectangle.setFill(Color.TRANSPARENT);
+            pane.getChildren().add(rectangle);
+
+            Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+            line.setStroke(Color.RED);
+            line.setStrokeWidth(5);
+            switch (wall){
+                case WEST -> pane.setRotate(90);
+                case NORTH -> pane.setRotate(180);
+                case EAST -> pane.setRotate(-90);
+            }
+            pane.getChildren().add(line);
+            this.getChildren().add(pane);
         }
     }
 
@@ -157,7 +178,4 @@ public class SpaceView extends StackPane implements ViewObserver {
             updateWalls();
         }
     }
-
-
-
 }

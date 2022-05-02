@@ -25,11 +25,15 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.Antenna;
 import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.controller.Gear;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -61,27 +65,23 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         if (space.getActions().size() > 0 && space.getActions().get(0) instanceof ConveyorBelt conveyorBelt) {
             if (conveyorBelt.getConveyorBeltColor() == ConveyorBelt.ConveyorBeltColor.green) {
-                switch (conveyorBelt.getHeading()) {
-                    case SOUTH -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                            SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
-                    case WEST -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 90;");
-                    case NORTH -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 180;");
-                    case EAST -> this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
-                }
+                int angle = switch (conveyorBelt.getHeading()) {
+                    case SOUTH -> 0;
+                    case WEST -> 90;
+                    case NORTH -> 180;
+                    case EAST -> 270;
+                };
+                this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + angle + ";");
             } else {
-                switch (conveyorBelt.getHeading()) {
-                    case SOUTH -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                            SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
-                    case WEST -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 90;");
-                    case NORTH -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 180;");
-                    case EAST -> this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                            SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: 270;");
-                }
+                int angle = switch (conveyorBelt.getHeading()) {
+                    case SOUTH -> 0;
+                    case WEST -> 90;
+                    case NORTH -> 180;
+                    case EAST -> 270;
+                };
+                this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + angle + ";");
             }
 
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Gear gear) {
@@ -128,11 +128,36 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    @Override
-    public void updateView(Subject subject) {
-        if (subject == this.space) {
-            updatePlayer();
+    /**
+     * Draws the walls on the gameboard.
+     */
+    private void updateWalls() {
+        for (Heading heading: space.getWalls()) {
+            Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            gc.setStroke(Color.RED);
+            gc.setLineWidth(5);
+            gc.setLineCap(StrokeLineCap.SQUARE);
+            switch (heading) {
+                case NORTH -> gc.strokeLine(2, SPACE_HEIGHT - 58, SPACE_WIDTH, SPACE_HEIGHT - 58);
+                case WEST -> gc.strokeLine(2, SPACE_HEIGHT, SPACE_WIDTH - 58, SPACE_HEIGHT - 58);
+                case SOUTH -> gc.strokeLine(2, SPACE_HEIGHT, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+                case EAST -> gc.strokeLine(SPACE_HEIGHT, SPACE_HEIGHT - 2, SPACE_WIDTH, SPACE_HEIGHT - 58);
+            }
+            this.getChildren().add(canvas);
         }
     }
+
+    @Override
+    public void updateView(Subject subject) {
+        this.getChildren().clear();
+
+        if (subject == this.space) {
+            updatePlayer();
+            updateWalls();
+        }
+    }
+
+
 
 }

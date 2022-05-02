@@ -20,7 +20,9 @@
   "currentPlayer": 0,
   "spaces": [
     {
-      "walls": [],
+      "walls": [
+        "NORTH"
+      ],
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Antenna",

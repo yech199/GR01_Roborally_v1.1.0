@@ -184,18 +184,20 @@ public class GameController {
                     }
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
-                    //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
-                    // executing the actions on the space a player moves to
-                    Space space = currentPlayer.getSpace();
-                    for (FieldAction action : space.getActions()) {
-                        action.doAction(this, space);
-                    }
 
                     //Check winner
                     if (currentPlayer.isWinner()) {
                         Winner(currentPlayer);
                     }
                 }
+
+                //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
+                // executing the actions on the space a player moves to
+                Space space = currentPlayer.getSpace();
+                for (FieldAction action : space.getActions()) {
+                    action.doAction(this, space);
+                }
+
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));

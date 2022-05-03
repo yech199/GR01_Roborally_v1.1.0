@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.Antenna;
 import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.controller.Gear;
+import dk.dtu.compute.se.pisd.roborally.controller.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -102,6 +103,10 @@ public class SpaceView extends StackPane implements ViewObserver {
             };
             this.setStyle("-fx-background-image: url('graphics/Antenna.png'); -fx-background-size: " +
                     SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
+        }
+        else if(space.getActions().size() > 0 && space.getActions().get(0) instanceof Pit pit) {
+            this.setStyle("-fx-background-image: url('graphics/Pit.png'); -fx-background-size: " +
+                    SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
         }
         // updatePlayer();
 

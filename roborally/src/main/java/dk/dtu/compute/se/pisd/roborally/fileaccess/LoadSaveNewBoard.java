@@ -146,6 +146,17 @@ public class LoadSaveNewBoard {
         }
 
         // TODO: set up players in template
+        for (Player player : board.getPlayers()) {
+            PlayerTemplate playerTemplate = new PlayerTemplate();
+            Space space = player.getSpace();
+            playerTemplate.spaceX = space.x;
+            playerTemplate.spaceY = space.y;
+            playerTemplate.heading = String.valueOf(player.getHeading());
+            playerTemplate.color = player.getColor();
+            playerTemplate.name = player.getName();
+            template.players.add(playerTemplate);
+        }
+        template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
 
         ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
         // TODO: this is not very defensive, and will result in a NullPointerException

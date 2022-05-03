@@ -28,15 +28,13 @@ import dk.dtu.compute.se.pisd.roborally.controller.Gear;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -45,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class SpaceView extends StackPane implements ViewObserver {
-
+    public int tileAngle = 0;
     final public static int SPACE_HEIGHT = 60; // 75;
     final public static int SPACE_WIDTH = 60; // 75;
 
@@ -68,23 +66,23 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         if (space.getActions().size() > 0 && space.getActions().get(0) instanceof ConveyorBelt conveyorBelt) {
             if (conveyorBelt.getConveyorBeltColor() == ConveyorBelt.ConveyorBeltColor.green) {
-                int angle = switch (conveyorBelt.getHeading()) {
+                this.tileAngle = switch (conveyorBelt.getHeading()) {
                     case SOUTH -> 0;
                     case WEST -> 90;
                     case NORTH -> 180;
                     case EAST -> 270;
                 };
                 this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + angle + ";");
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
             } else {
-                int angle = switch (conveyorBelt.getHeading()) {
+                this.tileAngle = switch (conveyorBelt.getHeading()) {
                     case SOUTH -> 0;
                     case WEST -> 90;
                     case NORTH -> 180;
                     case EAST -> 270;
                 };
                 this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + angle + ";");
+                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
             }
 
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Gear gear) {
@@ -96,14 +94,14 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
         else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Antenna antenna) {
-            int angle = switch (antenna.getHeading()) {
+            this.tileAngle = switch (antenna.getHeading()) {
                 case NORTH -> 0;
                 case EAST -> 90;
                 case WEST -> 180;
                 case SOUTH -> 270;
             };
             this.setStyle("-fx-background-image: url('graphics/Antenna.png'); -fx-background-size: " +
-                    SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + angle + ";");
+                    SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
         }
         // updatePlayer();
 
@@ -135,37 +133,22 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Draws the walls on the gameboard.
      */
     private void updateWalls() {
-        /*for (Heading heading: space.getWalls()) {
-            Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            gc.setStroke(Color.RED);
-            gc.setLineWidth(5);
-            gc.setLineCap(StrokeLineCap.SQUARE);
-            switch (heading) {
-                case NORTH -> gc.strokeLine(2, SPACE_HEIGHT - 58, SPACE_WIDTH, SPACE_HEIGHT - 58);
-                case WEST -> gc.strokeLine(2, SPACE_HEIGHT, SPACE_WIDTH - 58, SPACE_HEIGHT - 58);
-                case SOUTH -> gc.strokeLine(2, SPACE_HEIGHT, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                case EAST -> gc.strokeLine(SPACE_HEIGHT, SPACE_HEIGHT - 2, SPACE_WIDTH, SPACE_HEIGHT - 58);
-            }
-            this.getChildren().add(canvas);
-        }*/
+        ImagePattern wall2 = new ImagePattern(new Image("graphics/Wall.png"));
+
         for (Heading wall : space.getWalls()) {
-            Pane pane = new Pane();
             Rectangle rectangle =
                     new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-            rectangle.setFill(Color.TRANSPARENT);
-            pane.getChildren().add(rectangle);
+            rectangle.setFill(wall2);
 
-            Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-            line.setStroke(Color.RED);
-            line.setStrokeWidth(5);
-            switch (wall){
-                case WEST -> pane.setRotate(90);
-                case NORTH -> pane.setRotate(180);
-                case EAST -> pane.setRotate(-90);
-            }
-            pane.getChildren().add(line);
-            this.getChildren().add(pane);
+            int angle = switch (wall) {
+                case SOUTH -> 0;
+                case WEST -> 90;
+                case NORTH -> 180;
+                case EAST -> -90;
+            };
+            rectangle.setRotate(angle - this.tileAngle);
+            rectangle.toFront();
+            this.getChildren().add(rectangle);
         }
     }
 

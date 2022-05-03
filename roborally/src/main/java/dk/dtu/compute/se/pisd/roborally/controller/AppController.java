@@ -95,7 +95,6 @@ public class AppController implements Observer {
     }
 
     public void saveGame() {
-
         TextInputDialog dialogS = new TextInputDialog();
         dialogS.setTitle("SAVE GAME");
         dialogS.setHeaderText("Enter a Save game name");

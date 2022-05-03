@@ -110,7 +110,7 @@ public class Player extends Subject {
     }
 
     public boolean isWinner() {
-        return board.checkPointAmount == checkPoints;
+        return board.checkPointAmount == this.checkPoints;
     }
 
     public void setSpace(Space space) {

@@ -21,11 +21,14 @@ public class Antenna extends FieldAction {
     @Override
     public boolean doAction(GameController gameController, Space space) {
         List<Player> players = gameController.board.getPlayers();
+        // Practically a Triple containing a Player, the distance between a player and the antenna
+        // and the angle between the player and the antenna (depends on which way the antenna is looking)
         List<Tuple<Player, Tuple<Integer, Double>>> distAndAngles = new ArrayList<>();
 
         int antenna_x = space.x;
         int antenna_y = space.y;
 
+        // Calculates the angle between the antenna and a point in the direction of the header
         var antennaAngle = switch (this.heading) {
             case NORTH -> new Tuple<>(antenna_x, antenna_y + 1);
             case EAST -> new Tuple<>(antenna_x + 1, antenna_y);
@@ -37,13 +40,16 @@ public class Antenna extends FieldAction {
             headingAngle += 360;
         }
 
+
         for (Player player : players) {
             var playerSpace = player.getSpace();
             int player_x = playerSpace.x;
             int player_y = playerSpace.y;
 
+            // Calculates the distance between the antenna and the player (in steps)
             int distance = Math.abs(player_x - antenna_x) + Math.abs(player_y - antenna_y);
 
+            // Calculates the angle between the antenna and a player
             double angle = Math.toDegrees(Math.atan2(player_y - antenna_y, player_x - antenna_x));
             if (angle < 0) {
                 angle += 360;
@@ -54,6 +60,7 @@ public class Antenna extends FieldAction {
             distAndAngles.add(new Tuple<>(player, new Tuple<>(distance, angle)));
         }
 
+        // Sort on distance. IF distance is the same, sort on angles
         distAndAngles.sort((o1, o2) -> {
             int dist1 = o1.right().left();
             int dist2 = o2.right().left();
@@ -65,10 +72,12 @@ public class Antenna extends FieldAction {
             return result;
         });
 
+        // Set new player order
         for (int i = 0; i < players.size(); i++) {
             players.set(i, distAndAngles.get(i).left());
         }
         gameController.board.setPlayers(players);
+
         return true;
     }
 

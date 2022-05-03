@@ -63,21 +63,29 @@ public class ConveyorBelt extends FieldAction {
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         if (space.getActions().size() > 0) {
+
             ConveyorBelt action = (ConveyorBelt) space.getActions().get(0);
 
+            // Get Player on field
             Player player = space.getPlayer();
 
+            // If there is a player on the field
             if (player != null) {
-                // Move in direction of player
-                Heading heading = player.getHeading();
-                //player.setHeading(action.heading);
+                // Remember the players heading, then change it to conveyors direction
+                Heading playerHeading = player.getHeading();
+                player.setHeading(action.heading);
+
+                // Move the player
                 if (color == ConveyorBeltColor.green) {
                     gameController.moveForward(player);
                 } else {
-                    gameController.fastForward(player, 2);
+                    // Move player, then update direction, then move again
+                    gameController.moveForward(player);
+                    player.setHeading(action.heading);
+                    gameController.moveForward(player);
                 }
-
-                player.setHeading(heading);
+                // Reset the heading of the player
+                player.setHeading(playerHeading);
             } else {
                 // No player on space
                 return false;

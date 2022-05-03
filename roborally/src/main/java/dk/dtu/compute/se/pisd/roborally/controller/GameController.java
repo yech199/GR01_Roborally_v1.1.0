@@ -329,6 +329,7 @@ public class GameController {
 
     public void reboot(Player player, Board board) {
         int checkpoint = player.getCheckPoints();
+
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if (checkpoint == 1) {

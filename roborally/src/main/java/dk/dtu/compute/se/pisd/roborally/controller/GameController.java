@@ -272,27 +272,35 @@ public class GameController {
 
     // TODO: V2
     public void moveForward(@NotNull Player player) {
-        Space space = player.getSpace();
-
-        if (player.board == board && space != null) {
+        try {
             Heading heading = player.getHeading();
+            Space target = board.getNeighbour(player.getSpace(), heading);
+            // Target out of board
+            if (target == null) throw new ImpossibleMoveException(player, player.getSpace(), heading);
+            // Get target walls
+            List<Heading> walls = target.getWalls();
 
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                List<Heading> walls = target.getWalls();
-                if (!walls.contains(heading)) {
-                    if (target.getPlayer() == null) {
-                        // Move player
-                        target.setPlayer(player);
-                    }
-                    else {
-                        // Push other Player
-                        board.getNeighbour(target, heading).setPlayer(target.getPlayer());
-                        target.setPlayer(player);
-                    }
+            // Can't move into a wall
+            if (walls.contains(heading)) throw new ImpossibleMoveException(player, player.getSpace(), heading);
+            else {
+                // Check if target is occupied
+                if (target.getPlayer() != null) {
+                    // If occupied, push other robots recursively in the heading that the current player is moving. We have to adjust heading of the target player.
+                    Player targetPlayer = target.getPlayer();
+                    Heading targetHeadingBefore = targetPlayer.getHeading();
+                    targetPlayer.setHeading(player.getHeading());
+                    moveForward(target.getPlayer());
+                    targetPlayer.setHeading(targetHeadingBefore);
                 }
+                // Free? Then move player
+                target.setPlayer(player);
+
             }
+
+        } catch (ImpossibleMoveException e) {
+            System.out.println("Move impossible");
         }
+
     }
 
     // TODO: V2
@@ -356,23 +364,18 @@ public class GameController {
         Platform.exit();
     }
 
-    /*public void doFieldEffect (Player player){
+    class ImpossibleMoveException extends Exception {
 
-        // Check if player is on top of checkpoint
-        /*if (player.getSpace().checkpointNumber == player.getNextCheckPoint()) {
-            player.setNextCheckPoint(player.getNextCheckPoint() + 1);
+        private Player player;
+        private Space space;
+        private Heading heading;
+
+        public ImpossibleMoveException(Player player, Space space, Heading heading) {
+            super("Move impossible");
+            this.player = player;
+            this.space = space;
+            this.heading = heading;
         }
-
-        // Check if player is on a push panel
-        if (player.getSpace().isPushPanel) {
-            Heading heading = player.getSpace().pushPanelDirection;
-            Space target = board.getNeighbour(player.getSpace(), heading);
-
-            if (!target.isWall && target.getPlayer() == null && player.getSpace().getPushPanelLabel()[board.getStep()]) {
-                target.setPlayer(player);
-            }
-        }
-
-    }*/
+    }
 
 }

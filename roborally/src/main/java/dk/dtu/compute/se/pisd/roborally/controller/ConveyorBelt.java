@@ -90,30 +90,6 @@ public class ConveyorBelt extends FieldAction {
                 // No player on space
                 return false;
             }
-
-
-            // Set Variables
-            /*Heading heading = player.getSpace().conveyorDirection;
-            Space target = board.getNeighbour(player.getSpace(), heading);
-
-            // Green: Move once
-            if (player.getSpace().isGreenConveyor) {
-                if (!target.isWall && target.getPlayer() == null) {
-                    target.setPlayer(player);
-                }
-            }
-            // Blue: Move Twice
-            if (player.getSpace().isBlueConveyor) {
-                for (int i = 0; i < 2; i++) {
-                    heading = player.getSpace().conveyorDirection;
-                    target = board.getNeighbour(player.getSpace(), heading);
-                    if (!target.isWall && target.getPlayer() == null) {
-                        target.setPlayer(player);
-                    }
-                }
-            }
-        }
-        return false;*/
         }
         return true;
     }

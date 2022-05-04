@@ -46,11 +46,6 @@ public class Space extends Subject {
 
     // Field Types
     public int checkpointNumber = 0; // What number of checkpoint are you? 0 = not a checkpoint.
-    public boolean isPushPanel = false;
-    public Heading pushPanelDirection;
-    //public boolean[] pushPanelLabel = {true, true, false, true, true};
-    public boolean[] pushPanelLabel = new boolean[5];
-
 
     public Space(Board board, int x, int y) {
         this.board = board;
@@ -77,16 +72,6 @@ public class Space extends Subject {
             }
             notifyChange();
         }
-    }
-
-    public void setPushPanelLabel(boolean[] values) {
-        for (int i = 0; i < 5; i++) {
-            pushPanelLabel[i] = values[i];
-        }
-    }
-
-    public boolean[] getPushPanelLabel() {
-        return pushPanelLabel;
     }
 
     public List<Heading> getWalls() {

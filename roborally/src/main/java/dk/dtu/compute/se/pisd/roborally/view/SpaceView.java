@@ -129,8 +129,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         if (player != null) {
             //Polygon arrow = new Polygon(0.0, 0.0, 10.0, 20.0, 20.0, 0.0);
-            String playerColor = String.valueOf(player.getColor());
-            ImagePattern playerImage = new ImagePattern(new Image("graphics/robots/" + playerColor + ".png"));
+            ImagePattern playerImage = new ImagePattern(new Image("graphics/robots/" + player.getColor() + ".png"));
             Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
             try {
                 //arrow.setFill(Color.valueOf(player.getColor()));
@@ -139,7 +138,16 @@ public class SpaceView extends StackPane implements ViewObserver {
                 rectangle.setFill(Color.MEDIUMPURPLE);
             }
 
-            rectangle.setRotate((90 * player.getHeading().ordinal()) % 360);
+            int angle = switch (player.getHeading()) {
+                case NORTH -> 0;
+                case EAST -> 90;
+                case SOUTH -> 180;
+                case WEST -> 270;
+            };
+
+            // rectangle.setRotate((90 * player.getHeading().ordinal()) % 360);
+            rectangle.setRotate(angle - this.tileAngle);
+            rectangle.toFront();
             this.getChildren().add(rectangle);
         }
     }
@@ -171,8 +179,9 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         this.getChildren().clear();
 
+        updatePlayer();
+
         if (subject == this.space) {
-            updatePlayer();
             updateWalls();
         }
     }

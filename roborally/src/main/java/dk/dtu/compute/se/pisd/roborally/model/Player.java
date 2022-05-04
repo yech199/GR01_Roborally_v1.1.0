@@ -45,7 +45,7 @@ public class Player extends Subject {
     private String color;
 
     private Space space;
-    private Heading heading = SOUTH;
+    private Heading heading;
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
@@ -66,6 +66,8 @@ public class Player extends Subject {
             cards[i] = new CommandCardField(this);
         }
     }
+
+
 
     public String getName() {
         return name;

@@ -57,8 +57,6 @@ public class Board extends Subject {
 
     public int checkPointAmount; // How many checkpoint are there in total
 
-    private final int wallAmount = 3;
-
     private boolean stepMode;
 
     public Board(int width, int height, @NotNull String boardName) {

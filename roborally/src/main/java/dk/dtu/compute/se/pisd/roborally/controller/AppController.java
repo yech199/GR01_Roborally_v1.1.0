@@ -83,9 +83,20 @@ public class AppController implements Observer {
             Board board;
 
             if (resultS.isPresent()) {
-                board = LoadSaveNewBoard.newBoard(result.get(), resultS.get());
+                board = LoadSaveNewBoard.loadOrNewGame(resultS.get(), true);
+                for (int i = 0; i < board.getPlayersNumber(); i++) {
+                    TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
+                    name.setTitle("Player name");
+                    name.setHeaderText("Write the name of the player");
+                    name.setContentText("Name: ");
+                    Optional<String> resultName = name.showAndWait();
+
+                    if (resultName.isPresent()) {
+                        board.getPlayer(i).setName(resultName.get());
+                    }
+                }
             } else {
-                board = LoadSaveNewBoard.newBoard(result.get(), null);
+                board = LoadSaveNewBoard.loadOrNewGame(null, true);
             }
 
             setupGameController(board);
@@ -117,7 +128,7 @@ public class AppController implements Observer {
 
             if (result.isPresent()) {
                 String boardname = result.get();
-                Board board = LoadSaveNewBoard.loadSave(boardname);
+                Board board = LoadSaveNewBoard.loadOrNewGame(boardname, false);
                 setupGameController(board);
             }  else {
                 // The UI should not allow this, but in case this happens anyway.

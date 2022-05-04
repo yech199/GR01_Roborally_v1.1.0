@@ -47,24 +47,31 @@ import java.util.List;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class LoadSaveNewBoard {
-
-    final private static List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
-
     private static final String BOARDSFOLDER = "boards";
-
     private static final String SAVEFOLDER = "savegames";
+
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
-
-    public static Board loadSave(String boardname) {
+    /**
+     * Loads the board chosen by the user.
+     * If new game: The available boards is stored in the BOARDSFOLDER named "boards"
+     * If load game: The available boards is stored in the SAVEFOLDER named "savegames"
+     *
+     * @return the new board being played
+     */
+    public static Board loadOrNewGame(String boardname, boolean newGame) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
         }
 
         ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(SAVEFOLDER + "/" + boardname + "." + JSON_EXT);
-
+        // Looks up the gameboards
+        InputStream inputStream;
+        if (newGame)
+            inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+        else
+            inputStream = classLoader.getResourceAsStream(SAVEFOLDER + "/" + boardname + "." + JSON_EXT);
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
             return new Board(8, 8);
@@ -75,7 +82,7 @@ public class LoadSaveNewBoard {
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
 
-        Board result;
+        Board newBoard;
         // FileReader fileReader = null;
         JsonReader reader = null;
         try {
@@ -83,12 +90,12 @@ public class LoadSaveNewBoard {
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
 
-            result = new Board(template.width, template.height, boardname);
+            newBoard = new Board(template.width, template.height, boardname);
 
             // TODO: Add loading of phase, stepmode and step
             // Loading spaces
             for (SpaceTemplate spaceTemplate : template.spaces) {
-                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                Space space = newBoard.getSpace(spaceTemplate.x, spaceTemplate.y);
                 if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
@@ -97,17 +104,17 @@ public class LoadSaveNewBoard {
 
             // Loading players
             for (PlayerTemplate player : template.players) {
-                Player newPlayer = new Player(result, player.color, player.name);
-                result.addPlayer(newPlayer);
-                newPlayer.setSpace(result.getSpace(player.spaceX, player.spaceY));
+                Player newPlayer = new Player(newBoard, player.color, player.name);
+                newBoard.addPlayer(newPlayer);
+                newPlayer.setSpace(newBoard.getSpace(player.spaceX, player.spaceY));
                 newPlayer.setHeading(Heading.valueOf(player.heading));
             }
 
             // Set current player
-            result.setCurrentPlayer(result.getPlayer(template.currentPlayer));
+            newBoard.setCurrentPlayer(newBoard.getPlayer(template.currentPlayer));
 
             reader.close();
-            return result;
+            return newBoard;
         } catch (IOException e1) {
             if (reader != null) {
                 try {
@@ -195,53 +202,4 @@ public class LoadSaveNewBoard {
             }
         }
     }
-
-    public static Board newBoard(int numOfPlayers, String boardname) {
-        Board newBoard;
-
-        if (boardname == null) {
-            boardname = DEFAULTBOARD;
-        }
-
-        ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
-
-        if (inputStream == null) {
-            return new Board(8, 8);
-        }
-
-        GsonBuilder simpleBuilder = new GsonBuilder().registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
-        Gson gson = simpleBuilder.create();
-
-        try {
-
-            JsonReader reader = gson.newJsonReader(new InputStreamReader(inputStream));
-            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
-
-            newBoard = new Board(template.width, template.height);
-
-            for (SpaceTemplate spaceTemplate : template.spaces) {
-                Space space = newBoard.getSpace(spaceTemplate.x, spaceTemplate.y);
-                if (space != null) {
-                    space.getActions().addAll(spaceTemplate.actions);
-                    space.getWalls().addAll(spaceTemplate.walls);
-                    space.setPlayer(null);
-                }
-            }
-
-            for (int i = 0; i < numOfPlayers; i++) {
-                Player player = new Player(newBoard, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                newBoard.addPlayer(player);
-                player.setSpace(newBoard.getSpace(i % newBoard.width, i));
-            }
-
-            reader.close();
-
-        } catch (Exception e) {
-            System.out.println("Failed loading board");
-            newBoard = new Board(8, 8);
-        }
-        return newBoard;
-    }
-
 }

@@ -101,7 +101,7 @@ public class AppController implements Observer {
 
         if (resultS.isPresent()) {
             String saveName = resultS.get();
-            LoadSaveNewBoard.saveBoard(gameController.board, saveName);
+            LoadSaveNewBoard.saveGame(gameController.board, saveName);
         }
     }
 
@@ -117,7 +117,7 @@ public class AppController implements Observer {
 
             if (result.isPresent()) {
                 String boardname = result.get();
-                Board board = LoadSaveNewBoard.loadBoard(boardname);
+                Board board = LoadSaveNewBoard.loadSave(boardname);
                 setupGameController(board);
             }  else {
                 // The UI should not allow this, but in case this happens anyway.

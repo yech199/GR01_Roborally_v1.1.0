@@ -57,7 +57,7 @@ public class LoadSaveNewBoard {
     private static final String JSON_EXT = "json";
 
 
-    public static Board loadBoard(String boardname) {
+    public static Board loadSave(String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
         }
@@ -126,7 +126,7 @@ public class LoadSaveNewBoard {
         return null;
     }
 
-    public static void saveBoard(Board board, String name) {
+    public static void saveGame(Board board, String name) {
         // Set up the board template
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;

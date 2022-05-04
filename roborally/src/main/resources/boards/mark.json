@@ -1,0 +1,38 @@
+{
+  "width": 5,
+  "height": 5,
+  "players": [
+    {
+      "name": "Player 1",
+      "color": "red",
+      "spaceX": 0,
+      "spaceY": 0,
+      "heading": "SOUTH"
+    },
+    {
+      "name": "Player 2",
+      "color": "green",
+      "spaceX": 1,
+      "spaceY": 0,
+      "heading": "SOUTH"
+    }
+  ],
+  "currentPlayer": 0,
+  "spaces": [
+    {
+      "walls": [
+        "NORTH"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.PushPanel",
+          "INSTANCE": {
+            "heading": "EAST"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 1
+    }
+  ]
+}

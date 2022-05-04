@@ -50,13 +50,7 @@ public class Space extends Subject {
     public Heading pushPanelDirection;
     //public boolean[] pushPanelLabel = {true, true, false, true, true};
     public boolean[] pushPanelLabel = new boolean[5];
-    public boolean isGear = false;
-    public boolean gearDirection = false; //What rotation direction, True = Clockwise, False = Anti-Clockwise
-    public boolean isWall = false; //tells if space is a wall
-    public boolean isPit = false; //tells if space is a pit
-    public boolean isGreenConveyor = false; //tells if space is a conveyor that pushes one space
-    public boolean isBlueConveyor = false; //tells if space is a conveyor that pushes two space
-    public Heading conveyorDirection;
+
 
     public Space(Board board, int x, int y) {
         this.board = board;

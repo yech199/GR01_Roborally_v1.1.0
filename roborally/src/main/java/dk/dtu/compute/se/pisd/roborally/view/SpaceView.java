@@ -22,10 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.Antenna;
-import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.controller.Gear;
-import dk.dtu.compute.se.pisd.roborally.controller.Pit;
+import dk.dtu.compute.se.pisd.roborally.controller.*;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;

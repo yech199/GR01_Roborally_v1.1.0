@@ -51,6 +51,8 @@ public class LoadSaveNewBoard {
     final private static List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     private static final String BOARDSFOLDER = "boards";
+
+    private static final String SAVEFOLDER = "savegames";
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
@@ -61,7 +63,7 @@ public class LoadSaveNewBoard {
         }
 
         ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+        InputStream inputStream = classLoader.getResourceAsStream(SAVEFOLDER + "/" + boardname + "." + JSON_EXT);
 
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
@@ -163,7 +165,7 @@ public class LoadSaveNewBoard {
         //       when the folder "resources" does not exist! But, it does not need
         //       the file "simpleCards.json" to exist!
         String filename =
-                classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
+                classLoader.getResource(SAVEFOLDER).getPath() + "/" + name + "." + JSON_EXT;
 
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
@@ -194,14 +196,18 @@ public class LoadSaveNewBoard {
         }
     }
 
-    public static Board newBoard(int numOfPlayers) {
+    public static Board newBoard(int numOfPlayers, String boardname) {
         Board newBoard;
 
+        if (boardname == null) {
+            boardname = DEFAULTBOARD;
+        }
+
         ClassLoader classLoader = LoadSaveNewBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + DEFAULTBOARD + "." + JSON_EXT);
+        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
 
         if (inputStream == null) {
-            System.out.println("Does not exists");
+            return new Board(8, 8);
         }
 
         GsonBuilder simpleBuilder = new GsonBuilder().registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());

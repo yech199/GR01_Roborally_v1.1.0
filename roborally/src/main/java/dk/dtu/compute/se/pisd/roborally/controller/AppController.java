@@ -73,31 +73,29 @@ public class AppController implements Observer {
                 }
             }
 
-            Board board = LoadSaveNewBoard.newBoard(result.get());
-            setupGameController(board);
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-            /*Board board = new Board(8,8);
+            List<String> BOARD_NAMES = ResourcesUtil.getBoardFileNames();
 
-            int no = result.get();
-            for (int i = 0; i < no; i++) {
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
+            ChoiceDialog<String> dialogL = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
+            dialogL.setTitle("Select board");
+            dialogL.setHeaderText("Select a board to load");
+            Optional<String> resultS = dialogL.showAndWait();
+
+            Board board;
+
+            if (resultS.isPresent()) {
+                board = LoadSaveNewBoard.newBoard(result.get(), resultS.get());
+            } else {
+                board = LoadSaveNewBoard.newBoard(result.get(), null);
             }
 
-            // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
-            gameController.startProgrammingPhase();
-
-            roboRally.createBoardView(gameController);*/
+            setupGameController(board);
         }
     }
 
     public void saveGame() {
         TextInputDialog dialogS = new TextInputDialog();
         dialogS.setTitle("SAVE GAME");
-        dialogS.setHeaderText("Enter a Save game name");
+        dialogS.setHeaderText("Enter a name for your game save");
 
         final Optional<String> resultS = dialogS.showAndWait();
 
@@ -105,21 +103,16 @@ public class AppController implements Observer {
             String saveName = resultS.get();
             LoadSaveNewBoard.saveBoard(gameController.board, saveName);
         }
-
-
-        // XXX needs to be implemented eventually
-        //LoadSaveNewBoard.saveBoard(gameController.board, "defaultboard.json");
-        //LoadBoard.saveBoard(gameController.board, "testboard");
     }
 
     public void loadGame() {
         if (gameController == null) {
 
-            final List<String> BOARD_NAMES = ResourcesUtil.getBoardFileNames();
+            final List<String> BOARD_NAMES = ResourcesUtil.getSaveGameFiles();
 
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
             dialogL.setTitle("Load game");
-            dialogL.setHeaderText("Select a game to load");
+            dialogL.setHeaderText("Select a savegame to load");
             Optional<String> result = dialogL.showAndWait();
 
             if (result.isPresent()) {

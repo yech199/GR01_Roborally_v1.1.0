@@ -24,4 +24,14 @@ public class ResourcesUtil {
         }
         return result;
     }
+    public static List<String> getSaveGameFiles() {
+        File[] savegames = getResourceFolderFiles("savegames");
+
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = 0; i < savegames.length; i++) {
+            String name = savegames[i].getName();
+            result.add(name.substring(0, name.lastIndexOf(".")));
+        }
+        return result;
+    }
 }

@@ -11,3 +11,4 @@ roborally/roborally.iml
 .DS_Store
 /roborally/target/
 roborally/roborally.iml~
+/roborally/src/main/resources/savegames/

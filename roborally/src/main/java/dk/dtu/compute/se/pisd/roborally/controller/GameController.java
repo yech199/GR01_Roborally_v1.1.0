@@ -294,9 +294,7 @@ public class GameController {
                 }
                 // Free? Then move player
                 target.setPlayer(player);
-
             }
-
         } catch (ImpossibleMoveException e) {
             System.out.println("Move impossible");
         }

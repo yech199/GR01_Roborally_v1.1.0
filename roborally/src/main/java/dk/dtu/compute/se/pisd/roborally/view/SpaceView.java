@@ -30,7 +30,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
@@ -156,14 +155,14 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Draws the walls on the gameboard.
      */
     private void updateWalls() {
-        ImagePattern wall2 = new ImagePattern(new Image("graphics/Wall.png"));
+        ImagePattern wall = new ImagePattern(new Image("graphics/Wall.png"));
 
-        for (Heading wall : space.getWalls()) {
+        for (Heading wallHeading : this.space.getWalls()) {
             Rectangle rectangle =
                     new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-            rectangle.setFill(wall2);
+            rectangle.setFill(wall);
 
-            int angle = switch (wall) {
+            int angle = switch (wallHeading) {
                 case SOUTH -> 0;
                 case WEST -> 90;
                 case NORTH -> 180;

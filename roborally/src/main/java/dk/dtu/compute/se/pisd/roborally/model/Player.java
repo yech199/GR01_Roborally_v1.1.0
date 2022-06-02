@@ -67,8 +67,6 @@ public class Player extends Subject {
         }
     }
 
-
-
     public String getName() {
         return name;
     }
@@ -142,6 +140,9 @@ public class Player extends Subject {
                 space.playerChanged();
             }
         }
+    }
+    public void setCard(@NotNull CommandCard card) {
+
     }
 
     public CommandCardField getProgramField(int i) {

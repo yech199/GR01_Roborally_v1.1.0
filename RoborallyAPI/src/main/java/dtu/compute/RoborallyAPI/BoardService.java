@@ -2,11 +2,10 @@ package dtu.compute.RoborallyAPI;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import dtu.compute.RoborallyAPI.Model.Board;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
 
 @Service
 public class BoardService implements IBoardService {

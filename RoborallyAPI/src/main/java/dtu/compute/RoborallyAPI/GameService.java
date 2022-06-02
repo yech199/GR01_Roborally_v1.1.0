@@ -8,14 +8,15 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class BoardService implements IBoardService {
+public class GameService implements IGameService {
 
     private Board board;
+    private String gameData;
 
     Gson gson = new Gson();
     DataFile dataFile = new DataFile("test.json");
 
-    public BoardService() throws IOException {
+    public GameService() throws IOException {
         //loadBoard();
     }
 
@@ -25,9 +26,18 @@ public class BoardService implements IBoardService {
     }
 
     @Override
-    public Board getBoardByName() {
-        board = new Board();
-        board.name = "Test";
-        return board;
+    public String getGameById(int id) {
+        // TODO: Implement get game by ID
+        return null;
+    }
+
+    @Override
+    public void updateGame(String gameData) {
+        this.gameData = gameData;
+    }
+
+    @Override
+    public String getGame() {
+        return gameData;
     }
 }

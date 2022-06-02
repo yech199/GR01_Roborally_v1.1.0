@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 public class PushPanel extends FieldAction {
     private Heading heading;
-    private ArrayList<Integer> pushPanelLabels;
+    //private int pushPanelAmount = 0;
+    private int[] pushPanelLabel;
 
     public Heading getHeading() {
         return heading;
@@ -18,20 +19,17 @@ public class PushPanel extends FieldAction {
         this.heading = heading;
     }
 
-    public void setPushPanelLabels(ArrayList<Integer> pushPanelLabels) {
-        this.pushPanelLabels = pushPanelLabels;
-    }
-
-    public ArrayList<Integer> getPushPanelLabels() {
-        return pushPanelLabels;
-    }
-
     @Override
     public boolean doAction(GameController gameController, Space space) {
         if (space.getActions().size() > 0) {
             Space neighbour = space.board.getNeighbour(space, heading);
             Player player = space.getPlayer();
-            if(pushPanelLabels.contains(gameController.board.getStep() + 1)) {
+            int step = gameController.board.getStep();
+
+            System.out.println(pushPanelLabel[1]);
+            System.out.println(pushPanelLabel[3]);
+
+            if(pushPanelLabel[0] == step || pushPanelLabel[1] == step) {
                 if (player != null && neighbour != null) {
                     Heading playerHeading = player.getHeading();
                     player.setHeading(heading);

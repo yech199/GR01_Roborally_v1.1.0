@@ -27,6 +27,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.CommandCardFieldTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
@@ -108,6 +109,12 @@ public class LoadSaveNewBoard {
                 newBoard.addPlayer(newPlayer);
                 newPlayer.setSpace(newBoard.getSpace(player.spaceX, player.spaceY));
                 newPlayer.setHeading(Heading.valueOf(player.heading));
+
+                PlayerTemplate playerTemplate = new PlayerTemplate();
+
+                for (CommandCardFieldTemplate card : playerTemplate.playerCards) {
+                    newPlayer.
+                }
             }
 
             // Set current player

@@ -277,26 +277,29 @@ public class GameController {
             Space target = board.getNeighbour(player.getSpace(), heading);
             // Target out of board
             if (target == null) throw new ImpossibleMoveException(player, player.getSpace(), heading);
-            // Get target walls
-            List<Heading> walls = target.getWalls();
-
-            // Can't move into a wall
-            if (walls.contains(heading)) throw new ImpossibleMoveException(player, player.getSpace(), heading);
             else {
-                // Check if target is occupied
-                if (target.getPlayer() != null) {
-                    // If occupied, push other robots recursively in the heading that the current player is moving. We have to adjust heading of the target player.
-                    Player targetPlayer = target.getPlayer();
-                    Heading targetHeadingBefore = targetPlayer.getHeading();
-                    targetPlayer.setHeading(player.getHeading());
-                    moveForward(target.getPlayer());
-                    targetPlayer.setHeading(targetHeadingBefore);
+                // Get target walls
+                List<Heading> walls = target.getWalls();
+
+                // Can't move into a wall
+                if (walls.contains(heading)) throw new ImpossibleMoveException(player, player.getSpace(), heading);
+                else {
+                    // Check if target is occupied
+                    if (target.getPlayer() != null) {
+                        // If occupied, push other robots recursively in the heading that the current player is moving. We have to adjust heading of the target player.
+                        Player targetPlayer = target.getPlayer();
+                        Heading targetHeadingBefore = targetPlayer.getHeading();
+                        targetPlayer.setHeading(player.getHeading());
+                        moveForward(target.getPlayer());
+                        targetPlayer.setHeading(targetHeadingBefore);
+                    }
+                    // Free? Then move player
+                    target.setPlayer(player);
                 }
-                // Free? Then move player
-                target.setPlayer(player);
             }
         } catch (ImpossibleMoveException e) {
-            System.out.println("Move impossible");
+            reboot(player,board);
+            //System.out.println("Move impossible");
         }
 
     }
@@ -337,17 +340,15 @@ public class GameController {
 
     public void reboot(Player player, Board board) {
         int checkpoint = player.getCheckPoints();
-
-
-        for (int x = 0; x < board.getSpaces().length; x++) {
-            for (int y = 0; y < board.getSpaces()[0].length; y++) {
-                if (checkpoint == 1) {
-                    player.setSpace(board.getSpace(0, 0));
-                }
-                else {
+        if (checkpoint == 1) {
+            player.setSpace(board.getSpace(0, 0));
+        }
+        else {
+            for (int x = 0; x < board.getSpaces().length; x++) {
+                for (int y = 0; y < board.getSpaces()[0].length; y++)
+                {
                     if (board.getSpace(x, y).checkpointNumber == checkpoint - 1) {
                         player.setSpace(board.getSpace(x, y));
-
                     }
                 }
             }

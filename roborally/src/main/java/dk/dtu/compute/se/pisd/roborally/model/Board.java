@@ -73,11 +73,6 @@ public class Board extends Subject {
         }
         this.stepMode = false;
 
-        /*setupCheckpoints(checkPointAmount);
-        setupWalls(wallAmount);
-        setupGears(wallAmount);
-        setupConveyor(3);
-        setupPushPanels(3);*/
     }
 
     public Board(int width, int height) {

@@ -113,7 +113,6 @@ public class LoadSaveNewBoard {
                 PlayerTemplate playerTemplate = new PlayerTemplate();
 
                 for (CommandCardFieldTemplate card : playerTemplate.playerCards) {
-                    newPlayer.
                 }
             }
 

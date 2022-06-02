@@ -12,3 +12,5 @@ roborally/roborally.iml
 /roborally/target/
 roborally/roborally.iml~
 /roborally/src/main/resources/savegames/
+/RoborallyAPI/RoborallyAPI.iml
+/RoborallyAPI/target/classes/application.properties

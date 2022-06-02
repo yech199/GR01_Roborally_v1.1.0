@@ -23,8 +23,13 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteSource;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonWriter;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A utility class reading strings from resources and arbitrary input streams.
@@ -32,6 +37,12 @@ import java.io.*;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class IOUtil {
+
+    private static final String BOARDSFOLDER = "boards";
+    private static final String SAVEFOLDER = "savegames";
+
+    private static final String DEFAULTBOARD = "defaultboard";
+    private static final String JSON_EXT = "json";
 
     /**
      * Reads a string from some InputStream. The solution is based
@@ -71,4 +82,79 @@ public class IOUtil {
         return IOUtil.readString(inputStream);
     }
 
+    /**
+     * Write the game state from a json string to a json file.
+     * @param gameName Name of the file
+     * @param jsonGameState json string of the game state
+     * @author Mads Sørensen (s215805)
+     */
+    public static void writeGame(String gameName, String jsonGameState) {
+        ClassLoader classLoader = LoadSaveBoard.class.getClassLoader();
+
+        String filename = classLoader.getResource(SAVEFOLDER).getPath() + "/" + gameName + "." + JSON_EXT;
+
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
+                setPrettyPrinting();
+        Gson gson = simpleBuilder.create();
+
+        FileWriter fileWriter = null;
+        JsonWriter writer = null;
+
+        try {
+            fileWriter = new FileWriter(filename);
+            writer = gson.newJsonWriter(fileWriter);
+
+            writer.jsonValue(jsonGameState);
+            writer.flush();
+            writer.close();
+
+        } catch (IOException e1) {
+            if (writer != null) {
+                try {
+                    writer.close();
+                    fileWriter = null;
+                } catch (IOException e2) {
+                }
+            }
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException e2) {}
+            }
+        }
+
+    }
+
+    /**
+     * Read game state from a json file.
+     * The method can handle if the we read from a save game or board file.
+     * @param gameName name of game
+     * @return json string of the game state
+     * @author Mads Sørensen (s215805)
+     */
+    public static String readGame(String gameName, boolean savedGame) {
+        if (gameName == null) {
+            gameName = DEFAULTBOARD;
+        }
+
+        // If we load a new game, we load from predefined boards in boards folder.
+        String resourcePath;
+        if (savedGame)  {
+             resourcePath = SAVEFOLDER + "/" + gameName + "." + JSON_EXT;
+        } else { // else we load from an save in savesfolder
+            resourcePath = BOARDSFOLDER + "/" + gameName + "." + JSON_EXT;
+        }
+
+        ClassLoader classLoader = LoadSaveBoard.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(resourcePath);
+
+        try {
+            String json = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            return json;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

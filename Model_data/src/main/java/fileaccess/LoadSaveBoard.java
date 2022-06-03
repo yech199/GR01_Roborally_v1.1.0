@@ -46,6 +46,41 @@ public class LoadSaveBoard {
      * @return board object with the game state
      */
 
+    private static void loadSpaces(BoardTemplate template, Board board) {
+        // Loading spaces
+        for (SpaceTemplate spaceTemplate : template.spaces) {
+            Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
+            if (space != null) {
+                space.getActions().addAll(spaceTemplate.actions);
+                space.getWalls().addAll(spaceTemplate.walls);
+            }
+        }
+    }
+    private static void loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
+        // Loading players
+        for (PlayerTemplate player : template.players) {
+
+            Player newPlayer = new Player(board, player.color, player.name);
+            newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
+            newPlayer.setHeading(Heading.valueOf(player.heading));
+
+            CommandCardField[] newCards = new CommandCardField[player.cards.size()];
+            CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
+
+            // If we have a new game, we don't need to do card and register setup
+            if(!saveGame) {
+                board.addPlayer(newPlayer);
+                continue;
+            }
+
+            loadCards(template, player, newCards, newPlayer);
+            loadRegisters(template, player, newRegisters, newPlayer);
+
+            loadedBoard = true;
+
+            board.addPlayer(newPlayer);
+        }
+    }
     private static void loadCards(BoardTemplate template, PlayerTemplate player, CommandCardField[] newCards, Player newPlayer) {
         // Load all cards from JSON file
         for (int i = 0; i < newCards.length; i++) {
@@ -108,38 +143,8 @@ public class LoadSaveBoard {
 
         Board board = new Board(template.width, template.height, gameName);
 
-        // Loading spaces
-        for (SpaceTemplate spaceTemplate : template.spaces) {
-            Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
-            if (space != null) {
-                space.getActions().addAll(spaceTemplate.actions);
-                space.getWalls().addAll(spaceTemplate.walls);
-            }
-        }
-
-        // Loading players
-        for (PlayerTemplate player : template.players) {
-
-            Player newPlayer = new Player(board, player.color, player.name);
-            newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
-            newPlayer.setHeading(Heading.valueOf(player.heading));
-
-            CommandCardField[] newCards = new CommandCardField[player.cards.size()];
-            CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
-
-            // If we have a new game, we don't need to do card and register setup
-            if (!saveGame) {
-                board.addPlayer(newPlayer);
-                continue;
-            }
-
-            loadCards(template, player, newCards, newPlayer);
-            loadRegisters(template, player, newRegisters, newPlayer);
-
-            loadedBoard = true;
-
-            board.addPlayer(newPlayer);
-        }
+        loadSpaces(template, board);
+        loadPlayers(template, board, saveGame);
 
         // if game is new, then just return default board
         if (!saveGame) return board;
@@ -151,19 +156,7 @@ public class LoadSaveBoard {
 
         return board;
     }
-
-    /**
-     * Serialize a board with the game state to a json string
-     *
-     * @param board the board to be serialized
-     * @return json string of game state
-     */
-    private static String serialize(Board board) {
-        // Set up the board template
-        BoardTemplate template = new BoardTemplate();
-        template.width = board.width;
-        template.height = board.height;
-
+    private static void saveSpaces(BoardTemplate template, Board board) {
         // Add all spaces
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
@@ -178,7 +171,9 @@ public class LoadSaveBoard {
                 }
             }
         }
-
+    }
+    private static void savePlayers(BoardTemplate template, Board board) {
+        // Save state of player
         for (Player player : board.getPlayers()) {
             PlayerTemplate playerTemplate = new PlayerTemplate();
             Space space = player.getSpace();
@@ -188,46 +183,67 @@ public class LoadSaveBoard {
             playerTemplate.color = player.getColor();
             playerTemplate.name = player.getName();
 
-            // Save cards
-            ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
-            for (CommandCardField commandCardField : player.getCards()) {
-                CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
-
-                if (commandCardField.getCard() == null) {
-                    cardFieldTemplate.command = "";
-                    cardFieldTemplate.visible = true;
-                } else {
-                    cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
-                    cardFieldTemplate.visible = commandCardField.isVisible();
-                }
-
-                // Add to card template
-                cards.add(cardFieldTemplate);
-            }
-
-            // Save registers
-            ArrayList<CommandCardFieldTemplate> registers = new ArrayList<>();
-            for (CommandCardField commandCardField : player.getProgram()) {
-                CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
-
-                if (commandCardField.getCard() == null) {
-                    cardFieldTemplate.command = "";
-                    cardFieldTemplate.visible = true;
-                } else {
-                    cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
-                    cardFieldTemplate.visible = commandCardField.isVisible();
-                }
-
-                // Add to card template
-                registers.add(cardFieldTemplate);
-            }
-
-            playerTemplate.registers = registers;
-            playerTemplate.cards = cards;
+            playerTemplate.registers = saveRegisters(player);
+            playerTemplate.cards = saveCards(player);
 
             template.players.add(playerTemplate);
 
         }
+    }
+    private static ArrayList<CommandCardFieldTemplate> saveCards(Player player) {
+        // Save cards
+        ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
+        for (CommandCardField commandCardField : player.getCards()) {
+            CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
+
+            if (commandCardField.getCard() == null) {
+                cardFieldTemplate.command = "";
+                cardFieldTemplate.visible = true;
+            } else {
+                cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
+                cardFieldTemplate.visible = commandCardField.isVisible();
+            }
+
+            // Add to card template
+            cards.add(cardFieldTemplate);
+        }
+        return cards;
+    }
+    private static ArrayList<CommandCardFieldTemplate> saveRegisters(Player player) {
+        // Save registers
+        ArrayList<CommandCardFieldTemplate> registers = new ArrayList<>();
+        for (CommandCardField commandCardField : player.getProgram()) {
+            CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
+
+            if (commandCardField.getCard() == null) {
+                cardFieldTemplate.command = "";
+                cardFieldTemplate.visible = true;
+            } else {
+                cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
+                cardFieldTemplate.visible = commandCardField.isVisible();
+            }
+
+            // Add to card template
+            registers.add(cardFieldTemplate);
+        }
+        return registers;
+    }
+
+    /**
+     * Serialize a board with the game state to a json string
+     *
+     * @param board the board to be serialized
+     * @return json string of game state
+     */
+    private static String serialize(Board board) {
+        // Set up the board template
+        BoardTemplate template = new BoardTemplate();
+        template.width = board.width;
+        template.height = board.height;
+
+        saveSpaces(template, board);
+        savePlayers(template, board);
+
         template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
         template.step = board.getStep();
         template.phase = String.valueOf(board.getPhase());

@@ -204,22 +204,35 @@ public class Board extends Subject {
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
         int x = space.x;
         int y = space.y;
+        boolean outOfBoard = false;
+        // Check for
+        // Update Placing/Check for collision
         switch (heading) {
             case SOUTH:
-                y = (y + 1) % height;
+                y = (y + 1); //% height;
                 break;
             case WEST:
-                x = (x + width - 1) % width;
+                x = (x - 1); //% width;
                 break;
             case NORTH:
-                y = (y + height - 1) % height;
+                y = (y - 1); //% height;
                 break;
             case EAST:
-                x = (x + 1) % width;
+                x = (x + 1); // % width;
                 break;
         }
 
-        return getSpace(x, y);
+        // Check for out of bounds
+        if (y > height || y < 0 && x > width || x < 0)
+        {
+            // Pushed out of bounds
+            return null;
+        }
+        else
+        {
+            // Moved within board
+            return getSpace(x, y);
+        }
     }
 
     public int getCheckPointAmount() {

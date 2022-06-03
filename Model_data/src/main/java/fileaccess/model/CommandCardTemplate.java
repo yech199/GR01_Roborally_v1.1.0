@@ -1,4 +1,4 @@
-package roborally.fileaccess.model;
+package fileaccess.model;
 
 import model.Command;
 

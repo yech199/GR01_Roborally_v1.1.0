@@ -13,6 +13,6 @@ public class DataFile {
     }
 
     String load() throws IOException {
-        return new String(Files.readAllBytes(Paths.get(fileName)));
+        return new String(Files.readAllBytes(Paths.get("RoborallyAPI/src/main/resources/boards/", fileName)));
     }
 }

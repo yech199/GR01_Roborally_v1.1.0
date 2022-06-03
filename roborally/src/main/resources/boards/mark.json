@@ -14,20 +14,32 @@
       "color": "green",
       "spaceX": 1,
       "spaceY": 0,
-      "heading": "SOUTH"
+      "heading": "SOUTH",
+      "playerCards": [
+      {
+        "visible": "true",
+        "commandCard": {
+          "command": "FAST_FORWARD"
+        }
+      },
+        {
+          "visible": "true",
+          "commandCard": {
+            "command": "LEFT"
+          }
+        }
+      ]
     }
   ],
   "currentPlayer": 0,
   "spaces": [
     {
-      "walls": [
-        "NORTH"
-      ],
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.PushPanel",
           "INSTANCE": {
-            "heading": "EAST"
+            "heading": "EAST",
+            "pushPanelLabel": ["0", "1", "0", "1", "0"]
           }
         }
       ],

@@ -22,11 +22,11 @@
 package roborally.controller;
 
 import controller.AGameController;
+import fileaccess.LoadSaveBoard;
 import model.boardElements.FieldAction;
 import javafx.application.Platform;
 import model.*;
 import org.jetbrains.annotations.NotNull;
-import roborally.fileaccess.LoadSaveBoard;
 
 import javax.swing.*;
 import java.util.List;

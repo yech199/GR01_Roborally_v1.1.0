@@ -70,27 +70,27 @@ public class LoadSaveBoard {
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
 
-            CommandCardField[] newCards = new CommandCardField[player.playerCards.size()];
-            CommandCardField[] newProgram = new CommandCardField[player.playerCards.size()];
+            // CommandCardField[] newCards = new CommandCardField[player.playerCards.size()];
+            // CommandCardField[] newProgram = new CommandCardField[player.playerCards.size()];
 
-            for (int i = 0; i < newCards.length; i++) {
-                // TODO: Load player cards
-                // Sets CommandCardField
-                CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(newPlayer.hashCode()).playerCards.get(i);
-                CommandCardField commandCardField = template.players.get(newPlayer.hashCode()).playerCards.get(i).commandCardField;
-
-                // Sets CommandCard to commandCardField
-                CommandCard commandCard = new CommandCard(commandCardFieldTemplate.command);
-                commandCardField.setCard(commandCard);
-            }
-
-            for (int i = 0; i < newProgram.length; i++) {
-                // TODO: Load player registers
-
-            }
-
-            newPlayer.setCards(newCards);
-            newPlayer.setProgram(newProgram);
+            // for (int i = 0; i < newCards.length; i++) {
+            //     // TODO: Load player cards
+            //     // Sets CommandCardField
+            //     CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(newPlayer.hashCode()).playerCards.get(i);
+            //     CommandCardField commandCardField = template.players.get(newPlayer.hashCode()).playerCards.get(i).commandCardField;
+            //
+            //     // Sets CommandCard to commandCardField
+            //     CommandCard commandCard = new CommandCard(commandCardFieldTemplate.command);
+            //     commandCardField.setCard(commandCard);
+            // }
+            //
+            // for (int i = 0; i < newProgram.length; i++) {
+            //     // TODO: Load player registers
+            //
+            // }
+            //
+            // newPlayer.setCards(newCards);
+            // newPlayer.setProgram(newProgram);
         }
 
         // Set current player
@@ -138,21 +138,21 @@ public class LoadSaveBoard {
             ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
 
             // TODO Setup cards by loading array of cards into playertemplate
-            for (CommandCardField commandCardField : player.getCards()) {
-
-                CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
-                CommandCardTemplate cardTemplate = new CommandCardTemplate();
-                CommandTemplate commandTemplate = new CommandTemplate();
-
-                commandTemplate.command = commandCardField.getCard().command;
-                cardTemplate.commandCard = commandTemplate;
-                cardFieldTemplate.commandCard = cardTemplate;
-                cardFieldTemplate.visible = commandCardField.isVisible();
-
-                // Add to card template
-                cards.add(cardFieldTemplate);
-
-            }
+            // for (CommandCardField commandCardField : player.getCards()) {
+            //
+            //     CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
+            //     CommandCardTemplate cardTemplate = new CommandCardTemplate();
+            //     CommandTemplate commandTemplate = new CommandTemplate();
+            //
+            //     commandTemplate.command = commandCardField.getCard().command;
+            //     cardTemplate.commandCard = commandTemplate;
+            //     cardFieldTemplate.commandCard = cardTemplate;
+            //     cardFieldTemplate.visible = commandCardField.isVisible();
+            //
+            //     // Add to card template
+            //     cards.add(cardFieldTemplate);
+            //
+            // }
 
             ArrayList<CommandCardFieldTemplate> program = new ArrayList<>();
             // TODO Setup program by loading array of cards into playertemplate

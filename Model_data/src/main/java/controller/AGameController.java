@@ -1,6 +1,7 @@
 package controller;
 
 import model.*;
+import model.BoardElements.Antenna;
 import org.jetbrains.annotations.NotNull;
 
 abstract public class AGameController {

@@ -26,7 +26,7 @@ import com.google.common.io.ByteSource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
-import controller.FieldAction;
+import model.BoardElements.FieldAction;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

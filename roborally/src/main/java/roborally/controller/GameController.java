@@ -22,8 +22,7 @@
 package roborally.controller;
 
 import controller.AGameController;
-import controller.Antenna;
-import controller.FieldAction;
+import model.BoardElements.FieldAction;
 import javafx.application.Platform;
 import model.*;
 import org.jetbrains.annotations.NotNull;

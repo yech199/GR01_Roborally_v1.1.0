@@ -21,7 +21,7 @@
  */
 package roborally.fileaccess.model;
 
-import controller.FieldAction;
+import model.BoardElements.FieldAction;
 import model.Heading;
 
 import java.util.ArrayList;

@@ -23,7 +23,7 @@ package roborally.fileaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import controller.FieldAction;
+import model.BoardElements.FieldAction;
 import model.*;
 import roborally.fileaccess.model.*;
 

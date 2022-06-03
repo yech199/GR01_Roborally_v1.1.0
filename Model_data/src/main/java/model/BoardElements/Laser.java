@@ -1,5 +1,6 @@
-package controller;
+package model.BoardElements;
 
+import controller.AGameController;
 import model.Space;
 
 public class Laser extends FieldAction {

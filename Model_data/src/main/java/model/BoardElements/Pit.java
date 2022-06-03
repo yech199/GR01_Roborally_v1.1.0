@@ -1,5 +1,6 @@
-package controller;
+package model.BoardElements;
 
+import controller.AGameController;
 import model.Player;
 import model.Space;
 import model.Board;

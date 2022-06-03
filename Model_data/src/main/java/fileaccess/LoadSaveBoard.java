@@ -19,13 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package roborally.fileaccess;
+package fileaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import fileaccess.*;
+import fileaccess.model.BoardTemplate;
+import fileaccess.model.CommandCardFieldTemplate;
+import fileaccess.model.PlayerTemplate;
+import fileaccess.model.SpaceTemplate;
 import model.boardElements.FieldAction;
 import model.*;
-import roborally.fileaccess.model.*;
 
 import java.util.ArrayList;
 

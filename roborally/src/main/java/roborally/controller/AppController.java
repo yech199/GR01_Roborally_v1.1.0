@@ -27,7 +27,7 @@ import designpatterns.observer.Observer;
 import roborally.RoboRally;
 
 import roborally.util.ResourcesUtil;
-import roborally.fileaccess.LoadSaveBoard;
+import fileaccess.LoadSaveBoard;
 import model.Board;
 
 import javafx.application.Platform;

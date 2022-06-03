@@ -1,4 +1,6 @@
-package roborally.fileaccess.model;
+package fileaccess.model;
+
+import fileaccess.model.CommandCardFieldTemplate;
 
 import java.util.ArrayList;
 

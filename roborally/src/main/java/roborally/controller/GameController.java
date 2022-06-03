@@ -26,6 +26,7 @@ import model.boardElements.FieldAction;
 import javafx.application.Platform;
 import model.*;
 import org.jetbrains.annotations.NotNull;
+import roborally.fileaccess.LoadSaveBoard;
 
 import javax.swing.*;
 import java.util.List;
@@ -70,10 +71,12 @@ public class GameController extends AGameController {
      * and autogenerate a number of cards the player can choose from.
      */
     public void startProgrammingPhase() {
+        // If game is loaded we don't need to setup the programming phase, and we can skip the rest
+        if (LoadSaveBoard.getLoadedBoard()) return;
+
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
-
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
             if (player != null) {

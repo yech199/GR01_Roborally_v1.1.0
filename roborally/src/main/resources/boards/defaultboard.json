@@ -1,20 +1,142 @@
 {
   "width": 8,
   "height": 8,
+  "phase": "PROGRAMMING",
+  "step": 0,
   "players": [
     {
       "name": "Player 1",
       "color": "red",
-      "spaceX": 0,
-      "spaceY": 0,
-      "heading": "SOUTH"
+      "spaceX": 4,
+      "spaceY": 1,
+      "heading": "SOUTH",
+      "cards": [
+        {
+          "command": "LEFT",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ],
+      "registers": [
+        {
+          "command": "RIGHT",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ]
     },
     {
       "name": "Player 2",
       "color": "green",
       "spaceX": 1,
-      "spaceY": 0,
-      "heading": "SOUTH"
+      "spaceY": 1,
+      "heading": "SOUTH",
+      "cards": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ],
+      "registers": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ]
     }
   ],
   "currentPlayer": 0,

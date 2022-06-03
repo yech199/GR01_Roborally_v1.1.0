@@ -5,8 +5,6 @@ import model.CommandCard;
 import model.CommandCardField;
 
 public class CommandCardFieldTemplate {
-    public CommandCardField commandCardField;
-    public CommandCard commandCard;
-    public Command command;
+    public String command;
     public boolean visible;
 }

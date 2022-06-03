@@ -35,6 +35,8 @@ public class BoardTemplate {
 
     public int width;
     public int height;
+    public String phase;
+    public int step;
 
     public List<PlayerTemplate> players = new ArrayList<>();
     public int currentPlayer;

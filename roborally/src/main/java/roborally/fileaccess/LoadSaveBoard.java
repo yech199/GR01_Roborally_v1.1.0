@@ -41,7 +41,7 @@ public class LoadSaveBoard {
      * @param gameName name of the save game
      * @return board object with the game state
      */
-    private static Board deserialize(String jsonGameState, String gameName) {
+    private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
@@ -51,9 +51,6 @@ public class LoadSaveBoard {
 
         Board board = new Board(template.width, template.height, gameName);
 
-        // TODO: New games dont have state for registers, phase etc.
-
-        // TODO: Add loading of phases and other game state elements.
         // Loading spaces
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -66,35 +63,72 @@ public class LoadSaveBoard {
         // Loading players
         for (PlayerTemplate player : template.players) {
             Player newPlayer = new Player(board, player.color, player.name);
-            board.addPlayer(newPlayer);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
 
-            CommandCardField[] newCards = new CommandCardField[player.playerCards.size()];
-            CommandCardField[] newProgram = new CommandCardField[player.playerCards.size()];
+            CommandCardField[] newCards = new CommandCardField[player.cards.size()];
+            CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
 
-            for (int i = 0; i < newCards.length; i++) {
-                // TODO: Load player cards
-                // Sets CommandCardField
-                CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(newPlayer.hashCode()).playerCards.get(i);
-                CommandCardField commandCardField = template.players.get(newPlayer.hashCode()).playerCards.get(i).commandCardField;
+            if (saveGame) {
+                // Load all cards from JSON file
+                for (int i = 0; i < newCards.length; i++) {
+                    int j = template.players.indexOf(player);
 
-                // Sets CommandCard to commandCardField
-                CommandCard commandCard = new CommandCard(commandCardFieldTemplate.command);
-                commandCardField.setCard(commandCard);
+                    // Get the CommandCardField JSON data
+                    CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(j).cards.get(i);
+
+                    // Set the game CommandCardField to the template
+                    CommandCardField commandCardField = new CommandCardField(newPlayer);
+
+                    String command = commandCardFieldTemplate.command;
+
+                    // If command is empty in json, we just make a null value TODO make random card?
+                    if (!command.equals("")) {
+                        Command commandType = Command.valueOf(command);
+                        // Get the command from the template and make a new commandCard that we use in the game
+                        CommandCard commandCard = new CommandCard(commandType);
+                        // Set the CommandCardField card
+                        commandCardField.setCard(commandCard);
+                    }
+                    newCards[i] = commandCardField;
+                }
+
+                // Load all registers from JSON file
+                for (int i = 0; i < newRegisters.length; i++) {
+                    int j = template.players.indexOf(player);
+
+                    // Get the CommandCardField JSON data
+                    CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(j).registers.get(i);
+
+                    // Set the game CommandCardField to the template
+                    CommandCardField commandCardField = new CommandCardField(newPlayer);
+
+                    String command = commandCardFieldTemplate.command;
+
+                    if (command.equals("")) {
+                        //CommandCard commandCard = new CommandCard();
+                    } else {
+                        // Get the command from the template and make a new commandCard that we use in the game
+                        CommandCard commandCard = new CommandCard(Command.valueOf(command));
+                        // Set the CommandCardField card
+                        commandCardField.setCard(commandCard);
+                    }
+                    newRegisters[i] = commandCardField;
+                }
+
+                newPlayer.setCards(newCards);
+                newPlayer.setProgram(newRegisters);
+                loadedBoard = true;
             }
-
-            for (int i = 0; i < newProgram.length; i++) {
-                // TODO: Load player registers
-
-            }
-
-            newPlayer.setCards(newCards);
-            newPlayer.setProgram(newProgram);
+            board.addPlayer(newPlayer);
         }
 
         // Set current player
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
+
+        board.setPhase(Phase.valueOf(template.phase));
+
+        board.setStep(template.step);
 
         return board;
     }

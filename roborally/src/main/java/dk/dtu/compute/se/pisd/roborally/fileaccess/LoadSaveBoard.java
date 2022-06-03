@@ -24,29 +24,16 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.*;
+
+import java.util.ArrayList;
 
 /**
  * This class is responsible for reading(load) and writing(save) game state to and from json files.
  * @author Mads Sørensen (s215805)
  */
 public class LoadSaveBoard {
-    private static final String BOARDSFOLDER = "boards";
-    private static final String SAVEFOLDER = "savegames";
-
-    private static final String DEFAULTBOARD = "defaultboard";
-    private static final String JSON_EXT = "json";
-
-
-    public static Board loadOrNewGame(String boardname, boolean newGame) {
-       return null;
-    }
 
     /**
      * Deserialize a json string with the state of the game and returns a board.
@@ -83,7 +70,19 @@ public class LoadSaveBoard {
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
 
-            // TODO: Add loading of registers and cards for each player.
+            CommandCardField[] newCards = new CommandCardField[player.playerCards.size()];
+            CommandCardField[] newProgram = new CommandCardField[player.playerCards.size()];
+
+            for (int i = 0; i < newCards.length; i++) {
+                // TODO: Load player cards
+            }
+
+            for (int i = 0; i < newProgram.length; i++) {
+                // TODO: Load player registers
+            }
+
+            newPlayer.setCards(newCards);
+            newPlayer.setProgram(newProgram);
         }
 
         // Set current player
@@ -127,7 +126,33 @@ public class LoadSaveBoard {
             playerTemplate.heading = String.valueOf(player.getHeading());
             playerTemplate.color = player.getColor();
             playerTemplate.name = player.getName();
+
+            ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
+
+            // TODO Setup cards by loading array of cards into playertemplate
+            for (CommandCardField commandCardField : player.getCards()) {
+
+                CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
+                CommandCardTemplate cardTemplate = new CommandCardTemplate();
+                CommandTemplate commandTemplate = new CommandTemplate();
+
+                commandTemplate.command = commandCardField.getCard().command;
+                cardTemplate.commandCard = commandTemplate;
+                cardFieldTemplate.commandCard = cardTemplate;
+                cardFieldTemplate.visible = commandCardField.isVisible();
+
+                // Add to card template
+                cards.add(cardFieldTemplate);
+
+            }
+
+            ArrayList<CommandCardFieldTemplate> program = new ArrayList<>();
+            // TODO Setup program by loading array of cards into playertemplate
+
+            playerTemplate.playerCards = cards;
+
             template.players.add(playerTemplate);
+
         }
         template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
 

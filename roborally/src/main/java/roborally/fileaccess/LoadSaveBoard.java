@@ -24,13 +24,8 @@ package roborally.fileaccess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import controller.FieldAction;
-import roborally.fileaccess.model.BoardTemplate;
-import roborally.fileaccess.model.PlayerTemplate;
-import roborally.fileaccess.model.SpaceTemplate;
-import model.Board;
-import model.Heading;
-import model.Player;
-import model.Space;
+import model.*;
+import roborally.fileaccess.model.*;
 
 import java.util.ArrayList;
 

@@ -14,7 +14,29 @@
       "color": "green",
       "spaceX": 1,
       "spaceY": 1,
-      "heading": "SOUTH"
+      "heading": "SOUTH",
+      "playerCards": [
+        {
+          "visible": "true",
+          "commandCard": {
+            "command": "FAST_FORWARD"
+          }
+        },
+        {
+          "visible": "true",
+          "commandCard": {
+            "command": "LEFT"
+          }
+        }
+      ],
+      "playerProgram": [
+        {
+          "visible": "true",
+          "commandCard": {
+            "command": "FORWARD"
+          }
+        }
+      ]
     }
   ],
   "currentPlayer": 1,
@@ -33,7 +55,7 @@
       ],
       "x": 0,
       "y": 0
-    },s
+    },
     {
       "walls": [
         "NORTH"

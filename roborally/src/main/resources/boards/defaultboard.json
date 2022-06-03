@@ -363,7 +363,7 @@
         {
           "CLASSNAME": "model.boardElements.Checkpoint",
           "INSTANCE": {
-            "checkpointNumber": "4"
+            "checkpointNumber": "1"
           }
         }
       ],

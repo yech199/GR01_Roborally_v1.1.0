@@ -141,8 +141,18 @@ public class Player extends Subject {
             }
         }
     }
-    public void setCard(@NotNull CommandCard card) {
 
+    public void setCards(@NotNull CommandCardField[] cards) {
+        this.cards = cards;
+    }
+    public CommandCardField[] getCards() {
+        return cards;
+    }
+    public void setProgram(@NotNull CommandCardField[] program) {
+        this.program = program;
+    }
+    public CommandCardField[] getProgram() {
+        return program;
     }
 
     public CommandCardField getProgramField(int i) {

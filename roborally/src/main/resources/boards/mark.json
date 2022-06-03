@@ -14,21 +14,7 @@
       "color": "green",
       "spaceX": 1,
       "spaceY": 0,
-      "heading": "SOUTH",
-      "playerCards": [
-      {
-        "visible": "true",
-        "commandCard": {
-          "command": "FAST_FORWARD"
-        }
-      },
-        {
-          "visible": "true",
-          "commandCard": {
-            "command": "LEFT"
-          }
-        }
-      ]
+      "heading": "SOUTH"
     }
   ],
   "currentPlayer": 0,

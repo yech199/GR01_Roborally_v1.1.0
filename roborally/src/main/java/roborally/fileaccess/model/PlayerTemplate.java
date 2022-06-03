@@ -10,8 +10,8 @@ public class PlayerTemplate {
     public int spaceY;
     public String heading;
 
-    public ArrayList<CommandCardFieldTemplate> playerCards = new ArrayList<>();
-    public ArrayList<CommandCardFieldTemplate> playerProgram = new ArrayList<>();
+    public ArrayList<CommandCardFieldTemplate> registers = new ArrayList<>();
+    public ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
 
 
 }

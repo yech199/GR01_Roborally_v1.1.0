@@ -69,6 +69,8 @@ public class LoadSaveBoard {
             }
             commandCardField.setVisible(commandCardFieldTemplate.visible);
             newCards[i] = commandCardField;
+
+            newPlayer.setCards(newCards);
         }
     }
     private static void loadRegisters(BoardTemplate template, PlayerTemplate player, CommandCardField[] newRegisters, Player newPlayer) {
@@ -91,6 +93,8 @@ public class LoadSaveBoard {
                 commandCardField.setCard(commandCard);
             }
             newRegisters[i] = commandCardField;
+
+            newPlayer.setProgram(newRegisters);
         }
     }
 
@@ -132,14 +136,15 @@ public class LoadSaveBoard {
             loadCards(template, player, newCards, newPlayer);
             loadRegisters(template, player, newRegisters, newPlayer);
 
-            newPlayer.setCards(newCards);
-            newPlayer.setProgram(newRegisters);
             loadedBoard = true;
 
             board.addPlayer(newPlayer);
         }
 
+        // if game is new, then just return default board
         if (!saveGame) return board;
+
+        // load board state values into board from templates
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));
         board.setStep(template.step);

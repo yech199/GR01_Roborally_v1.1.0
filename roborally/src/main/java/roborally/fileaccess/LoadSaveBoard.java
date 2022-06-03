@@ -239,4 +239,8 @@ public class LoadSaveBoard {
         String json = serialize(board);
         IOUtil.writeGame(gameName, json);
     }
+
+    public static boolean getLoadedBoard() {
+        return loadedBoard;
+    }
 }

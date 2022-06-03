@@ -31,14 +31,16 @@ import java.util.ArrayList;
 
 /**
  * This class is responsible for reading(load) and writing(save) game state to and from json files.
- * @author Mads Sørensen (s215805)
  */
 public class LoadSaveBoard {
 
+    private static boolean loadedBoard = false;
+
     /**
      * Deserialize a json string with the state of the game and returns a board.
+     *
      * @param jsonGameState a json string of game state
-     * @param gameName name of the save game
+     * @param gameName      name of the save game
      * @return board object with the game state
      */
     private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
@@ -62,6 +64,7 @@ public class LoadSaveBoard {
 
         // Loading players
         for (PlayerTemplate player : template.players) {
+
             Player newPlayer = new Player(board, player.color, player.name);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
@@ -69,65 +72,67 @@ public class LoadSaveBoard {
             CommandCardField[] newCards = new CommandCardField[player.cards.size()];
             CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
 
-            if (saveGame) {
-                // Load all cards from JSON file
-                for (int i = 0; i < newCards.length; i++) {
-                    int j = template.players.indexOf(player);
-
-                    // Get the CommandCardField JSON data
-                    CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(j).cards.get(i);
-
-                    // Set the game CommandCardField to the template
-                    CommandCardField commandCardField = new CommandCardField(newPlayer);
-
-                    String command = commandCardFieldTemplate.command;
-
-                    // If command is empty in json, we just make a null value TODO make random card?
-                    if (!command.equals("")) {
-                        Command commandType = Command.valueOf(command);
-                        // Get the command from the template and make a new commandCard that we use in the game
-                        CommandCard commandCard = new CommandCard(commandType);
-                        // Set the CommandCardField card
-                        commandCardField.setCard(commandCard);
-                    }
-                    newCards[i] = commandCardField;
-                }
-
-                // Load all registers from JSON file
-                for (int i = 0; i < newRegisters.length; i++) {
-                    int j = template.players.indexOf(player);
-
-                    // Get the CommandCardField JSON data
-                    CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(j).registers.get(i);
-
-                    // Set the game CommandCardField to the template
-                    CommandCardField commandCardField = new CommandCardField(newPlayer);
-
-                    String command = commandCardFieldTemplate.command;
-
-                    if (command.equals("")) {
-                        //CommandCard commandCard = new CommandCard();
-                    } else {
-                        // Get the command from the template and make a new commandCard that we use in the game
-                        CommandCard commandCard = new CommandCard(Command.valueOf(command));
-                        // Set the CommandCardField card
-                        commandCardField.setCard(commandCard);
-                    }
-                    newRegisters[i] = commandCardField;
-                }
-
-                newPlayer.setCards(newCards);
-                newPlayer.setProgram(newRegisters);
-                loadedBoard = true;
+            // If we have a new game, we don't need to do card and register setup
+            if (!saveGame) {
+                board.addPlayer(newPlayer);
+                continue;
             }
+
+            // Load all cards from JSON file
+            for (int i = 0; i < newCards.length; i++) {
+                int j = template.players.indexOf(player);
+
+                // Get the CommandCardField JSON data
+                CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(j).cards.get(i);
+
+                // Set the game CommandCardField to the template
+                CommandCardField commandCardField = new CommandCardField(newPlayer);
+
+                String command = commandCardFieldTemplate.command;
+
+                // If command is empty in json, we just make a null value TODO make random card?
+                if (!command.equals("")) {
+                    Command commandType = Command.valueOf(command);
+                    // Get the command from the template and make a new commandCard that we use in the game
+                    CommandCard commandCard = new CommandCard(commandType);
+                    // Set the CommandCardField card
+                    commandCardField.setCard(commandCard);
+                }
+                commandCardField.setVisible(commandCardFieldTemplate.visible);
+                newCards[i] = commandCardField;
+            }
+
+            // Load all registers from JSON file
+            for (int i = 0; i < newRegisters.length; i++) {
+                int j = template.players.indexOf(player);
+
+                // Get the CommandCardField JSON data
+                CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(j).registers.get(i);
+
+                // Set the game CommandCardField to the template
+                CommandCardField commandCardField = new CommandCardField(newPlayer);
+
+                String command = commandCardFieldTemplate.command;
+
+                if (!command.equals("")) {
+                    // Get the command from the template and make a new commandCard that we use in the game
+                    CommandCard commandCard = new CommandCard(Command.valueOf(command));
+                    // Set the CommandCardField card
+                    commandCardField.setCard(commandCard);
+                }
+                newRegisters[i] = commandCardField;
+            }
+
+            newPlayer.setCards(newCards);
+            newPlayer.setProgram(newRegisters);
+            loadedBoard = true;
+
             board.addPlayer(newPlayer);
         }
 
-        // Set current player
+        if (!saveGame) return board;
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
-
         board.setPhase(Phase.valueOf(template.phase));
-
         board.setStep(template.step);
 
         return board;
@@ -135,6 +140,7 @@ public class LoadSaveBoard {
 
     /**
      * Serialize a board with the game state to a json string
+     *
      * @param board the board to be serialized
      * @return json string of game state
      */
@@ -159,7 +165,6 @@ public class LoadSaveBoard {
             }
         }
 
-        // TODO: set up players in template
         for (Player player : board.getPlayers()) {
             PlayerTemplate playerTemplate = new PlayerTemplate();
             Space space = player.getSpace();
@@ -169,34 +174,49 @@ public class LoadSaveBoard {
             playerTemplate.color = player.getColor();
             playerTemplate.name = player.getName();
 
+            // Save cards
             ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
-
-            // TODO Setup cards by loading array of cards into playertemplate
             for (CommandCardField commandCardField : player.getCards()) {
-
                 CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
-                CommandCardTemplate cardTemplate = new CommandCardTemplate();
-                CommandTemplate commandTemplate = new CommandTemplate();
 
-                commandTemplate.command = commandCardField.getCard().command;
-                cardTemplate.commandCard = commandTemplate;
-                cardFieldTemplate.commandCard = cardTemplate;
-                cardFieldTemplate.visible = commandCardField.isVisible();
+                if (commandCardField.getCard() == null) {
+                    cardFieldTemplate.command = "";
+                    cardFieldTemplate.visible = true;
+                } else {
+                    cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
+                    cardFieldTemplate.visible = commandCardField.isVisible();
+                }
 
                 // Add to card template
                 cards.add(cardFieldTemplate);
-
             }
 
-            ArrayList<CommandCardFieldTemplate> program = new ArrayList<>();
-            // TODO Setup program by loading array of cards into playertemplate
+            // Save registers
+            ArrayList<CommandCardFieldTemplate> registers = new ArrayList<>();
+            for (CommandCardField commandCardField : player.getProgram()) {
+                CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
 
-            playerTemplate.playerCards = cards;
+                if (commandCardField.getCard() == null) {
+                    cardFieldTemplate.command = "";
+                    cardFieldTemplate.visible = true;
+                } else {
+                    cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
+                    cardFieldTemplate.visible = commandCardField.isVisible();
+                }
+
+                // Add to card template
+                registers.add(cardFieldTemplate);
+            }
+
+            playerTemplate.registers = registers;
+            playerTemplate.cards = cards;
 
             template.players.add(playerTemplate);
 
         }
         template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
+        template.step = board.getStep();
+        template.phase = String.valueOf(board.getPhase());
 
         // Saving the board template using GSON
         GsonBuilder simpleBuilder = new GsonBuilder().
@@ -209,20 +229,21 @@ public class LoadSaveBoard {
 
     /**
      * Load the given board from a json file.
+     *
      * @param gameName name of the game board
      * @return the new board
      */
     public static Board loadGame(String gameName, boolean saveGame) {
         String gameState = IOUtil.readGame(gameName, saveGame);
-
         if (gameState != null) {
-            return deserialize(gameState, gameName);
+            return deserialize(gameState, gameName, saveGame);
         }
         return new Board(8, 8);
     }
 
     /**
      * Create a new game by loading a gameboard from the predefined board configurations in resource folder
+     *
      * @param gameName name of the game board
      * @return the new board
      */
@@ -232,7 +253,8 @@ public class LoadSaveBoard {
 
     /**
      * Save a game in json format to the resource/savegames folder
-     * @param board the board to be saved
+     *
+     * @param board    the board to be saved
      * @param gameName name of the game board
      */
     public static void saveGame(Board board, String gameName) {

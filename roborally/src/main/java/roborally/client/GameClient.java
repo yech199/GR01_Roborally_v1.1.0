@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.client;
+package roborally.client;
 
 import java.net.URI;
 import java.net.http.HttpRequest;

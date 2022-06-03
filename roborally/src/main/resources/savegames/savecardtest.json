@@ -1,13 +1,75 @@
 {
   "width": 8,
   "height": 8,
+  "phase": "PROGRAMMING",
+  "step": 0,
   "players": [
     {
       "name": "Player 1",
       "color": "red",
       "spaceX": 4,
       "spaceY": 1,
-      "heading": "SOUTH"
+      "heading": "SOUTH",
+      "cards": [
+        {
+          "command": "LEFT",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ],
+      "registers": [
+        {
+          "command": "RIGHT",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ]
     },
     {
       "name": "Player 2",
@@ -15,26 +77,64 @@
       "spaceX": 1,
       "spaceY": 1,
       "heading": "SOUTH",
-      "playerCards": [
+      "cards": [
         {
-          "visible": "true",
-          "commandCard": {
-            "command": "FAST_FORWARD"
-          }
+          "command": "",
+          "visible": "true"
         },
         {
-          "visible": "true",
-          "commandCard": {
-            "command": "LEFT"
-          }
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
         }
       ],
-      "playerProgram": [
+      "registers": [
         {
-          "visible": "true",
-          "commandCard": {
-            "command": "FORWARD"
-          }
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
         }
       ]
     }
@@ -43,11 +143,26 @@
   "spaces": [
     {
       "walls": [
+        "NORTH"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.Antenna",
+          "INSTANCE": {
+            "heading": "EAST"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 1
+    },
+    {
+      "walls": [
         "SOUTH"
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -62,22 +177,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Antenna",
-          "INSTANCE": {
-            "heading": "EAST"
-          }
-        }
-      ],
-      "x": 0,
-      "y": 1
-    },
-    {
-      "walls": [
-        "NORTH"
-      ],
-      "actions": [
-        {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -92,7 +192,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -105,7 +205,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -118,7 +218,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -131,7 +231,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -144,7 +244,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -157,7 +257,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -172,7 +272,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -187,7 +287,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH"
           }
@@ -202,7 +302,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -217,7 +317,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -232,7 +332,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -247,14 +347,28 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "model.boardElements.Pit",
           "INSTANCE": {
-            "heading": "SOUTH"
           }
         }
       ],
       "x": 7,
       "y": 7
+    },
+    {
+      "walls": [
+        "WEST"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.Checkpoint",
+          "INSTANCE": {
+            "checkpointNumber": "4"
+          }
+        }
+      ],
+      "x": 3,
+      "y": 4
     }
   ]
 }

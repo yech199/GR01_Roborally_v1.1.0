@@ -75,10 +75,18 @@ public class LoadSaveBoard {
 
             for (int i = 0; i < newCards.length; i++) {
                 // TODO: Load player cards
+                // Sets CommandCardField
+                CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(newPlayer.hashCode()).playerCards.get(i);
+                CommandCardField commandCardField = template.players.get(newPlayer.hashCode()).playerCards.get(i).commandCardField;
+
+                // Sets CommandCard to commandCardField
+                CommandCard commandCard = new CommandCard(commandCardFieldTemplate.command);
+                commandCardField.setCard(commandCard);
             }
 
             for (int i = 0; i < newProgram.length; i++) {
                 // TODO: Load player registers
+
             }
 
             newPlayer.setCards(newCards);

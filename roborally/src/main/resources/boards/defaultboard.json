@@ -25,7 +25,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Antenna",
+          "CLASSNAME": "controller.Antenna",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -40,7 +40,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -55,7 +55,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -70,7 +70,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -83,7 +83,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -96,7 +96,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -109,7 +109,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -122,7 +122,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -135,7 +135,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -150,7 +150,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -165,7 +165,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH"
           }
@@ -180,7 +180,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -195,7 +195,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -210,7 +210,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "controller.ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -225,7 +225,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Pit",
+          "CLASSNAME": "controller.Pit",
           "INSTANCE": {
           }
         }
@@ -239,7 +239,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint",
+          "CLASSNAME": "controller.Checkpoint",
           "INSTANCE": {
             "checkpointNumber": "4"
           }

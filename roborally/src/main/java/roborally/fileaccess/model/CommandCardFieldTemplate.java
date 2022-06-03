@@ -1,8 +1,8 @@
 package roborally.fileaccess.model;
 
-import dk.dtu.compute.se.pisd.roborally.model.Command;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCard;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
+import model.Command;
+import model.CommandCard;
+import model.CommandCardField;
 
 public class CommandCardFieldTemplate {
     public CommandCardField commandCardField;

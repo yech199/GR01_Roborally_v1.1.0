@@ -1,4 +1,4 @@
-package model.BoardElements;
+package model.boardElements;
 
 import controller.AGameController;
 import model.Space;

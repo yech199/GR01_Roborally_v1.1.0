@@ -22,7 +22,7 @@
 package model;
 
 import designpatterns.observer.Subject;
-import model.BoardElements.FieldAction;
+import model.boardElements.FieldAction;
 
 import java.util.ArrayList;
 import java.util.List;

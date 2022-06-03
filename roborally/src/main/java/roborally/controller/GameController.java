@@ -22,7 +22,7 @@
 package roborally.controller;
 
 import controller.AGameController;
-import model.BoardElements.FieldAction;
+import model.boardElements.FieldAction;
 import javafx.application.Platform;
 import model.*;
 import org.jetbrains.annotations.NotNull;

@@ -27,7 +27,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.util.ResourcesUtil;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadSaveNewBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadSaveBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 
 import javafx.application.Platform;
@@ -83,7 +83,7 @@ public class AppController implements Observer {
             Board board;
 
             if (resultS.isPresent()) {
-                board = LoadSaveNewBoard.loadOrNewGame(resultS.get(), true);
+                board = LoadSaveBoard.newGame(resultS.get());
                 for (int i = 0; i < board.getPlayersNumber(); i++) {
                     TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
                     name.setTitle("Player name");
@@ -96,7 +96,7 @@ public class AppController implements Observer {
                     }
                 }
             } else {
-                board = LoadSaveNewBoard.loadOrNewGame(null, true);
+                board = LoadSaveBoard.newGame(null);
             }
 
             setupGameController(board);
@@ -112,7 +112,7 @@ public class AppController implements Observer {
 
         if (resultS.isPresent()) {
             String saveName = resultS.get();
-            LoadSaveNewBoard.saveGame(gameController.board, saveName);
+            LoadSaveBoard.saveGame(gameController.board, saveName);
         }
     }
 
@@ -128,7 +128,7 @@ public class AppController implements Observer {
 
             if (result.isPresent()) {
                 String boardname = result.get();
-                Board board = LoadSaveNewBoard.loadOrNewGame(boardname, false);
+                Board board = LoadSaveBoard.loadGame(boardname, true);
                 setupGameController(board);
             }  else {
                 // The UI should not allow this, but in case this happens anyway.

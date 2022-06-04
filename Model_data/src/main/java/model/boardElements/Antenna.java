@@ -9,7 +9,7 @@ import util.Tuple;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Antenna extends FieldAction {
+public class Antenna extends SpaceElement {
     private Heading heading;
 
     /**
@@ -20,7 +20,7 @@ public class Antenna extends FieldAction {
      * @return whether this action was successful
      */
     @Override
-    public boolean doAction(AGameController gameController, Space space) {
+    public void doAction(AGameController gameController, Space space) {
         List<Player> players = gameController.board.getPlayers();
         // Practically a Triple containing a Player, the distance between a player and the antenna
         // and the angle between the player and the antenna (depends on which way the antenna is looking)
@@ -78,8 +78,6 @@ public class Antenna extends FieldAction {
             players.set(i, distAndAngles.get(i).left());
         }
         gameController.board.setPlayers(players);
-
-        return true;
     }
 
     public Heading getHeading() {

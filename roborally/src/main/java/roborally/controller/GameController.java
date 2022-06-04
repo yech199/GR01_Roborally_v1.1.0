@@ -23,7 +23,7 @@ package roborally.controller;
 
 import controller.AGameController;
 import fileaccess.LoadSaveBoard;
-import model.boardElements.FieldAction;
+import model.boardElements.SpaceElement;
 import javafx.application.Platform;
 import model.*;
 import org.jetbrains.annotations.NotNull;
@@ -179,7 +179,7 @@ public class GameController extends AGameController {
                 //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
                 // executing the actions on the space a player moves to
                 Space space = currentPlayer.getSpace();
-                for (FieldAction action : space.getActions()) {
+                for (SpaceElement action : space.getActions()) {
                     action.doAction(this, space);
                 }
 

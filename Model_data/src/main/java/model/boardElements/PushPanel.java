@@ -6,7 +6,7 @@ import model.Heading;
 import model.Player;
 import model.Space;
 
-public class PushPanel extends FieldAction {
+public class PushPanel extends SpaceElement {
     private Heading heading;
     //private int pushPanelAmount = 0;
     private int[] pushPanelLabel;
@@ -20,7 +20,7 @@ public class PushPanel extends FieldAction {
     }
 
     @Override
-    public boolean doAction(AGameController gameController, Space space) {
+    public void doAction(AGameController gameController, Space space) {
         if (space.getActions().size() > 0) {
             Space neighbour = space.board.getNeighbour(space, heading);
             Player player = space.getPlayer();
@@ -60,9 +60,6 @@ public class PushPanel extends FieldAction {
                     }
                 }
             }
-            return true;
         }
-
-        return false;
     }
 }

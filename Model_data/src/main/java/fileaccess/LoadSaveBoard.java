@@ -23,12 +23,11 @@ package fileaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fileaccess.*;
 import fileaccess.model.BoardTemplate;
 import fileaccess.model.CommandCardFieldTemplate;
 import fileaccess.model.PlayerTemplate;
 import fileaccess.model.SpaceTemplate;
-import model.boardElements.FieldAction;
+import model.boardElements.SpaceElement;
 import model.*;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class LoadSaveBoard {
     private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
         Gson gson = simpleBuilder.create();
 
         BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
@@ -224,7 +223,7 @@ public class LoadSaveBoard {
 
         // Saving the board template using GSON
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>()).
                 setPrettyPrinting();
         Gson gson = simpleBuilder.create();
 

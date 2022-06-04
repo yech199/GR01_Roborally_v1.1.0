@@ -26,7 +26,7 @@ import com.google.common.io.ByteSource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
-import model.boardElements.FieldAction;
+import model.boardElements.SpaceElement;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -94,7 +94,7 @@ public class IOUtil {
         String filename = classLoader.getResource(SAVEFOLDER).getPath() + "/" + gameName + "." + JSON_EXT;
 
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>()).
                 setPrettyPrinting();
         Gson gson = simpleBuilder.create();
 

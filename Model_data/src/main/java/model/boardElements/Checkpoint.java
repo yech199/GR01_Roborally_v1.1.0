@@ -4,7 +4,7 @@ import controller.AGameController;
 import model.Player;
 import model.Space;
 
-public class Checkpoint extends FieldAction {
+public class Checkpoint extends SpaceElement {
 
     private int checkpointNumber;
 
@@ -17,7 +17,7 @@ public class Checkpoint extends FieldAction {
     }
 
     @Override
-    public boolean doAction(AGameController gameController, Space space) {
+    public void doAction(AGameController gameController, Space space) {
         if (space.getActions().size() > 0) {
             Checkpoint checkpoint = (Checkpoint) space.getActions().get(0);
 
@@ -25,10 +25,7 @@ public class Checkpoint extends FieldAction {
 
             if (player != null && player.getCheckPoints() == checkpoint.checkpointNumber) {
                 player.nextCheckPoint();
-                return true;
             }
         }
-
-        return false;
     }
 }

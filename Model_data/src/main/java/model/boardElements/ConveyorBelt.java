@@ -33,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class ConveyorBelt extends FieldAction {
+public class ConveyorBelt extends SpaceElement {
 
     public enum ConveyorBeltColor {
         green,
@@ -61,7 +61,7 @@ public class ConveyorBelt extends FieldAction {
     }
 
     @Override
-    public boolean doAction(@NotNull AGameController gameController, @NotNull Space space) {
+    public void doAction(@NotNull AGameController gameController, @NotNull Space space) {
         if (space.getActions().size() > 0) {
 
             ConveyorBelt action = (ConveyorBelt) space.getActions().get(0);
@@ -88,9 +88,7 @@ public class ConveyorBelt extends FieldAction {
                 player.setHeading(playerHeading);
             } else {
                 // No player on space
-                return false;
             }
         }
-        return true;
     }
 }

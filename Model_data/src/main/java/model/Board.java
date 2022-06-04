@@ -25,6 +25,7 @@ import designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static model.Phase.INITIALISATION;
@@ -133,9 +134,10 @@ public class Board extends Subject {
     }
 
     public void setPlayers(List<Player> newPlayerList) {
-        for (int i = 0; i < players.size(); i++) {
+        /*for (int i = 0; i < players.size(); i++) {
             this.players.set(i, newPlayerList.get(i));
-        }
+        }*/
+        this.players.addAll(newPlayerList);
     }
 
     public Player getCurrentPlayer() {

@@ -66,16 +66,13 @@ public class LoadSaveBoard {
         }
         return spaces;
     }*/
-    private static ArrayList<Player> loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
-        ArrayList<Player> players = new ArrayList<>();
+    private static List<Player> loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
+        List<Player> players = new ArrayList<>();
         // Loading players
         for (PlayerTemplate player : template.players) {
             Player newPlayer = new Player(board, player.color, player.name);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
-
-            CommandCardField[] newCards = new CommandCardField[player.cards.size()];
-            CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
 
             // If we have a new game, we don't need to do card and register setup
             if(!saveGame) {
@@ -83,14 +80,33 @@ public class LoadSaveBoard {
                 continue;
             }
 
-            newPlayer.setCards(loadCards(template, player, newCards, newPlayer));
-            newPlayer.setProgram(loadRegisters(template, player, newRegisters, newPlayer));
+            newPlayer.setCards(loadCards(player, newPlayer));
+            newPlayer.setProgram(loadRegisters(player, newPlayer));
+
+            players.add(newPlayer);
 
             loadedBoard = true;
         }
         return players;
     }
-    private static CommandCardField[] loadCards(BoardTemplate template, PlayerTemplate player, CommandCardField[] newCards, Player newPlayer) {
+    private static CommandCardField[] loadCards(PlayerTemplate player, Player newPlayer) {
+        CommandCardField[] newCards = new CommandCardField[player.cards.size()];
+        for(int i = 0; i < player.cards.size(); i++) {
+            CommandCardField commandCardField = new CommandCardField(newPlayer);
+            String command = player.cards.get(i).command;
+
+            if (!command.equals("")) {
+                CommandCard commandCard = new CommandCard(Command.valueOf(command));
+
+                // Set the CommandCardField card
+                commandCardField.setCard(commandCard);
+            }
+
+            newCards[i] = commandCardField;
+
+        }
+        return newCards;
+        /*
         // Load all cards from JSON file
         for (int i = 0; i < newCards.length; i++) {
             int j = template.players.indexOf(player);
@@ -115,28 +131,23 @@ public class LoadSaveBoard {
             newCards[i] = commandCardField;
 
         }
-        return newCards;
+        return newCards;*/
     }
-    private static CommandCardField[] loadRegisters(BoardTemplate template, PlayerTemplate player, CommandCardField[] newRegisters, Player newPlayer) {
-        // Load all registers from JSON file
-        for (int i = 0; i < newRegisters.length; i++) {
-            int j = template.players.indexOf(player);
-
-            // Get the CommandCardField JSON data
-            CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(j).registers.get(i);
-
-            // Set the game CommandCardField to the template
+    private static CommandCardField[] loadRegisters(PlayerTemplate player, Player newPlayer) {
+        CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
+        for(int i = 0; i < player.registers.size(); i++) {
             CommandCardField commandCardField = new CommandCardField(newPlayer);
-
-            String command = commandCardFieldTemplate.command;
+            String command = player.registers.get(i).command;
 
             if (!command.equals("")) {
-                // Get the command from the template and make a new commandCard that we use in the game
                 CommandCard commandCard = new CommandCard(Command.valueOf(command));
+
                 // Set the CommandCardField card
                 commandCardField.setCard(commandCard);
             }
+
             newRegisters[i] = commandCardField;
+
         }
         return newRegisters;
     }

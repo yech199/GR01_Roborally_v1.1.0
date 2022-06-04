@@ -41,14 +41,14 @@ public class LoadSaveBoard {
 
     private static boolean loadedBoard = false;
 
-    /**
+    /*/**
      * Deserialize a json string with the state of the game and returns a board.
      *
      * @param jsonGameState a json string of game state
      * @param gameName      name of the save game
      * @return board object with the game state
      */
-    private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
+    /*private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
@@ -67,6 +67,7 @@ public class LoadSaveBoard {
             }
         }
     }*/
+
     private static void loadSpaces(BoardTemplate template, Board board) {
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -148,7 +149,6 @@ public class LoadSaveBoard {
                     spaceTemplate.y = space.y;
                     spaceTemplate.actions.addAll(space.getActions());
                     spaceTemplate.walls.addAll(space.getWalls());
-                    //template.spaces.add(spaceTemplate);
                     spaceTemplates.add(spaceTemplate);
                 }
             }
@@ -172,13 +172,10 @@ public class LoadSaveBoard {
             playerTemplate.registers = saveRegisters(player);
             playerTemplate.cards = saveCards(player);
 
-            //template.players.add(playerTemplate);
             playerTemplates.add(playerTemplate);
-
         }
         return playerTemplates;
     }
-    // TODO: This is the best way to do it. Implement in load methods as well
     private static ArrayList<CommandCardFieldTemplate> saveCards(Player player) {
         // Save cards
         ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
@@ -226,12 +223,12 @@ public class LoadSaveBoard {
     private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
         Gson gson = simpleBuilder.create();
 
         BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
 
-        Board board = new Board(template.width, template.height, gameName);
+        Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
 
         loadSpaces(template, board);
         board.setPlayers(loadPlayers(template, board, saveGame));
@@ -239,6 +236,7 @@ public class LoadSaveBoard {
         // if game is new, then just return default board
         if (!saveGame) return board;
 
+        // -----------------------------SAVED GAME-------------------------------------
         // load board state values into board from templates
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));

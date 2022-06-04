@@ -1,7 +1,7 @@
 {
   "width": 8,
   "height": 8,
-  "checkPointAmount": 1,
+  "checkPointAmount": 2,
   "phase": "PROGRAMMING",
   "step": 0,
   "players": [
@@ -630,8 +630,9 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "model.boardElements.DefaultTile",
+          "CLASSNAME": "model.boardElements.Checkpoint",
           "INSTANCE": {
+            "checkpointNumber": "2"
           }
         }
       ],

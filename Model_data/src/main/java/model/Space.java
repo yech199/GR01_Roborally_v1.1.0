@@ -22,7 +22,7 @@
 package model;
 
 import designpatterns.observer.Subject;
-import model.boardElements.FieldAction;
+import model.boardElements.SpaceElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Space extends Subject {
     public final Board board;
 
     private List<Heading> walls = new ArrayList<>();
-    private List<FieldAction> actions = new ArrayList<>();
+    private List<SpaceElement> actions = new ArrayList<>();
 
     // Game Basics
     public final int x;

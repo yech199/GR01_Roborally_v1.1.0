@@ -7,14 +7,14 @@ import java.util.List;
 
 public class ResourcesUtil {
 
-    private static File[] getResourceFolderFiles (String folder) {
+    private static File[] getResourceFolderFiles (String folder) throws NullPointerException {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         URL url = loader.getResource(folder);
         String path = url.getPath();
         return new File(path).listFiles();
     }
 
-    public static List<String> getBoardFileNames() {
+    public static List<String> getBoardFileNames() throws NullPointerException {
         File[] boardnames = getResourceFolderFiles("boards");
 
         ArrayList<String> result = new ArrayList<>();
@@ -24,7 +24,7 @@ public class ResourcesUtil {
         }
         return result;
     }
-    public static List<String> getSaveGameFiles() {
+    public static List<String> getSaveGameFiles() throws NullPointerException {
         File[] savegames = getResourceFolderFiles("savegames");
 
         ArrayList<String> result = new ArrayList<>();

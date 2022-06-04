@@ -261,7 +261,7 @@ public class LoadSaveBoard {
      * @param board    the board to be saved
      * @param gameName name of the game board
      */
-    public static void saveGame(Board board, String gameName) {
+     public static void saveGame(Board board, String gameName) {
         String json = serialize(board);
         IOUtil.writeGame(gameName, json);
     }

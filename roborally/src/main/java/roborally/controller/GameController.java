@@ -308,12 +308,8 @@ public class GameController extends AGameController {
 
         if (isValid) {
             // If occupied, push other robots recursively in the playerHeading that
-            // the current player is moving. We have to adjust playerHeading of the target player.
-            Heading origHeading = targetPlayer.getHeading();
-            targetPlayer.setHeading(playerHeading);
-            moveForward(targetPlayer);
-            targetPlayer.setHeading(origHeading);
-            // if (targetPlayer.getSpace() == )
+            // the current player is moving
+            tmpTarget.setPlayer(targetPlayer);
         }
 
         return true;

@@ -313,7 +313,7 @@ public class GameController extends AGameController {
             targetPlayer.setHeading(playerHeading);
             moveForward(targetPlayer);
             targetPlayer.setHeading(origHeading);
-            if (targetPlayer.getSpace() == )
+            // if (targetPlayer.getSpace() == )
         }
 
         return true;

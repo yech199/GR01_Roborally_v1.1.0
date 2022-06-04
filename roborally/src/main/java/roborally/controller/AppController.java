@@ -154,7 +154,12 @@ public class AppController implements Observer {
 
     private void setupGameController(Board board) {
         gameController = new GameController(board);
-        gameController.startProgrammingPhase();
+
+        // If game is new (eg. not loaded), then we set up the programming phase. Else we skip it.
+        if (!LoadSaveBoard.getLoadedBoard()) {
+            gameController.startProgrammingPhase();
+        }
+
         roboRally.createBoardView(gameController);
     }
 

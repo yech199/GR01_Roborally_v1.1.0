@@ -71,9 +71,6 @@ public class GameController extends AGameController {
      * and autogenerate a number of cards the player can choose from.
      */
     public void startProgrammingPhase() {
-        // If game is loaded we don't need to setup the programming phase, and we can skip the rest
-        if (LoadSaveBoard.getLoadedBoard()) return;
-
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -188,8 +185,6 @@ public class GameController extends AGameController {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 }
                 else {
-
-
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);

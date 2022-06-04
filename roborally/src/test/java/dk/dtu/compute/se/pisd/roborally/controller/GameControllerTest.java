@@ -20,7 +20,8 @@ class GameControllerTest {
         Board board = new Board(TEST_WIDTH, TEST_HEIGHT, TEST_CHECKPOINTAMOUNT);
         gameController = new GameController(board);
         for (int i = 0; i < 6; i++) {
-            Player player = new Player(board, null, "Player " + i);
+            Player player = new Player(board, null, "Player " + i + 1);
+            player.setName("Player " + (i + 1));
             board.addPlayer(player);
             player.setSpace(board.getSpace(i, i));
             // Player 0: 0 % 4 = 0      Player 1: 1 % 4 = 1     Player 2: 2 % 4 = 2

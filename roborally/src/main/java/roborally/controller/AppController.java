@@ -24,10 +24,11 @@ package roborally.controller;
 import designpatterns.observer.Subject;
 import designpatterns.observer.Observer;
 
+import fileaccess.LoadBoard;
 import roborally.RoboRally;
 
 import roborally.util.ResourcesUtil;
-import fileaccess.LoadSaveBoard;
+import fileaccess.SaveBoard;
 import model.Board;
 
 import javafx.application.Platform;
@@ -38,6 +39,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +96,7 @@ public class AppController implements Observer {
             Board board;
 
             if (resultS.isPresent()) {
-                board = LoadSaveBoard.newGame(resultS.get());
+                board = LoadBoard.newGame(resultS.get(), numberOfPlayers);
                 // Sets number of players here!
                 for (int i = 0; i < numberOfPlayers; i++) {
                     TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
@@ -107,12 +109,8 @@ public class AppController implements Observer {
                         board.getPlayer(i).setName(resultName.get());
                     }
                 }
-                for (int i = 5; i >= numberOfPlayers ; i--) {
-                    board.getPlayer(i).getSpace().setPlayer(null);
-                    board.getPlayers().remove(i);
-                }
             } else {
-                board = LoadSaveBoard.newGame(null);
+                board = LoadBoard.newGame(null, numberOfPlayers);
             }
 
             setupGameController(board);
@@ -128,7 +126,7 @@ public class AppController implements Observer {
 
         if (resultS.isPresent()) {
             String saveName = resultS.get();
-            LoadSaveBoard.saveGame(gameController.board, saveName);
+            SaveBoard.saveGame(gameController.board, saveName);
         }
     }
 
@@ -143,7 +141,6 @@ public class AppController implements Observer {
                 return;
             }
 
-
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
             dialogL.setTitle("Load game");
             dialogL.setHeaderText("Select a savegame to load");
@@ -151,7 +148,7 @@ public class AppController implements Observer {
 
             if (result.isPresent()) {
                 String boardname = result.get();
-                Board board = LoadSaveBoard.loadGame(boardname, true);
+                Board board = LoadBoard.loadGame(boardname, true);
                 setupGameController(board);
             }  else {
                 // The UI should not allow this, but in case this happens anyway.
@@ -165,7 +162,7 @@ public class AppController implements Observer {
         gameController = new GameController(board);
 
         // If game is new (eg. not loaded), then we set up the programming phase. Else we skip it.
-        if (!LoadSaveBoard.getLoadedBoard()) {
+        if (!LoadBoard.getLoadedBoard()) {
             gameController.startProgrammingPhase();
         }
 

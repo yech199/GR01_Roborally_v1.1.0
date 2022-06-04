@@ -30,8 +30,6 @@ import model.boardElements.SpaceElement;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * A utility class reading strings from resources and arbitrary input streams.
@@ -85,7 +83,7 @@ public class IOUtil {
     }
 
     public static String getResourceFile(String folderName, String fileName, String ext) throws NullPointerException {
-        ClassLoader classLoader = LoadSaveBoard.class.getClassLoader();
+        ClassLoader classLoader = SaveBoard.class.getClassLoader();
         return classLoader.getResource(folderName).getPath() + "/" + fileName + "." + ext;
     }
 
@@ -156,7 +154,7 @@ public class IOUtil {
             resourcePath = BOARDSFOLDER + "/" + gameName + "." + JSON_EXT;
         }
 
-        ClassLoader classLoader = LoadSaveBoard.class.getClassLoader();
+        ClassLoader classLoader = SaveBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(resourcePath);
 
         try {

@@ -1,6 +1,6 @@
 package roborally.client;
 
-import fileaccess.LoadSaveBoard;
+// import fileaccess.LoadSaveBoard;
 import model.Board;
 
 public class GameClient {

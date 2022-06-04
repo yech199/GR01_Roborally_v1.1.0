@@ -55,7 +55,7 @@ public class LoadSaveBoard {
 
         BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
 
-        Board board = new Board(template.width, template.height, gameName);
+        Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
 
         // Loading spaces
         for (SpaceTemplate spaceTemplate : template.spaces) {
@@ -242,7 +242,7 @@ public class LoadSaveBoard {
         if (gameState != null) {
             return deserialize(gameState, gameName, saveGame);
         }
-        return new Board(8, 8);
+        return new Board(8, 8, 1);
     }
 
     /**

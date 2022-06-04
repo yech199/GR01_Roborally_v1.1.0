@@ -59,10 +59,11 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
-    public Board(int width, int height, @NotNull String boardName) {
+    public Board(int width, int height, int checkPointAmount, @NotNull String boardName) {
         this.boardName = boardName;
         this.width = width;
         this.height = height;
+        this.checkPointAmount = checkPointAmount;
         spaces = new Space[width][height];
 
         for (int x = 0; x < width; x++) {
@@ -75,8 +76,8 @@ public class Board extends Subject {
 
     }
 
-    public Board(int width, int height) {
-        this(width, height, "defaultboard");
+    public Board(int width, int height, int checkPointAmount) {
+        this(width, height, checkPointAmount, "defaultboard");
     }
 
     public Integer getGameId() {
@@ -204,8 +205,10 @@ public class Board extends Subject {
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
         int x = space.x;
         int y = space.y;
-        boolean outOfBoard = false;
-        // Check for
+
+        // Check for Walls
+
+
         // Update Placing/Check for collision
         switch (heading) {
             case SOUTH:

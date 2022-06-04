@@ -23,6 +23,7 @@ package roborally.controller;
 
 import controller.AGameController;
 
+import model.boardElements.Pit;
 import model.boardElements.SpaceElement;
 import model.*;
 
@@ -300,6 +301,12 @@ public class GameController extends AGameController {
             isValid = checkIfMoveToTargetWithPlayerIsValid(player, tmpTarget);
         }
 
+        if (tmpTarget.getActions().size() > 0) {
+            for (SpaceElement space : tmpTarget.getActions()) {
+                space.doAction(this, target);
+            }
+        }
+
         // Moves the pushed player(s) recursively
         if (isValid) {
             tmpTarget.setPlayer(targetPlayer);
@@ -342,7 +349,7 @@ public class GameController extends AGameController {
         }
     }
 
-    public void reboot(Player player, Board board) {
+    public void reboot(Player player) {
         int checkpoint = player.getCheckPoints();
         if (checkpoint == 1) {
             player.setSpace(board.getSpace(0, 0));

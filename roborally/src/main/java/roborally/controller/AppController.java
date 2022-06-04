@@ -108,6 +108,7 @@ public class AppController implements Observer {
                     }
                 }
                 for (int i = 5; i >= numberOfPlayers ; i--) {
+                    board.getPlayer(i).getSpace().setPlayer(null);
                     board.getPlayers().remove(i);
                 }
             } else {

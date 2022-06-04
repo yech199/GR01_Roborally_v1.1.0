@@ -340,7 +340,7 @@ public class GameController extends AGameController {
         System.out.println(player.getName() + " har vundet");
         JOptionPane.showMessageDialog(null, player.getName()
                 + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
-        Platform.exit();
+        //Platform.exit();
     }
 
     class ImpossibleMoveException extends Exception {

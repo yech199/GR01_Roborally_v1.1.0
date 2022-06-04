@@ -23,5 +23,4 @@ public class DataController {
         gameService.updateGame(gameData);
         return ResponseEntity.ok().body("OK");
     }
-
 }

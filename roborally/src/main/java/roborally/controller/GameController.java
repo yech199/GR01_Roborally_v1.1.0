@@ -22,12 +22,15 @@
 package roborally.controller;
 
 import controller.AGameController;
-import fileaccess.LoadSaveBoard;
+
 import model.boardElements.SpaceElement;
-import javafx.application.Platform;
 import model.*;
+
+import fileaccess.LoadSaveBoard;
+
 import org.jetbrains.annotations.NotNull;
 
+import javafx.application.Platform;
 import javax.swing.*;
 import java.util.List;
 
@@ -258,35 +261,66 @@ public class GameController extends AGameController {
     // TODO: V2
     public void moveForward(@NotNull Player player) {
         try {
-            Heading heading = player.getHeading();
-            Space target = board.getNeighbour(player.getSpace(), heading);
-            // Target out of board
-            if (target == null) throw new ImpossibleMoveException(player, player.getSpace(), heading);
+            Heading playerHeading = player.getHeading();
+            Space target = board.getNeighbour(player.getSpace(), playerHeading);
+
+            // Target out of board. You cannot move out of the board or into an antenna (you can only be pushed out)
+            if (target == null || target == this.antennaSpace)
+                throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
+
+            // If the target contains another player
+            else if (target.getPlayer() != null) {
+                boolean isValid = checkIfMoveToTargetWithPlayerIsValid(player, target);
+                if (!isValid) throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
+
+
+            }
             else {
                 // Get target walls
                 List<Heading> walls = target.getWalls();
 
                 // Can't move into a wall
-                if (walls.contains(heading)) throw new ImpossibleMoveException(player, player.getSpace(), heading);
-                else {
-                    // Check if target is occupied
-                    if (target.getPlayer() != null) {
-                        // If occupied, push other robots recursively in the heading that the current player is moving. We have to adjust heading of the target player.
-                        Player targetPlayer = target.getPlayer();
-                        Heading targetHeadingBefore = targetPlayer.getHeading();
-                        targetPlayer.setHeading(player.getHeading());
-                        moveForward(target.getPlayer());
-                        targetPlayer.setHeading(targetHeadingBefore);
-                    }
-                    // Free? Then move player
-                    target.setPlayer(player);
+                if (walls.contains(playerHeading)) {
+                    throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
                 }
             }
+            // Free? Then move player
+            target.setPlayer(player);
+
         } catch (ImpossibleMoveException e) {
-            reboot(player,board);
-            //System.out.println("Move impossible");
+            // reboot(player,board);
+            System.out.println("Move impossible");
         }
 
+    }
+
+    private boolean checkIfMoveToTargetWithPlayerIsValid(@NotNull Player player, Space target) throws ImpossibleMoveException {
+        Heading playerHeading = player.getHeading();
+
+        Player targetPlayer = target.getPlayer();
+        Space tmpTarget = board.getNeighbour(targetPlayer.getSpace(), playerHeading);
+
+        if (target.hasWallPointing(playerHeading) || tmpTarget.hasWallPointing(playerHeading.next().next())
+                || tmpTarget == this.antennaSpace) {
+            return false;
+        }
+
+        boolean isValid = true;
+        if (tmpTarget.getPlayer() != null) {
+            isValid = checkIfMoveToTargetWithPlayerIsValid(player, tmpTarget);
+        }
+
+        if (isValid) {
+            // If occupied, push other robots recursively in the playerHeading that
+            // the current player is moving. We have to adjust playerHeading of the target player.
+            Heading origHeading = targetPlayer.getHeading();
+            targetPlayer.setHeading(playerHeading);
+            moveForward(targetPlayer);
+            targetPlayer.setHeading(origHeading);
+            if (targetPlayer.getSpace() == )
+        }
+
+        return true;
     }
 
     // TODO: V2
@@ -330,8 +364,7 @@ public class GameController extends AGameController {
         }
         else {
             for (int x = 0; x < board.getSpaces().length; x++) {
-                for (int y = 0; y < board.getSpaces()[0].length; y++)
-                {
+                for (int y = 0; y < board.getSpaces()[0].length; y++) {
                     if (board.getSpace(x, y).checkpointNumber == checkpoint - 1) {
                         player.setSpace(board.getSpace(x, y));
                     }

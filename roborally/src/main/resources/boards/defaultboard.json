@@ -625,6 +625,20 @@
     },
     {
       "walls": [
+        "EAST"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.DefaultTile",
+          "INSTANCE": {
+          }
+        }
+      ],
+      "x": 5,
+      "y": 2
+    },
+    {
+      "walls": [
         "WEST"
       ],
       "actions": [

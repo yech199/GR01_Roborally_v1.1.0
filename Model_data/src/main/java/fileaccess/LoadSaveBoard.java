@@ -44,7 +44,7 @@ public class LoadSaveBoard {
 
     // TODO: Explore option to make multiple generalized overloaded method (eg. copyValues()? )
     // TODO: Add comments
-    private static void loadSpaces(BoardTemplate template, Board board) {
+    /*private static void loadSpaces(BoardTemplate template, Board board) {
         // Loading spaces
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -53,19 +53,16 @@ public class LoadSaveBoard {
                 space.getWalls().addAll(spaceTemplate.walls);
             }
         }
-    }
-    /*private static ArrayList<Space> loadSpaces(BoardTemplate template, Board board) {
-        ArrayList<Space> spaces = new ArrayList<>();
+    }*/
+    private static void loadSpaces(BoardTemplate template, Board board) {
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
-            if(space != null) {
+            if (space != null) {
                 space.getActions().addAll(spaceTemplate.actions);
                 space.getWalls().addAll(spaceTemplate.walls);
-                spaces.add(space);
             }
         }
-        return spaces;
-    }*/
+    }
     private static List<Player> loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
         List<Player> players = new ArrayList<>();
         // Loading players

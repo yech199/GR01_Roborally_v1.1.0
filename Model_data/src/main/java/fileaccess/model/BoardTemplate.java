@@ -38,6 +38,7 @@ public class BoardTemplate {
 
     public int width;
     public int height;
+    public int checkPointAmount;
     public String phase;
     public int step;
 

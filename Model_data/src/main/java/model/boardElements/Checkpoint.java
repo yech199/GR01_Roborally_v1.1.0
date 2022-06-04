@@ -23,7 +23,7 @@ public class Checkpoint extends SpaceElement {
 
             Player player = space.getPlayer();
 
-            if (player != null && player.getCheckPoints() == checkpoint.checkpointNumber) {
+            if (player != null && player.getCheckPoints()+1 == checkpoint.checkpointNumber) {
                 player.nextCheckPoint();
             }
         }

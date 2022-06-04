@@ -629,9 +629,9 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "model.boardElements.DefaultTile",
+          "CLASSNAME": "model.boardElements.RebootToken",
           "INSTANCE": {
-            "isRebootToken": "true"
+            "heading": "NORTH"
           }
         }
       ],

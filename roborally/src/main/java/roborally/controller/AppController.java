@@ -94,24 +94,23 @@ public class AppController implements Observer {
             Optional<String> resultS = dialogL.showAndWait();
 
             Board board;
-            ArrayList<String> playernames = new ArrayList<>();
 
             if (resultS.isPresent()) {
+                board = LoadBoard.newGame(resultS.get(), numberOfPlayers);
                 // Sets number of players here!
                 for (int i = 0; i < numberOfPlayers; i++) {
-                    TextInputDialog name = new TextInputDialog();
+                    TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
                     name.setTitle("Player name");
                     name.setHeaderText("Write the name of the player");
                     name.setContentText("Name: ");
                     Optional<String> resultName = name.showAndWait();
 
                     if (resultName.isPresent()) {
-                        playernames.add(resultName.get());
+                        board.getPlayer(i).setName(resultName.get());
                     }
                 }
-                board = LoadBoard.newGame(resultS.get(), playernames);
             } else {
-                board = LoadBoard.newGame(null, playernames);
+                board = LoadBoard.newGame(null, numberOfPlayers);
             }
 
             setupGameController(board);

@@ -25,8 +25,9 @@ public class LoadBoard {
     }
     private static void loadPlayers(BoardTemplate template, Board board) {
         // Loading players
+        int playerNo = 1;
         for (PlayerTemplate player : template.players) {
-            Player newPlayer = new Player(board, player.color, player.name);
+            Player newPlayer = new Player(board, player.color, "Player " + playerNo);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
 
@@ -35,6 +36,7 @@ public class LoadBoard {
             newPlayer.setProgram(loadRegisters(player, newPlayer));
 
             board.addPlayer(newPlayer);
+            playerNo++;
         }
     }
     private static CommandCardField[] loadCards(PlayerTemplate player, Player newPlayer) {
@@ -101,7 +103,7 @@ public class LoadBoard {
         return board;
     }
 
-    private static Board deserializeBoard(String jsonGameState, String gameName, ArrayList<String> playernames) {
+    private static Board deserializeBoard(String jsonGameState, String gameName, int numberOfPlayers) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
@@ -113,11 +115,13 @@ public class LoadBoard {
 
         loadSpaces(template, board);
 
-        for(int i = 0; i < playernames.size(); i++) {
-            Player player = new Player(board, template.players.get(i).color, playernames.get(i));
+        int playerNo = 1;
+        for(int i = 0; i < numberOfPlayers; i++) {
+            Player player = new Player(board, template.players.get(i).color, "Player " + playerNo);
             player.setSpace(board.getSpace(template.players.get(i).spaceX, template.players.get(i).spaceY));
             player.setHeading(Heading.valueOf(template.players.get(i).heading));
             board.addPlayer(player);
+            playerNo++;
         }
         return board;
     }
@@ -143,9 +147,9 @@ public class LoadBoard {
      * @param boardName name of the game board
      * @return the new board
      */
-    public static Board newGame(String boardName, ArrayList<String> playernames) {
+    public static Board newGame(String boardName, int numberOfPlayers) {
         String gameState = IOUtil.readGame(boardName, false);
-        return deserializeBoard(gameState, boardName, playernames);
+        return deserializeBoard(gameState, boardName, numberOfPlayers);
     }
 
     public static boolean getLoadedBoard() {

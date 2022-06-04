@@ -166,11 +166,6 @@ public class GameController extends AGameController {
                     }
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
-
-                    //Check winner
-                    if (currentPlayer.isWinner()) {
-                        Winner(currentPlayer);
-                    }
                 }
 
                 //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
@@ -180,6 +175,12 @@ public class GameController extends AGameController {
                     action.doAction(this, space);
                 }
 
+                //Check winner
+                if (currentPlayer.isWinner()) {
+                    Winner(currentPlayer);
+                }
+
+                // Next Player
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));

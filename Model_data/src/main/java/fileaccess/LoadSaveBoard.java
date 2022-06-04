@@ -50,8 +50,7 @@ public class LoadSaveBoard {
             }
         }
     }
-    private static List<Player> loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
-        List<Player> players = new ArrayList<>();
+    private static void loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
         // Loading players
         for (PlayerTemplate player : template.players) {
             Player newPlayer = new Player(board, player.color, player.name);
@@ -60,18 +59,16 @@ public class LoadSaveBoard {
 
             // If we have a new game, we don't need to do card and register setup
             if(!saveGame) {
-                players.add(newPlayer);
+                board.addPlayer(newPlayer);
                 continue;
             }
             // -----------------------------SAVED GAME-------------------------------------
             newPlayer.setCards(loadCards(player, newPlayer));
             newPlayer.setProgram(loadRegisters(player, newPlayer));
 
-            players.add(newPlayer);
-
+            board.addPlayer(newPlayer);
             loadedBoard = true;
         }
-        return players;
     }
     private static CommandCardField[] loadCards(PlayerTemplate player, Player newPlayer) {
         CommandCardField[] newCards = new CommandCardField[player.cards.size()];
@@ -204,7 +201,7 @@ public class LoadSaveBoard {
         Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
 
         loadSpaces(template, board);
-        board.setPlayers(loadPlayers(template, board, saveGame));
+        loadPlayers(template, board, saveGame);
 
         // if game is new, then just return default board
         if (!saveGame) return board;

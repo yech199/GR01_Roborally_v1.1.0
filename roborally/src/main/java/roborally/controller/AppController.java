@@ -67,7 +67,7 @@ public class AppController implements Observer {
         if (result.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
+                // TODO give the user the option to save the game or abort this operation!
                 if (!stopGame()) {
                     return;
                 }
@@ -84,7 +84,9 @@ public class AppController implements Observer {
 
             if (resultS.isPresent()) {
                 board = LoadSaveBoard.newGame(resultS.get());
-                for (int i = 0; i < board.getPlayersNumber(); i++) {
+                // Sets number of players here!
+                board.setNumberOfPlayers(result.get());
+                for (int i = 0; i < board.getNumberOfPlayers(); i++) {
                     TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
                     name.setTitle("Player name");
                     name.setHeaderText("Write the name of the player");

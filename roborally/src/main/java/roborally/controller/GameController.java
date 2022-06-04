@@ -60,7 +60,7 @@ public class GameController extends AGameController {
             Player currentPlayer = board.getCurrentPlayer();
             if (currentPlayer != null && space.getPlayer() == null) {
                 currentPlayer.setSpace(space);
-                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
+                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getNumberOfPlayers();
                 board.setCurrentPlayer(board.getPlayer(playerNumber));
             }
         }
@@ -77,7 +77,7 @@ public class GameController extends AGameController {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
+        for (int i = 0; i < board.getNumberOfPlayers(); i++) {
             Player player = board.getPlayer(i);
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
@@ -113,7 +113,7 @@ public class GameController extends AGameController {
     // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
-            for (int i = 0; i < board.getPlayersNumber(); i++) {
+            for (int i = 0; i < board.getNumberOfPlayers(); i++) {
                 Player player = board.getPlayer(i);
                 CommandCardField field = player.getProgramField(register);
                 field.setVisible(true);
@@ -123,7 +123,7 @@ public class GameController extends AGameController {
 
     // XXX: V2
     private void makeProgramFieldsInvisible() {
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
+        for (int i = 0; i < board.getNumberOfPlayers(); i++) {
             Player player = board.getPlayer(i);
             for (int j = 0; j < Player.NO_REGISTERS; j++) {
                 CommandCardField field = player.getProgramField(j);
@@ -184,7 +184,7 @@ public class GameController extends AGameController {
                 }
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-                if (nextPlayerNumber < board.getPlayersNumber()) {
+                if (nextPlayerNumber < board.getNumberOfPlayers()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 }
                 else {
@@ -238,7 +238,7 @@ public class GameController extends AGameController {
         int step = board.getStep();
 
         int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-        if (nextPlayerNumber < board.getPlayersNumber()) {
+        if (nextPlayerNumber < board.getNumberOfPlayers()) {
             board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
         }
         else {

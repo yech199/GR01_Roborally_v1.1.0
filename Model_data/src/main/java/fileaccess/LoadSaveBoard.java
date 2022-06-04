@@ -66,7 +66,10 @@ public class LoadSaveBoard {
         }
 
         // Loading players
+        int counter = 0;
         for (PlayerTemplate player : template.players) {
+        // for (int k = 0; k < board.getNumberOfPlayers(); k++) {
+        //     PlayerTemplate player = template.players.get(k);
 
             Player newPlayer = new Player(board, player.color, player.name);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
@@ -168,7 +171,9 @@ public class LoadSaveBoard {
             }
         }
 
+        int playerCounter = 0;
         for (Player player : board.getPlayers()) {
+            if (playerCounter >= board.getNumberOfPlayers()) break;
             PlayerTemplate playerTemplate = new PlayerTemplate();
             Space space = player.getSpace();
             playerTemplate.spaceX = space.x;

@@ -37,6 +37,8 @@ import static model.Phase.INITIALISATION;
  */
 public class Board extends Subject {
 
+    public int numberOfPlayers = 0;
+
     public final int width;
 
     public final int height;
@@ -72,7 +74,6 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
-
     }
 
     public Board(int width, int height) {
@@ -94,6 +95,17 @@ public class Board extends Subject {
         }
     }
 
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    /**
+     * Sets the number of players only once. After this it shouldn't be changed.
+     */
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        if (this.numberOfPlayers == 0) this.numberOfPlayers = numberOfPlayers;
+    }
+
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {
@@ -108,9 +120,9 @@ public class Board extends Subject {
         return spaces;
     }
 
-    public int getPlayersNumber() {
-        return players.size();
-    }
+    // public int getPlayersNumber() {
+    //     return players.size();
+    // }
 
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {

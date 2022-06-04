@@ -64,16 +64,27 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
 
+        int numberOfPlayers;
+
         if (result.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
+                // TODO give the user the option to save the game or abort this operation!
                 if (!stopGame()) {
                     return;
                 }
-            }
 
-            List<String> BOARD_NAMES = ResourcesUtil.getBoardFileNames();
+            }
+            numberOfPlayers = result.get();
+
+            final List<String> BOARD_NAMES;
+            try {
+                BOARD_NAMES = ResourcesUtil.getBoardFileNames();
+            } catch (NullPointerException e) {
+                // If this happens, then the player then can't start a game to make a savegame.
+                System.out.println("Could not find Resource folder or there is not any board templates available");
+                return;
+            }
 
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
             dialogL.setTitle("Select board");
@@ -84,7 +95,8 @@ public class AppController implements Observer {
 
             if (resultS.isPresent()) {
                 board = LoadSaveBoard.newGame(resultS.get());
-                for (int i = 0; i < board.getPlayersNumber(); i++) {
+                // Sets number of players here!
+                for (int i = 0; i < numberOfPlayers; i++) {
                     TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
                     name.setTitle("Player name");
                     name.setHeaderText("Write the name of the player");
@@ -94,6 +106,9 @@ public class AppController implements Observer {
                     if (resultName.isPresent()) {
                         board.getPlayer(i).setName(resultName.get());
                     }
+                }
+                for (int i = 5; i >= numberOfPlayers ; i--) {
+                    board.getPlayers().remove(i);
                 }
             } else {
                 board = LoadSaveBoard.newGame(null);
@@ -119,7 +134,14 @@ public class AppController implements Observer {
     public void loadGame() {
         if (gameController == null) {
 
-            final List<String> BOARD_NAMES = ResourcesUtil.getSaveGameFiles();
+            final List<String> BOARD_NAMES;
+            try {
+                BOARD_NAMES = ResourcesUtil.getSaveGameFiles();
+            } catch (NullPointerException e) {
+                System.out.println("Could not find Resource folder or there is not any save games available");
+                return;
+            }
+
 
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
             dialogL.setTitle("Load game");
@@ -140,7 +162,12 @@ public class AppController implements Observer {
 
     private void setupGameController(Board board) {
         gameController = new GameController(board);
-        gameController.startProgrammingPhase();
+
+        // If game is new (eg. not loaded), then we set up the programming phase. Else we skip it.
+        if (!LoadSaveBoard.getLoadedBoard()) {
+            gameController.startProgrammingPhase();
+        }
+
         roboRally.createBoardView(gameController);
     }
 

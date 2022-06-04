@@ -139,7 +139,7 @@
       ]
     }
   ],
-  "currentPlayer": 1,
+  "currentPlayer": 0,
   "spaces": [
     {
       "walls": [
@@ -363,7 +363,7 @@
         {
           "CLASSNAME": "model.boardElements.Checkpoint",
           "INSTANCE": {
-            "checkpointNumber": "4"
+            "checkpointNumber": "1"
           }
         }
       ],

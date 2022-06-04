@@ -26,10 +26,12 @@ import com.google.common.io.ByteSource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
-import model.boardElements.FieldAction;
+import model.boardElements.SpaceElement;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * A utility class reading strings from resources and arbitrary input streams.
@@ -82,19 +84,28 @@ public class IOUtil {
         return IOUtil.readString(inputStream);
     }
 
+    public static String getResourceFile(String folderName, String fileName, String ext) throws NullPointerException {
+        ClassLoader classLoader = LoadSaveBoard.class.getClassLoader();
+        return classLoader.getResource(folderName).getPath() + "/" + fileName + "." + ext;
+    }
+
     /**
      * Write the game state from a json string to a json file.
      * @param gameName Name of the file
      * @param jsonGameState json string of the game state
-     * @author Mads Sørensen (s215805)
      */
     public static void writeGame(String gameName, String jsonGameState) {
-        ClassLoader classLoader = LoadSaveBoard.class.getClassLoader();
-
-        String filename = classLoader.getResource(SAVEFOLDER).getPath() + "/" + gameName + "." + JSON_EXT;
+        String filename;
+        try {
+             filename = getResourceFile(SAVEFOLDER, gameName, JSON_EXT);
+        } catch (NullPointerException e) {
+            System.out.println("Could not find save games folder");
+            // TODO Expore option to create a save game folder for the user?
+            return;
+        }
 
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>()).
                 setPrettyPrinting();
         Gson gson = simpleBuilder.create();
 
@@ -131,7 +142,6 @@ public class IOUtil {
      * The method can handle if the we read from a save game or board file.
      * @param gameName name of game
      * @return json string of the game state
-     * @author Mads Sørensen (s215805)
      */
     public static String readGame(String gameName, boolean savedGame) {
         if (gameName == null) {

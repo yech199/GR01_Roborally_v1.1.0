@@ -4,7 +4,7 @@ import controller.AGameController;
 import model.Heading;
 import model.Space;
 
-public class Gear extends FieldAction {
+public class Gear extends SpaceElement {
     public enum Direction {
         LEFT,
         RIGHT
@@ -21,7 +21,7 @@ public class Gear extends FieldAction {
     }
 
     @Override
-    public boolean doAction(AGameController gameController, Space space) {
+    public void doAction(AGameController gameController, Space space) {
         if (space.getActions().size() > 0) {
             switch (getDirection()) {
                 case LEFT -> {
@@ -33,8 +33,6 @@ public class Gear extends FieldAction {
                     space.getPlayer().setHeading(curr.next());
                 }
             }
-            return true;
         }
-        return false;
     }
 }

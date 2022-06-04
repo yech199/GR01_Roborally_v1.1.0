@@ -30,7 +30,7 @@ import model.Space;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public abstract class FieldAction {
+public abstract class SpaceElement {
 
     /**
      * Executes the field action for a given space. In order to be able to do
@@ -40,6 +40,5 @@ public abstract class FieldAction {
      * @param space the space this action should be executed for
      * @return whether the action was successfully executed
      */
-    public abstract boolean doAction(AGameController gameController, Space space);
-
+    public abstract void doAction(AGameController gameController, Space space);
 }

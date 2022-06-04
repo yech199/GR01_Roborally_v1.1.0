@@ -2,7 +2,6 @@ package dtu.compute.RoborallyAPI;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class DataFile {
@@ -13,6 +12,6 @@ public class DataFile {
     }
 
     String load() throws IOException {
-        return new String(Files.readAllBytes(Paths.get(fileName)));
+        return new String(Files.readAllBytes(Paths.get("RoborallyAPI/src/main/resources/boards/", fileName)));
     }
 }

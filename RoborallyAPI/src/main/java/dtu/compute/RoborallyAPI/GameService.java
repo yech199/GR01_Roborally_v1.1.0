@@ -8,10 +8,9 @@ import java.io.IOException;
 @Service
 public class GameService implements IGameService {
 
-    private Board board;
     private String gameData;
 
-    DataFile dataFile = new DataFile("test.json");
+    DataFile dataFile = new DataFile("defaultboard.json");
 
     public GameService() throws IOException {
         loadGame();

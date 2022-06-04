@@ -23,12 +23,11 @@ package fileaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fileaccess.*;
 import fileaccess.model.BoardTemplate;
 import fileaccess.model.CommandCardFieldTemplate;
 import fileaccess.model.PlayerTemplate;
 import fileaccess.model.SpaceTemplate;
-import model.boardElements.FieldAction;
+import model.boardElements.SpaceElement;
 import model.*;
 
 import java.lang.reflect.Array;
@@ -42,9 +41,23 @@ public class LoadSaveBoard {
 
     private static boolean loadedBoard = false;
 
-    // TODO: Explore option to make multiple generalized overloaded method (eg. copyValues()? )
-    // TODO: Add comments
-    /*private static void loadSpaces(BoardTemplate template, Board board) {
+    /**
+     * Deserialize a json string with the state of the game and returns a board.
+     *
+     * @param jsonGameState a json string of game state
+     * @param gameName      name of the save game
+     * @return board object with the game state
+     */
+    private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
+        // In simple cases, we can create a Gson object with new Gson():
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
+        Gson gson = simpleBuilder.create();
+
+        BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
+
+        Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
+
         // Loading spaces
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -76,7 +89,7 @@ public class LoadSaveBoard {
                 players.add(newPlayer);
                 continue;
             }
-
+            // -----------------------------SAVED GAME-------------------------------------
             newPlayer.setCards(loadCards(player, newPlayer));
             newPlayer.setProgram(loadRegisters(player, newPlayer));
 
@@ -103,32 +116,6 @@ public class LoadSaveBoard {
 
         }
         return newCards;
-        /*
-        // Load all cards from JSON file
-        for (int i = 0; i < newCards.length; i++) {
-            int j = template.players.indexOf(player);
-
-            // Get the CommandCardField JSON data
-            CommandCardFieldTemplate commandCardFieldTemplate = template.players.get(j).cards.get(i);
-
-            // Set the game CommandCardField to the template
-            CommandCardField commandCardField = new CommandCardField(newPlayer);
-
-            String command = commandCardFieldTemplate.command;
-
-            // If command is empty in json, we just make a null value TODO make random card?
-            if (!command.equals("")) {
-                Command commandType = Command.valueOf(command);
-                // Get the command from the template and make a new commandCard that we use in the game
-                CommandCard commandCard = new CommandCard(commandType);
-                // Set the CommandCardField card
-                commandCardField.setCard(commandCard);
-            }
-            commandCardField.setVisible(commandCardFieldTemplate.visible);
-            newCards[i] = commandCardField;
-
-        }
-        return newCards;*/
     }
     private static CommandCardField[] loadRegisters(PlayerTemplate player, Player newPlayer) {
         CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
@@ -169,9 +156,11 @@ public class LoadSaveBoard {
         return spaceTemplates;
     }
     private static ArrayList<PlayerTemplate> savePlayers(Board board) {
+        int playerCounter = 0;
         ArrayList<PlayerTemplate> playerTemplates = new ArrayList<>();
         // Save state of player
         for (Player player : board.getPlayers()) {
+            if (playerCounter >= board.getPlayersNumber()) break;
             PlayerTemplate playerTemplate = new PlayerTemplate();
             Space space = player.getSpace();
             playerTemplate.spaceX = space.x;
@@ -279,7 +268,7 @@ public class LoadSaveBoard {
 
         // Saving the board template using GSON
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>()).
                 setPrettyPrinting();
         Gson gson = simpleBuilder.create();
 
@@ -297,7 +286,7 @@ public class LoadSaveBoard {
         if (gameState != null) {
             return deserialize(gameState, gameName, saveGame);
         }
-        return new Board(8, 8);
+        return new Board(8, 8, 1);
     }
 
     /**
@@ -316,7 +305,7 @@ public class LoadSaveBoard {
      * @param board    the board to be saved
      * @param gameName name of the game board
      */
-    public static void saveGame(Board board, String gameName) {
+     public static void saveGame(Board board, String gameName) {
         String json = serialize(board);
         IOUtil.writeGame(gameName, json);
     }

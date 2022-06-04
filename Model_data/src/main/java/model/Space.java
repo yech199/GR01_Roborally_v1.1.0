@@ -25,7 +25,6 @@ import designpatterns.observer.Subject;
 import model.boardElements.FieldAction;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -75,20 +74,20 @@ public class Space extends Subject {
         }
     }
 
+    public boolean hasWallPointing(Heading heading) {
+        if (this.getWalls().contains(heading)) return true;
+        else return false;
+    }
+
     public List<Heading> getWalls() {
         return walls;
     }
 
-    public void setWalls(List<Heading> walls) {
-        Collections.copy(this.walls, walls);
-    }
-
-    public List<FieldAction> getActions() {
+    /**
+     * @return a list of boardElements on this space
+     */
+    public List<SpaceElement> getActions() {
         return actions;
-    }
-
-    public void setAction(List<FieldAction> actions) {
-        Collections.copy(this.actions, actions);
     }
 
     void playerChanged() {
@@ -98,4 +97,11 @@ public class Space extends Subject {
         notifyChange();
     }
 
+    @Override
+    public String toString() {
+        return "Space{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

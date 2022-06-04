@@ -156,6 +156,8 @@ public class LoadSaveBoard {
 
         return board;
     }
+
+
     private static void saveSpaces(BoardTemplate template, Board board) {
         // Add all spaces
         for (int i = 0; i < board.width; i++) {

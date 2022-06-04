@@ -40,12 +40,8 @@ public class LoadSaveBoard {
 
     private static boolean loadedBoard = false;
 
-    /**
-     * Deserialize a json string with the state of the game and returns a board.
-     *
-     * @return board object with the game state
-     */
-
+    // TODO: Explore option to make multiple generalized overloaded method (eg. copyValues()? )
+    // TODO: Add comments
     private static void loadSpaces(BoardTemplate template, Board board) {
         // Loading spaces
         for (SpaceTemplate spaceTemplate : template.spaces) {
@@ -133,31 +129,6 @@ public class LoadSaveBoard {
         }
     }
 
-    private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
-        // In simple cases, we can create a Gson object with new Gson():
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
-        Gson gson = simpleBuilder.create();
-
-        BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
-
-        Board board = new Board(template.width, template.height, gameName);
-
-        loadSpaces(template, board);
-        loadPlayers(template, board, saveGame);
-
-        // if game is new, then just return default board
-        if (!saveGame) return board;
-
-        // load board state values into board from templates
-        board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
-        board.setPhase(Phase.valueOf(template.phase));
-        board.setStep(template.step);
-
-        return board;
-    }
-
-
     private static void saveSpaces(BoardTemplate template, Board board) {
         // Add all spaces
         for (int i = 0; i < board.width; i++) {
@@ -192,6 +163,7 @@ public class LoadSaveBoard {
 
         }
     }
+    // TODO: This is the best way to do it. Implement in load methods as well
     private static ArrayList<CommandCardFieldTemplate> saveCards(Player player) {
         // Save cards
         ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
@@ -229,6 +201,35 @@ public class LoadSaveBoard {
             registers.add(cardFieldTemplate);
         }
         return registers;
+    }
+
+    /**
+     * Deserialize a json string with the state of the game and returns a board.
+     *
+     * @return board object with the game state
+     */
+    private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
+        // In simple cases, we can create a Gson object with new Gson():
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+
+        BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
+
+        Board board = new Board(template.width, template.height, gameName);
+
+        loadSpaces(template, board);
+        loadPlayers(template, board, saveGame);
+
+        // if game is new, then just return default board
+        if (!saveGame) return board;
+
+        // load board state values into board from templates
+        board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
+        board.setPhase(Phase.valueOf(template.phase));
+        board.setStep(template.step);
+
+        return board;
     }
 
     /**

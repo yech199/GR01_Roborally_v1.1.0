@@ -74,10 +74,18 @@ public class Space extends Subject {
         }
     }
 
+    public boolean hasWallPointing(Heading heading) {
+        if (this.getWalls().contains(heading)) return true;
+        else return false;
+    }
+
     public List<Heading> getWalls() {
         return walls;
     }
 
+    /**
+     * @return a list of boardElements on this space
+     */
     public List<FieldAction> getActions() {
         return actions;
     }
@@ -89,4 +97,11 @@ public class Space extends Subject {
         notifyChange();
     }
 
+    @Override
+    public String toString() {
+        return "Space{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

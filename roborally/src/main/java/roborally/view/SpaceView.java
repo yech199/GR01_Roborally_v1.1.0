@@ -117,7 +117,10 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-image: url('graphics/Checkpoint"+ checkpoint.getCheckpointNumber() +".png'); -fx-background-size: " +
                     SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
         }
-        // updatePlayer();
+        else if(space.getActions().size() > 0 && space.getActions().get(0) instanceof DefaultTile rebootToken && rebootToken.isRebootToken) {
+            this.setStyle("-fx-background-image: url('graphics/RespawnToken.png'); -fx-background-size: " +
+                    SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+        }
 
         // This space view should listen to changes of the space
         space.attach(this);

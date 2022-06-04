@@ -626,6 +626,20 @@
     },
     {
       "walls": [
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.DefaultTile",
+          "INSTANCE": {
+            "isRebootToken": "true"
+          }
+        }
+      ],
+      "x": 5,
+      "y": 3
+    },
+    {
+      "walls": [
         "EAST"
       ],
       "actions": [

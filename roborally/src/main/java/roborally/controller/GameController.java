@@ -223,7 +223,7 @@ public class GameController extends AGameController {
                 case FORWARD -> this.moveForward(player);
                 case RIGHT -> this.turnRight(player);
                 case LEFT -> this.turnLeft(player);
-                case FAST_FORWARD -> this.fastForward(player, 2);
+                case FAST_FORWARD -> this.moveXForward(player, 2);
                 default -> {
                 }
                 // DO NOTHING (for now)
@@ -290,7 +290,7 @@ public class GameController extends AGameController {
     }
 
     // TODO: V2
-    public void fastForward(@NotNull Player player, int moves) {
+    public void moveXForward(@NotNull Player player, int moves) {
         for (int i = 0; i < moves; i++) {
             moveForward(player);
         }
@@ -356,6 +356,7 @@ public class GameController extends AGameController {
 
         public ImpossibleMoveException(Player player, Space space, Heading heading) {
             super("Move impossible");
+            System.out.println(player.getName() + " tried to move " + heading + " from " + space.toString());
             this.player = player;
             this.space = space;
             this.heading = heading;

@@ -42,7 +42,7 @@ abstract public class AGameController {
 
     public abstract void moveForward(@NotNull Player player);
 
-    public abstract void fastForward(@NotNull Player player, int moves);
+    public abstract void moveXForward(@NotNull Player player, int moves);
 
     public abstract void turnRight(@NotNull Player player);
 

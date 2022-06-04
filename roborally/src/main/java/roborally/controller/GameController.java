@@ -26,11 +26,8 @@ import controller.AGameController;
 import model.boardElements.SpaceElement;
 import model.*;
 
-import fileaccess.LoadSaveBoard;
-
 import org.jetbrains.annotations.NotNull;
 
-import javafx.application.Platform;
 import javax.swing.*;
 import java.util.List;
 

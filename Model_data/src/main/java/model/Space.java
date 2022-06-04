@@ -25,6 +25,7 @@ import designpatterns.observer.Subject;
 import model.boardElements.FieldAction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -78,8 +79,16 @@ public class Space extends Subject {
         return walls;
     }
 
+    public void setWalls(List<Heading> walls) {
+        Collections.copy(this.walls, walls);
+    }
+
     public List<FieldAction> getActions() {
         return actions;
+    }
+
+    public void setAction(List<FieldAction> actions) {
+        Collections.copy(this.actions, actions);
     }
 
     void playerChanged() {

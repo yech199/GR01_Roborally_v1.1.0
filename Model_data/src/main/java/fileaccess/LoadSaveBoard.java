@@ -32,6 +32,7 @@ import model.boardElements.FieldAction;
 import model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is responsible for reading(load) and writing(save) game state to and from json files.
@@ -42,7 +43,7 @@ public class LoadSaveBoard {
 
     // TODO: Explore option to make multiple generalized overloaded method (eg. copyValues()? )
     // TODO: Add comments
-    private static void loadSpaces(BoardTemplate template, Board board) {
+    /*private static void loadSpaces(BoardTemplate template, Board board) {
         // Loading spaces
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -51,11 +52,18 @@ public class LoadSaveBoard {
                 space.getWalls().addAll(spaceTemplate.walls);
             }
         }
+    }*/
+    private static void loadSpaces(BoardTemplate template, Board board) {
+        for (SpaceTemplate spaceTemplate : template.spaces) {
+            Space space = new Space(board, spaceTemplate.x, spaceTemplate.y);
+            space.setWalls(spaceTemplate.walls);
+            space.setAction(spaceTemplate.actions);
+        }
     }
-    private static void loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
+    private static ArrayList<Player> loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
+        ArrayList<Player> players = new ArrayList<>();
         // Loading players
         for (PlayerTemplate player : template.players) {
-
             Player newPlayer = new Player(board, player.color, player.name);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
@@ -65,17 +73,18 @@ public class LoadSaveBoard {
 
             // If we have a new game, we don't need to do card and register setup
             if(!saveGame) {
-                board.addPlayer(newPlayer);
+                players.add(newPlayer);
                 continue;
             }
 
+            // newPlayer.setCards();
+            // newPlayer.setProgram();
             loadCards(template, player, newCards, newPlayer);
             loadRegisters(template, player, newRegisters, newPlayer);
 
             loadedBoard = true;
-
-            board.addPlayer(newPlayer);
         }
+        return players;
     }
     private static void loadCards(BoardTemplate template, PlayerTemplate player, CommandCardField[] newCards, Player newPlayer) {
         // Load all cards from JSON file
@@ -219,6 +228,7 @@ public class LoadSaveBoard {
         Board board = new Board(template.width, template.height, gameName);
 
         loadSpaces(template, board);
+        //board.setPlayers(loadPlayers(FieldAction));
         loadPlayers(template, board, saveGame);
 
         // if game is new, then just return default board

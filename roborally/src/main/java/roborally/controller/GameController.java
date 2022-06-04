@@ -23,14 +23,12 @@ package roborally.controller;
 
 import controller.AGameController;
 
-import model.boardElements.Pit;
 import model.boardElements.SpaceElement;
 import model.*;
 
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.util.List;
 
 /**
  * ...
@@ -92,14 +90,12 @@ public class GameController extends AGameController {
         }
     }
 
-    // XXX: V2
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * commands.length);
         return new CommandCard(commands[random]);
     }
 
-    // XXX: V2
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
@@ -108,7 +104,6 @@ public class GameController extends AGameController {
         board.setStep(0);
     }
 
-    // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -119,7 +114,6 @@ public class GameController extends AGameController {
         }
     }
 
-    // XXX: V2
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
@@ -130,19 +124,16 @@ public class GameController extends AGameController {
         }
     }
 
-    // XXX: V2
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
     }
 
-    // XXX: V2
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
 
-    // XXX: V2
     private void continuePrograms() {
         do {
             if (antenna != null && board.getPlayerNumber(board.getCurrentPlayer()) == 0) {
@@ -252,7 +243,6 @@ public class GameController extends AGameController {
         continuePrograms();
     }
 
-    // TODO: V2
     public void moveForward(@NotNull Player player) {
         try {
             Heading playerHeading = player.getHeading();
@@ -315,21 +305,18 @@ public class GameController extends AGameController {
         return true;
     }
 
-    // TODO: V2
     public void moveXForward(@NotNull Player player, int moves) {
         for (int i = 0; i < moves; i++) {
             moveForward(player);
         }
     }
 
-    // TODO: V2
     public void turnRight(@NotNull Player player) {
         if (player.board == board) {
             player.setHeading(player.getHeading().next());
         }
     }
 
-    // TODO: V2
     public void turnLeft(@NotNull Player player) {
         if (player.board == board) {
             player.setHeading(player.getHeading().prev());

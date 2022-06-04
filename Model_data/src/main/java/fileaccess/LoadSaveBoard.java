@@ -54,7 +54,7 @@ public class LoadSaveBoard {
 
         BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
 
-        Board board = new Board(template.width, template.height, gameName);
+        Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
 
         // Loading spaces
         for (SpaceTemplate spaceTemplate : template.spaces) {
@@ -244,7 +244,7 @@ public class LoadSaveBoard {
         if (gameState != null) {
             return deserialize(gameState, gameName, saveGame);
         }
-        return new Board(8, 8);
+        return new Board(8, 8, 1);
     }
 
     /**
@@ -263,7 +263,7 @@ public class LoadSaveBoard {
      * @param board    the board to be saved
      * @param gameName name of the game board
      */
-    public static void saveGame(Board board, String gameName) {
+     public static void saveGame(Board board, String gameName) {
         String json = serialize(board);
         IOUtil.writeGame(gameName, json);
     }

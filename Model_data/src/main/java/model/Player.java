@@ -37,7 +37,7 @@ public class Player extends Subject {
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 9;
 
-    private int checkPoints = 1;
+    private int checkPoints = 0;
 
     final public Board board;
 

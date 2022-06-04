@@ -128,6 +128,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().clear();
 
         Player player = space.getPlayer();
+        if (!this.space.board.getPlayers().contains(player)) {
+            return;
+        }
+
 
         if (player != null) {
             //Polygon arrow = new Polygon(0.0, 0.0, 10.0, 20.0, 20.0, 0.0);

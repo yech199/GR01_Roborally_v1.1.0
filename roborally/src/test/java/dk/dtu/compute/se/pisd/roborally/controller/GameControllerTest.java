@@ -57,7 +57,7 @@ class GameControllerTest {
         Assertions.assertEquals(Phase.PROGRAMMING, board.getPhase(), "It should be in PROGRAMMING Phase!");
         Assertions.assertEquals(board.getPlayer(0), board.getCurrentPlayer(), "Player " + board.getCurrentPlayer().getName() + " should be the current player!");
         Assertions.assertEquals(0, board.getStep(), "Step should be zero!");
-        Assertions.assertEquals(6, board.getNumberOfPlayers(), "There should be 6 players!");
+        Assertions.assertEquals(6, board.getPlayersNumber(), "There should be 6 players!");
     }
 
     @Test

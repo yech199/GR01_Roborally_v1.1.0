@@ -64,6 +64,8 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
 
+        int numberOfPlayers;
+
         if (result.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
@@ -71,7 +73,9 @@ public class AppController implements Observer {
                 if (!stopGame()) {
                     return;
                 }
+
             }
+            numberOfPlayers = result.get();
 
             List<String> BOARD_NAMES = ResourcesUtil.getBoardFileNames();
 
@@ -85,8 +89,7 @@ public class AppController implements Observer {
             if (resultS.isPresent()) {
                 board = LoadSaveBoard.newGame(resultS.get());
                 // Sets number of players here!
-                board.setNumberOfPlayers(result.get());
-                for (int i = 0; i < board.getNumberOfPlayers(); i++) {
+                for (int i = 0; i < numberOfPlayers; i++) {
                     TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
                     name.setTitle("Player name");
                     name.setHeaderText("Write the name of the player");
@@ -96,6 +99,9 @@ public class AppController implements Observer {
                     if (resultName.isPresent()) {
                         board.getPlayer(i).setName(resultName.get());
                     }
+                }
+                for (int i = 5; i >= numberOfPlayers ; i--) {
+                    board.getPlayers().remove(i);
                 }
             } else {
                 board = LoadSaveBoard.newGame(null);

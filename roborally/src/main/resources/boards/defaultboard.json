@@ -137,6 +137,274 @@
           "visible": "true"
         }
       ]
+    },
+    {
+      "name": "Player 3",
+      "color": "yellow",
+      "spaceX": 2,
+      "spaceY": 1,
+      "heading": "SOUTH",
+      "cards": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ],
+      "registers": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ]
+    },
+    {
+      "name": "Player 4",
+      "color": "magenta",
+      "spaceX": 3,
+      "spaceY": 1,
+      "heading": "SOUTH",
+      "cards": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ],
+      "registers": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ]
+    },
+    {
+      "name": "Player 5",
+      "color": "cyan",
+      "spaceX": 5,
+      "spaceY": 1,
+      "heading": "SOUTH",
+      "cards": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ],
+      "registers": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ]
+    },
+    {
+      "name": "Player 6",
+      "color": "blue",
+      "spaceX": 6,
+      "spaceY": 1,
+      "heading": "SOUTH",
+      "cards": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ],
+      "registers": [
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        },
+        {
+          "command": "",
+          "visible": "true"
+        }
+      ]
     }
   ],
   "currentPlayer": 0,

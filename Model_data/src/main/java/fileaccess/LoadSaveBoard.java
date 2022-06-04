@@ -66,10 +66,7 @@ public class LoadSaveBoard {
         }
 
         // Loading players
-        int counter = 0;
         for (PlayerTemplate player : template.players) {
-        // for (int k = 0; k < board.getNumberOfPlayers(); k++) {
-        //     PlayerTemplate player = template.players.get(k);
 
             Player newPlayer = new Player(board, player.color, player.name);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
@@ -84,6 +81,7 @@ public class LoadSaveBoard {
                 continue;
             }
 
+            // -----------------------------SAVED GAME-------------------------------------
             // Load all cards from JSON file
             for (int i = 0; i < newCards.length; i++) {
                 int j = template.players.indexOf(player);
@@ -173,7 +171,7 @@ public class LoadSaveBoard {
 
         int playerCounter = 0;
         for (Player player : board.getPlayers()) {
-            if (playerCounter >= board.getNumberOfPlayers()) break;
+            if (playerCounter >= board.getPlayersNumber()) break;
             PlayerTemplate playerTemplate = new PlayerTemplate();
             Space space = player.getSpace();
             playerTemplate.spaceX = space.x;

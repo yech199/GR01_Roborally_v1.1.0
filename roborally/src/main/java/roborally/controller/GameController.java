@@ -281,6 +281,10 @@ public class GameController extends AGameController {
         Player targetPlayer = target.getPlayer();
         Space tmpTarget = board.getNeighbour(targetPlayer.getSpace(), playerHeading);
 
+        if (tmpTarget == null) {
+            reboot(targetPlayer);
+            return true;
+        }
         if (target.hasWallPointing(playerHeading) || tmpTarget.hasWallPointing(playerHeading.next().next())
                 || tmpTarget == this.antennaSpace) {
             return false;
@@ -295,6 +299,7 @@ public class GameController extends AGameController {
             for (SpaceElement space : tmpTarget.getActions()) {
                 space.doAction(this, target);
             }
+            isValid = false;
         }
 
         // Moves the pushed player(s) recursively
@@ -337,19 +342,21 @@ public class GameController extends AGameController {
     }
 
     public void reboot(Player player) {
-        int checkpoint = player.getCheckPoints();
-        if (checkpoint == 1) {
-            player.setSpace(board.getSpace(0, 0));
-        }
-        else {
-            for (int x = 0; x < board.getSpaces().length; x++) {
-                for (int y = 0; y < board.getSpaces()[0].length; y++) {
-                    if (board.getSpace(x, y).checkpointNumber == checkpoint - 1) {
-                        player.setSpace(board.getSpace(x, y));
-                    }
-                }
-            }
-        }
+        // int checkpoint = player.getCheckPoints();
+        // if (checkpoint == 1) {
+        //     player.setSpace(board.getSpace(0, 0));
+        // }
+        // else {
+        //     for (int x = 0; x < board.getSpaces().length; x++) {
+        //         for (int y = 0; y < board.getSpaces()[0].length; y++) {
+        //             if (board.getSpace(x, y).checkpointNumber == checkpoint - 1) {
+        //                 player.setSpace(board.getSpace(x, y));
+        //             }
+        //         }
+        //     }
+        // }
+        
+        rebootTokenSpace.setPlayer(player);
     }
 
     public void Winner(Player player) {

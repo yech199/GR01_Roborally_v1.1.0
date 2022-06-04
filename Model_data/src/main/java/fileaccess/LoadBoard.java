@@ -23,6 +23,9 @@ public class LoadBoard {
             }
         }
     }
+    /**
+     * Only used when loading a saved game. Not a new game
+     */
     private static void loadPlayers(BoardTemplate template, Board board) {
         // Loading players
         int playerNo = 1;
@@ -39,6 +42,7 @@ public class LoadBoard {
             playerNo++;
         }
     }
+
     private static CommandCardField[] loadCards(PlayerTemplate player, Player newPlayer) {
         CommandCardField[] newCards = new CommandCardField[player.cards.size()];
         for(int i = 0; i < player.cards.size(); i++) {
@@ -57,6 +61,7 @@ public class LoadBoard {
         }
         return newCards;
     }
+
     private static CommandCardField[] loadRegisters(PlayerTemplate player, Player newPlayer) {
         CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
         for(int i = 0; i < player.registers.size(); i++) {

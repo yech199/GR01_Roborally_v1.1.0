@@ -39,7 +39,7 @@ import java.nio.charset.StandardCharsets;
 public class IOUtil {
 
     private static final String BOARDSFOLDER = "boards";
-    private static final String SAVEFOLDER = "savegames";
+    private static final String SAVEFOLDER = "savedgames";
 
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";

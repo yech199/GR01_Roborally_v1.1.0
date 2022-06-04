@@ -40,6 +40,7 @@ public class SaveBoard {
     private static ArrayList<SpaceTemplate> saveSpaces(Board board) {
         ArrayList<SpaceTemplate> spaceTemplates = new ArrayList<>();
         // Add all spaces
+        // TODO: Make sure all the needed attributes are saved. e.g. the boolean value on DefaultTile
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
                 Space space = board.getSpace(i, j);
@@ -55,6 +56,7 @@ public class SaveBoard {
         }
         return spaceTemplates;
     }
+
     private static ArrayList<PlayerTemplate> savePlayers(Board board) {
         int playerCounter = 0;
         ArrayList<PlayerTemplate> playerTemplates = new ArrayList<>();
@@ -76,6 +78,7 @@ public class SaveBoard {
         }
         return playerTemplates;
     }
+
     private static ArrayList<CommandCardFieldTemplate> saveCards(Player player) {
         // Save cards
         ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
@@ -95,6 +98,7 @@ public class SaveBoard {
         }
         return cards;
     }
+
     private static ArrayList<CommandCardFieldTemplate> saveRegisters(Player player) {
         // Save registers
         ArrayList<CommandCardFieldTemplate> registers = new ArrayList<>();
@@ -144,7 +148,7 @@ public class SaveBoard {
     }
 
     /**
-     * Save a game in json format to the resource/savegames folder
+     * Save a game in json format to the resource/savedgames folder
      *
      * @param board    the board to be saved
      * @param gameName name of the game board

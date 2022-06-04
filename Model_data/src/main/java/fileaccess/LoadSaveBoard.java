@@ -41,33 +41,6 @@ public class LoadSaveBoard {
 
     private static boolean loadedBoard = false;
 
-    /*/**
-     * Deserialize a json string with the state of the game and returns a board.
-     *
-     * @param jsonGameState a json string of game state
-     * @param gameName      name of the save game
-     * @return board object with the game state
-     */
-    /*private static Board deserialize(String jsonGameState, String gameName, boolean saveGame) {
-        // In simple cases, we can create a Gson object with new Gson():
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
-        Gson gson = simpleBuilder.create();
-
-        BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
-
-        Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
-
-        // Loading spaces
-        for (SpaceTemplate spaceTemplate : template.spaces) {
-            Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
-            if (space != null) {
-                space.getActions().addAll(spaceTemplate.actions);
-                space.getWalls().addAll(spaceTemplate.walls);
-            }
-        }
-    }*/
-
     private static void loadSpaces(BoardTemplate template, Board board) {
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);

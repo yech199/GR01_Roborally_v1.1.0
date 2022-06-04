@@ -31,6 +31,7 @@ import fileaccess.model.SpaceTemplate;
 import model.boardElements.FieldAction;
 import model.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class LoadSaveBoard {
 
     // TODO: Explore option to make multiple generalized overloaded method (eg. copyValues()? )
     // TODO: Add comments
-    /*private static void loadSpaces(BoardTemplate template, Board board) {
+    private static void loadSpaces(BoardTemplate template, Board board) {
         // Loading spaces
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -52,14 +53,19 @@ public class LoadSaveBoard {
                 space.getWalls().addAll(spaceTemplate.walls);
             }
         }
-    }*/
-    private static void loadSpaces(BoardTemplate template, Board board) {
-        for (SpaceTemplate spaceTemplate : template.spaces) {
-            Space space = new Space(board, spaceTemplate.x, spaceTemplate.y);
-            space.setWalls(spaceTemplate.walls);
-            space.setAction(spaceTemplate.actions);
-        }
     }
+    /*private static ArrayList<Space> loadSpaces(BoardTemplate template, Board board) {
+        ArrayList<Space> spaces = new ArrayList<>();
+        for (SpaceTemplate spaceTemplate : template.spaces) {
+            Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
+            if(space != null) {
+                space.getActions().addAll(spaceTemplate.actions);
+                space.getWalls().addAll(spaceTemplate.walls);
+                spaces.add(space);
+            }
+        }
+        return spaces;
+    }*/
     private static ArrayList<Player> loadPlayers(BoardTemplate template, Board board, boolean saveGame) {
         ArrayList<Player> players = new ArrayList<>();
         // Loading players
@@ -77,16 +83,14 @@ public class LoadSaveBoard {
                 continue;
             }
 
-            // newPlayer.setCards();
-            // newPlayer.setProgram();
-            loadCards(template, player, newCards, newPlayer);
-            loadRegisters(template, player, newRegisters, newPlayer);
+            newPlayer.setCards(loadCards(template, player, newCards, newPlayer));
+            newPlayer.setProgram(loadRegisters(template, player, newRegisters, newPlayer));
 
             loadedBoard = true;
         }
         return players;
     }
-    private static void loadCards(BoardTemplate template, PlayerTemplate player, CommandCardField[] newCards, Player newPlayer) {
+    private static CommandCardField[] loadCards(BoardTemplate template, PlayerTemplate player, CommandCardField[] newCards, Player newPlayer) {
         // Load all cards from JSON file
         for (int i = 0; i < newCards.length; i++) {
             int j = template.players.indexOf(player);
@@ -110,10 +114,10 @@ public class LoadSaveBoard {
             commandCardField.setVisible(commandCardFieldTemplate.visible);
             newCards[i] = commandCardField;
 
-            newPlayer.setCards(newCards);
         }
+        return newCards;
     }
-    private static void loadRegisters(BoardTemplate template, PlayerTemplate player, CommandCardField[] newRegisters, Player newPlayer) {
+    private static CommandCardField[] loadRegisters(BoardTemplate template, PlayerTemplate player, CommandCardField[] newRegisters, Player newPlayer) {
         // Load all registers from JSON file
         for (int i = 0; i < newRegisters.length; i++) {
             int j = template.players.indexOf(player);
@@ -133,12 +137,12 @@ public class LoadSaveBoard {
                 commandCardField.setCard(commandCard);
             }
             newRegisters[i] = commandCardField;
-
-            newPlayer.setProgram(newRegisters);
         }
+        return newRegisters;
     }
 
-    private static void saveSpaces(BoardTemplate template, Board board) {
+    private static ArrayList<SpaceTemplate> saveSpaces(Board board) {
+        ArrayList<SpaceTemplate> spaceTemplates = new ArrayList<>();
         // Add all spaces
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
@@ -149,12 +153,15 @@ public class LoadSaveBoard {
                     spaceTemplate.y = space.y;
                     spaceTemplate.actions.addAll(space.getActions());
                     spaceTemplate.walls.addAll(space.getWalls());
-                    template.spaces.add(spaceTemplate);
+                    //template.spaces.add(spaceTemplate);
+                    spaceTemplates.add(spaceTemplate);
                 }
             }
         }
+        return spaceTemplates;
     }
-    private static void savePlayers(BoardTemplate template, Board board) {
+    private static ArrayList<PlayerTemplate> savePlayers(Board board) {
+        ArrayList<PlayerTemplate> playerTemplates = new ArrayList<>();
         // Save state of player
         for (Player player : board.getPlayers()) {
             PlayerTemplate playerTemplate = new PlayerTemplate();
@@ -168,9 +175,11 @@ public class LoadSaveBoard {
             playerTemplate.registers = saveRegisters(player);
             playerTemplate.cards = saveCards(player);
 
-            template.players.add(playerTemplate);
+            //template.players.add(playerTemplate);
+            playerTemplates.add(playerTemplate);
 
         }
+        return playerTemplates;
     }
     // TODO: This is the best way to do it. Implement in load methods as well
     private static ArrayList<CommandCardFieldTemplate> saveCards(Player player) {
@@ -228,8 +237,7 @@ public class LoadSaveBoard {
         Board board = new Board(template.width, template.height, gameName);
 
         loadSpaces(template, board);
-        //board.setPlayers(loadPlayers(FieldAction));
-        loadPlayers(template, board, saveGame);
+        board.setPlayers(loadPlayers(template, board, saveGame));
 
         // if game is new, then just return default board
         if (!saveGame) return board;
@@ -254,8 +262,8 @@ public class LoadSaveBoard {
         template.width = board.width;
         template.height = board.height;
 
-        saveSpaces(template, board);
-        savePlayers(template, board);
+        template.spaces = saveSpaces(board);
+        template.players = savePlayers(board);
 
         template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
         template.step = board.getStep();

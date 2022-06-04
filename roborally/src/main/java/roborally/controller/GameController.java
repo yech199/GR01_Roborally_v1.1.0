@@ -272,11 +272,8 @@ public class GameController extends AGameController {
 
             }
             else {
-                // Get target walls
-                List<Heading> walls = target.getWalls();
-
-                // Can't move into a wall
-                if (walls.contains(playerHeading)) {
+                if (player.getSpace().hasWallPointing(playerHeading) || target.hasWallPointing(playerHeading.next().next())
+                        || target == this.antennaSpace) {
                     throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
                 }
             }
@@ -306,9 +303,8 @@ public class GameController extends AGameController {
             isValid = checkIfMoveToTargetWithPlayerIsValid(player, tmpTarget);
         }
 
+        // Moves the pushed player(s) recursively
         if (isValid) {
-            // If occupied, push other robots recursively in the playerHeading that
-            // the current player is moving
             tmpTarget.setPlayer(targetPlayer);
         }
 

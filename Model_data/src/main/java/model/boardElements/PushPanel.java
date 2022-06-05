@@ -24,7 +24,6 @@ public class PushPanel extends SpaceElement {
         if (space.getActions().size() > 0) {
             Space neighbour = space.board.getNeighbour(space, heading);
             Player player = space.getPlayer();
-            int step = gameController.board.getStep();
 
             // Used to determine what indexes push panels should activate on
             int n1 = 0, n2 = 1;
@@ -47,11 +46,14 @@ public class PushPanel extends SpaceElement {
                     firstFound = true;
                 }
             }
+
+            int step = gameController.board.getStep();
             // Get the current card from the current program field
             // and check if placed in one of the activation registers for push panel
-            CommandCard card = gameController.board.getCurrentPlayer().getProgramField(step).getCard();
-            if(pushPanelLabel[step] == n1 || pushPanelLabel[step] == n2) {
+            if(step == n1 || step == n2) {
+                CommandCard card = gameController.board.getCurrentPlayer().getProgramField(step).getCard();
                 if (card != null) {
+                    System.out.println(card.getName());
                     if (player != null && neighbour != null) {
                         Heading playerHeading = player.getHeading();
                         player.setHeading(heading);

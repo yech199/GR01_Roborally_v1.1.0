@@ -71,18 +71,17 @@ public class SaveBoard {
             playerTemplate.color = player.getColor();
             playerTemplate.name = player.getName();
 
-            playerTemplate.registers = saveRegisters(player);
-            playerTemplate.cards = saveCards(player);
+            playerTemplate.registers = saveCommandCardFields(player.getProgram());
+            playerTemplate.cards = saveCommandCardFields(player.getCards());
 
             playerTemplates.add(playerTemplate);
         }
         return playerTemplates;
     }
 
-    private static ArrayList<CommandCardFieldTemplate> saveCards(Player player) {
-        // Save cards
-        ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
-        for (CommandCardField commandCardField : player.getCards()) {
+    private static ArrayList<CommandCardFieldTemplate> saveCommandCardFields(CommandCardField[] commandCardFields) {
+        ArrayList<CommandCardFieldTemplate> newCards = new ArrayList<>();
+        for (CommandCardField commandCardField : commandCardFields) {
             CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
 
             if (commandCardField.getCard() == null) {
@@ -94,29 +93,9 @@ public class SaveBoard {
             }
 
             // Add to card template
-            cards.add(cardFieldTemplate);
+            newCards.add(cardFieldTemplate);
         }
-        return cards;
-    }
-
-    private static ArrayList<CommandCardFieldTemplate> saveRegisters(Player player) {
-        // Save registers
-        ArrayList<CommandCardFieldTemplate> registers = new ArrayList<>();
-        for (CommandCardField commandCardField : player.getProgram()) {
-            CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
-
-            if (commandCardField.getCard() == null) {
-                cardFieldTemplate.command = "";
-                cardFieldTemplate.visible = true;
-            } else {
-                cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
-                cardFieldTemplate.visible = commandCardField.isVisible();
-            }
-
-            // Add to card template
-            registers.add(cardFieldTemplate);
-        }
-        return registers;
+        return newCards;
     }
 
     /**

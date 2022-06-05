@@ -1,38 +1,64 @@
 package dtu.compute.RoborallyAPI;
 
-import dtu.compute.RoborallyAPI.Model.Board;
+import com.google.gson.Gson;
+import dtu.compute.RoborallyAPI.Model.Game;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Service
 public class GameService implements IGameService {
 
-    private String gameData;
+    ArrayList<Game> games = new ArrayList<>();
+    int id = 0;
+    //private String gameData;
 
-    DataFile dataFile = new DataFile("defaultboard.json");
+    //DataFile dataFile = new DataFile("defaultboard.json");
 
-    public GameService() throws IOException {
-        loadGame();
-    }
+    public void getGamesList() {
 
-    private void loadGame() throws IOException {
-        gameData = dataFile.load();
     }
 
     @Override
     public String getGameById(int id) {
-        // TODO: Implement get game by ID
-        return null;
+        return games.get(id).getGameState();
     }
 
     @Override
-    public void updateGame(String gameData) {
-        this.gameData = gameData;
+    public void updateGame(int id, String gameData) {
+        games.get(id).setGameState(gameData);
     }
 
     @Override
     public String getGame() {
-        return gameData;
+        //return gameData;
+        return null;
+    }
+
+    @Override
+    public int startGame() {
+        games.add(new Game(id));
+        int gameId = id;
+        id++;
+        return gameId;
+    }
+
+    @Override
+    public String getListOfGames() {
+        Gson gson = new Gson();
+
+        ArrayList<Game> ListOfGames = new ArrayList<>();
+        games.forEach(e -> {
+            if (e.getAmountOfPlayers() != 6) {
+                ListOfGames.add(e);
+            }
+        });
+        return gson.toJson(ListOfGames);
+    }
+
+    @Override
+    public String joinGame(int id) {
+        return null;
     }
 }

@@ -3,6 +3,7 @@ package fileaccess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fileaccess.model.BoardTemplate;
+import fileaccess.model.CommandCardFieldTemplate;
 import fileaccess.model.PlayerTemplate;
 import fileaccess.model.SpaceTemplate;
 import model.*;
@@ -35,50 +36,30 @@ public class LoadBoard {
             newPlayer.setHeading(Heading.valueOf(player.heading));
 
             // -----------------------------SAVED GAME-------------------------------------
-            newPlayer.setCards(loadCards(player, newPlayer));
-            newPlayer.setProgram(loadRegisters(player, newPlayer));
+            newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
+            newPlayer.setProgram(loadCommandCardFields(player.registers, newPlayer));
 
             board.addPlayer(newPlayer);
             playerNo++;
         }
     }
 
-    private static CommandCardField[] loadCards(PlayerTemplate player, Player newPlayer) {
-        CommandCardField[] newCards = new CommandCardField[player.cards.size()];
-        for(int i = 0; i < player.cards.size(); i++) {
+    private static CommandCardField[] loadCommandCardFields(ArrayList<CommandCardFieldTemplate> commandCardFields, Player newPlayer) {
+        int i = 0;
+        CommandCardField[] newCards = new CommandCardField[commandCardFields.size()];
+        for (CommandCardFieldTemplate commandCardFieldTemplate : commandCardFields) {
             CommandCardField commandCardField = new CommandCardField(newPlayer);
-            String command = player.cards.get(i).command;
+            String command = commandCardFieldTemplate.command;
 
+            // If the card is not empty we create a commandCard
             if (!command.equals("")) {
                 CommandCard commandCard = new CommandCard(Command.valueOf(command));
-
-                // Set the CommandCardField card
                 commandCardField.setCard(commandCard);
             }
-
             newCards[i] = commandCardField;
-
+            i++;
         }
         return newCards;
-    }
-
-    private static CommandCardField[] loadRegisters(PlayerTemplate player, Player newPlayer) {
-        CommandCardField[] newRegisters = new CommandCardField[player.registers.size()];
-        for(int i = 0; i < player.registers.size(); i++) {
-            CommandCardField commandCardField = new CommandCardField(newPlayer);
-            String command = player.registers.get(i).command;
-
-            if (!command.equals("")) {
-                CommandCard commandCard = new CommandCard(Command.valueOf(command));
-
-                // Set the CommandCardField card
-                commandCardField.setCard(commandCard);
-            }
-
-            newRegisters[i] = commandCardField;
-
-        }
-        return newRegisters;
     }
 
     /**
@@ -94,13 +75,10 @@ public class LoadBoard {
 
         BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
 
+        // load board state values into board from templates
         Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
-
         loadSpaces(template, board);
         loadPlayers(template, board);
-
-        // -----------------------------SAVED GAME-------------------------------------
-        // load board state values into board from templates
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));
         board.setStep(template.step);

@@ -25,7 +25,7 @@ public class ResourcesUtil {
         return result;
     }
     public static List<String> getSaveGameFiles() throws NullPointerException {
-        File[] savegames = getResourceFolderFiles("savegames");
+        File[] savegames = getResourceFolderFiles("savedgames");
 
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < savegames.length; i++) {

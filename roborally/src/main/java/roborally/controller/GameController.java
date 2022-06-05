@@ -23,6 +23,7 @@ package roborally.controller;
 
 import controller.AGameController;
 import model.*;
+import model.boardElements.ConveyorBelt;
 import model.boardElements.Pit;
 import model.boardElements.SpaceElement;
 import org.jetbrains.annotations.NotNull;
@@ -310,7 +311,9 @@ public class GameController extends AGameController {
 
             if (tmpTarget.getActions().size() > 0) {
                 for (SpaceElement space : tmpTarget.getActions()) {
-                    space.doAction(this, targetPlayer.getSpace());
+                    if (!(space instanceof ConveyorBelt)) {
+                        space.doAction(this, targetPlayer.getSpace());
+                    }
                 }
             }
         }

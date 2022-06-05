@@ -530,20 +530,6 @@
       "y": 5
     },
     {
-      "walls": [],
-      "actions": [
-        {
-          "CLASSNAME": "model.boardElements.ConveyorBelt",
-          "INSTANCE": {
-            "heading": "NORTH",
-            "color": "BLUE"
-          }
-        }
-      ],
-      "x": 1,
-      "y": 6
-    },
-    {
       "walls": [
         "NORTH"
       ],

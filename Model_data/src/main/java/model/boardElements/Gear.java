@@ -10,11 +10,8 @@ public class Gear extends SpaceElement {
         RIGHT
     }
 
+    // Assigned by Json file
     private Direction direction;
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
 
     public Direction getDirection() {
         return direction;
@@ -23,14 +20,12 @@ public class Gear extends SpaceElement {
     @Override
     public void doAction(AGameController gameController, Space space) {
         if (space.getActions().size() > 0) {
-            switch (getDirection()) {
+            switch (this.direction) {
                 case LEFT -> {
-                    Heading current = space.getPlayer().getHeading();
-                    space.getPlayer().setHeading(current.prev());
+                    gameController.turnLeft(space.getPlayer());
                 }
                 case RIGHT -> {
-                    Heading curr = space.getPlayer().getHeading();
-                    space.getPlayer().setHeading(curr.next());
+                    gameController.turnRight(space.getPlayer());
                 }
             }
         }

@@ -530,20 +530,6 @@
       "y": 5
     },
     {
-      "walls": [],
-      "actions": [
-        {
-          "CLASSNAME": "model.boardElements.ConveyorBelt",
-          "INSTANCE": {
-            "heading": "NORTH",
-            "color": "BLUE"
-          }
-        }
-      ],
-      "x": 1,
-      "y": 6
-    },
-    {
       "walls": [
         "NORTH"
       ],
@@ -622,6 +608,34 @@
       ],
       "x": 6,
       "y": 6
+    },
+    {
+      "walls": [
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.Gear",
+          "INSTANCE": {
+            "direction": "LEFT"
+          }
+        }
+      ],
+      "x": 3,
+      "y": 0
+    },
+    {
+      "walls": [
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.Gear",
+          "INSTANCE": {
+            "direction": "RIGHT"
+          }
+        }
+      ],
+      "x": 5,
+      "y": 0
     },
     {
       "walls": [

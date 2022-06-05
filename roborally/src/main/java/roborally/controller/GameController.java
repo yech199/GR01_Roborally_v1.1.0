@@ -23,6 +23,7 @@ package roborally.controller;
 
 import controller.AGameController;
 import model.*;
+import model.boardElements.ConveyorBelt;
 import model.boardElements.Pit;
 import model.boardElements.SpaceElement;
 import org.jetbrains.annotations.NotNull;
@@ -276,7 +277,15 @@ public class GameController extends AGameController {
 
     }
 
+    /**
+     *
+     * @param player who wants to push another player
+     * @param target the space of the player being pushed
+     * @return Whether the push is a valid move
+     * @throws ImpossibleMoveException
+     */
     private boolean checkIfMoveToTargetWithPlayerIsValid(@NotNull Player player, Space target) throws ImpossibleMoveException {
+
         Heading playerHeading = player.getHeading();
 
         Player targetPlayer = target.getPlayer();
@@ -296,16 +305,17 @@ public class GameController extends AGameController {
             isValid = checkIfMoveToTargetWithPlayerIsValid(player, tmpTarget);
         }
 
-        if (tmpTarget.getActions().size() > 0) {
-            for (SpaceElement space : tmpTarget.getActions()) {
-                space.doAction(this, target);
-            }
-            isValid = false;
-        }
-
         // Moves the pushed player(s) recursively
         if (isValid) {
             tmpTarget.setPlayer(targetPlayer);
+
+            if (tmpTarget.getActions().size() > 0) {
+                for (SpaceElement space : tmpTarget.getActions()) {
+                    if (!(space instanceof ConveyorBelt)) {
+                        space.doAction(this, targetPlayer.getSpace());
+                    }
+                }
+            }
         }
 
         return true;

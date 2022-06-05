@@ -24,9 +24,11 @@ package roborally.controller;
 import designpatterns.observer.Subject;
 import designpatterns.observer.Observer;
 
+import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import roborally.RoboRally;
 
+import roborally.client.GameClient;
 import roborally.util.ResourcesUtil;
 import fileaccess.SaveBoard;
 import model.Board;
@@ -54,6 +56,7 @@ public class AppController implements Observer {
 
     final private RoboRally roboRally;
     private GameController gameController;
+    private final GameClient client = new GameClient();
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
@@ -114,6 +117,14 @@ public class AppController implements Observer {
 
             setupGameController(board);
         }
+    }
+
+    public void serverGame() {
+        int gameId = client.createGame();
+        // Right now we just post the board on the client to the server.
+        // Users should be able to join, create and see other players games.
+        // make the user select the board to be created on the server
+        client.setGame(gameId, IOUtil.readGame(null, false));
     }
 
     public void saveGame() {

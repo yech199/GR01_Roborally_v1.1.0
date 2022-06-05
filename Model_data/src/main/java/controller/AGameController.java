@@ -58,7 +58,7 @@ abstract public class AGameController {
 
     public abstract void executeCommandOptionAndContinue(Command option);
 
-    public abstract void moveForward(@NotNull Player player);
+    public abstract void moveForward(@NotNull Player player, Heading playerHeading);
 
     public abstract void moveXForward(@NotNull Player player, int moves);
 

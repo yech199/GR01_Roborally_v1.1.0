@@ -60,7 +60,7 @@ public class PushPanel extends SpaceElement {
                     if (player != null && neighbour != null) {
                         Heading playerHeading = player.getHeading();
                         player.setHeading(heading);
-                        gameController.moveForward(player);
+                        gameController.moveForward(player, this.heading);
                         player.setHeading(playerHeading);
                     }
                 }

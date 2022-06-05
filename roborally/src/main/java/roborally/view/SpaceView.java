@@ -61,7 +61,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 + SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
 
         if (space.getActions().size() > 0 && space.getActions().get(0) instanceof ConveyorBelt conveyorBelt) {
-            if (conveyorBelt.getConveyorBeltColor() == ConveyorBelt.ConveyorBeltColor.green) {
+            if (conveyorBelt.getConveyorBeltColor() == ConveyorBelt.ConveyorBeltColor.GREEN) {
                 this.tileAngle = switch (conveyorBelt.getHeading()) {
                     case SOUTH -> 0;
                     case WEST -> 90;

@@ -36,8 +36,8 @@ import org.jetbrains.annotations.NotNull;
 public class ConveyorBelt extends SpaceElement {
 
     public enum ConveyorBeltColor {
-        green,
-        blue
+        GREEN,
+        BLUE
     }
 
     private ConveyorBeltColor color;
@@ -63,31 +63,18 @@ public class ConveyorBelt extends SpaceElement {
     @Override
     public void doAction(@NotNull AGameController gameController, @NotNull Space space) {
         if (space.getActions().size() > 0) {
-
-            ConveyorBelt action = (ConveyorBelt) space.getActions().get(0);
-
-            // Get Player on field
+            ConveyorBelt conveyorBelt = (ConveyorBelt) space.getActions().get(0);
             Player player = space.getPlayer();
 
             // If there is a player on the field
             if (player != null) {
-                // Remember the players heading, then change it to conveyors direction
-                Heading playerHeading = player.getHeading();
-                player.setHeading(action.heading);
-
-                // Move the player
-                if (color == ConveyorBeltColor.green) {
-                    gameController.moveForward(player);
+                if (this.color == ConveyorBeltColor.GREEN) {
+                    gameController.moveForward(player, conveyorBelt.heading);
                 } else {
-                    // Move player, then update direction, then move again
-                    gameController.moveForward(player);
-                    player.setHeading(action.heading);
-                    gameController.moveForward(player);
+                    // Move twice if blue
+                    gameController.moveForward(player, conveyorBelt.heading);
+                    gameController.moveForward(player, conveyorBelt.heading);
                 }
-                // Reset the heading of the player
-                player.setHeading(playerHeading);
-            } else {
-                // No player on space
             }
         }
     }

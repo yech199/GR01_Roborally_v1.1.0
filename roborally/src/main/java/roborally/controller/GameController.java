@@ -22,10 +22,9 @@
 package roborally.controller;
 
 import controller.AGameController;
-
-import model.boardElements.SpaceElement;
 import model.*;
-
+import model.boardElements.Pit;
+import model.boardElements.SpaceElement;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -271,9 +270,7 @@ public class GameController extends AGameController {
             }
             // Free? Then move player
             target.setPlayer(player);
-
         } catch (ImpossibleMoveException e) {
-            // reboot(player,board);
             System.out.println("Move impossible");
         }
 
@@ -316,6 +313,13 @@ public class GameController extends AGameController {
 
     public void moveXForward(@NotNull Player player, int moves) {
         for (int i = 0; i < moves; i++) {
+            if (player.getSpace().getActions().size() > 0) {
+                for (SpaceElement space : player.getSpace().getActions()) {
+                    if (space instanceof Pit)
+                        return;
+                }
+            }
+
             moveForward(player, player.getHeading());
         }
     }

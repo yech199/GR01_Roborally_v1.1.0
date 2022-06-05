@@ -642,6 +642,19 @@
       ],
       "actions": [
         {
+          "CLASSNAME": "model.boardElements.Pit",
+          "INSTANCE": {
+          }
+        }
+      ],
+      "x": 4,
+      "y": 2
+    },
+    {
+      "walls": [
+      ],
+      "actions": [
+        {
           "CLASSNAME": "model.boardElements.RebootToken",
           "INSTANCE": {
             "heading": "NORTH"

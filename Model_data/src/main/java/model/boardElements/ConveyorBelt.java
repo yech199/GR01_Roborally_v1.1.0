@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class ConveyorBelt extends SpaceElement {
 
@@ -68,12 +67,23 @@ public class ConveyorBelt extends SpaceElement {
 
             // If there is a player on the field
             if (player != null) {
-                if (this.color == ConveyorBeltColor.GREEN) {
+                gameController.moveForward(player, conveyorBelt.heading);
+
+                if (this.color == ConveyorBeltColor.BLUE) {
+                    if (player.getSpace().getActions().size() > 0) {
+                        for (SpaceElement s : player.getSpace().getActions()) {
+                            if (s instanceof Pit)
+                                return;
+                        }
+                    }
                     gameController.moveForward(player, conveyorBelt.heading);
-                } else {
-                    // Move twice if blue
-                    gameController.moveForward(player, conveyorBelt.heading);
-                    gameController.moveForward(player, conveyorBelt.heading);
+                }
+            }
+
+            if (player.getSpace().getActions().size() > 0) {
+                for (SpaceElement s : player.getSpace().getActions()) {
+                    if (!(s instanceof ConveyorBelt))
+                        s.doAction(gameController, player.getSpace());
                 }
             }
         }

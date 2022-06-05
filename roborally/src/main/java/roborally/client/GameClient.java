@@ -21,12 +21,12 @@ public class GameClient {
         return clientController.startGame();
     }
 
-    public Board getGame(String gameName) {
+    public Board getGameState(String gameName) {
         String json = clientController.getGame();
         return LoadBoard.loadGameState(json, gameName);
     }
 
-    public void setGame(int id, String jsonGameState) {
+    public void setGameState(int id, String jsonGameState) {
         clientController.updateGame(id, jsonGameState);
     }
 
@@ -48,7 +48,7 @@ public class GameClient {
         return new ArrayList<>(Arrays.asList(boardNames));
     }
 
-    public Board getBoard(String boardName, int numOfPlayers) {
+    public Board getBoardState(String boardName, int numOfPlayers) {
         String json = clientController.getBoard(boardName);
         return LoadBoard.newBoardState(json, boardName, numOfPlayers);
     }

@@ -86,7 +86,7 @@ public class ClientController implements IGameService {
     public String getListOfGames() {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/game/"))
+                .uri(URI.create("http://localhost:8080/game"))
                 .setHeader("User-Agent", "Product Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -101,6 +101,51 @@ public class ClientController implements IGameService {
             e.printStackTrace();
             result = null;
         }
+        return result;
+    }
+
+    @Override
+    public String getListOfBoards() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/board"))
+                .setHeader("User-Agent", "Product Client")
+                .header("Content-Type", "application/json")
+                .build();
+
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+        String result;
+        try {
+            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = null;
+        }
+        return result;
+    }
+
+    @Override
+    public String getBoard(String boardName) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/board/" + boardName))
+                .setHeader("User-Agent", "Product Client")
+                .header("Content-Type", "application/json")
+                .build();
+
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+        String result;
+        try {
+            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = null;
+        }
+
         return result;
     }
 

@@ -7,6 +7,8 @@ public interface IGameService {
     String getGame();
     int startGame();
     String getListOfGames();
+    String getListOfBoards();
+    String getBoard(String boardName);
     String joinGame(int id);
 
 }

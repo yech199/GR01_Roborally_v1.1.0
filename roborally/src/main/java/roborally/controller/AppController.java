@@ -124,15 +124,40 @@ public class AppController implements Observer {
         // Users should be able to join, create and see other players games.
         // make the user select the board to be created on the server
         //client.setGame(gameId, IOUtil.readGame(null, false));
-        List<String> games = client.getListOfGames();
+        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+        dialog.setTitle("Player number");
+        dialog.setHeaderText("Select number of players");
+        Optional<Integer> selectedNumOfPlayers = dialog.showAndWait();
+        int numOfPlayers;
+        if(selectedNumOfPlayers.isPresent()) {
+            numOfPlayers = selectedNumOfPlayers.get();
 
-        ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
-        dialogL.setTitle("Select board");
-        dialogL.setHeaderText("Select a board to load");
-        Optional<String> resultS = dialogL.showAndWait();
+            List<String> games = client.getListOfBoards();
 
-        if(resultS.isPresent()) {
+            ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
+            dialogL.setTitle("Select board");
+            dialogL.setHeaderText("Select a board to load");
+            Optional<String> selectedBoard = dialogL.showAndWait();
 
+            Board board;
+            if(selectedBoard.isPresent()) {
+                board = client.getBoard(selectedBoard.get(), numOfPlayers);
+                // Sets number of players here!
+                for (int i = 0; i < numOfPlayers; i++) {
+                    TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
+                    name.setTitle("Player name");
+                    name.setHeaderText("Write the name of the player");
+                    name.setContentText("Name: ");
+                    Optional<String> resultName = name.showAndWait();
+
+                    if (resultName.isPresent()) {
+                        board.getPlayer(i).setName(resultName.get());
+                    }
+                }
+            } else {
+                board = LoadBoard.newBoard(null, numOfPlayers);
+            }
+            setupGameController(board);
         }
     }
 

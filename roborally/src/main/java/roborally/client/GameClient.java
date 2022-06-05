@@ -39,6 +39,17 @@ public class GameClient {
             gameIDs.add(String.valueOf(j));
         }
         return gameIDs;
+    }
 
+    public List<String> getListOfBoards() {
+        Gson gson = new Gson();
+        String boards = data.getListOfBoards();
+        String[] boardNames = gson.fromJson(boards, String[].class);
+        return new ArrayList<>(Arrays.asList(boardNames));
+    }
+
+    public Board getBoard(String boardName, int numOfPlayers) {
+        String json = data.getBoard(boardName);
+        return LoadBoard.newBoardState(json, boardName, numOfPlayers);
     }
 }

@@ -6,7 +6,6 @@ import dtu.compute.RoborallyAPI.Model.Game;
 import fileaccess.IOUtil;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

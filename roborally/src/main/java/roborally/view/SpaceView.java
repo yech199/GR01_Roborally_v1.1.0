@@ -106,7 +106,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 case NORTH -> 180;
                 case EAST -> 270;
             };
-            this.setStyle("-fx-background-image: url('graphics/PushPanel2-4.png'); -fx-background-size: " +
+            this.setStyle(pushPanel.pushPanelStart + pushPanel.pushPanelInsert + pushPanel.pushPanelEnd +
                     SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
         }
         else if(space.getActions().size() > 0 && space.getActions().get(0) instanceof Pit pit) {

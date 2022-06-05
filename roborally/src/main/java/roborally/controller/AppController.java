@@ -138,7 +138,7 @@ public class AppController implements Observer {
 
             Board board;
             if(selectedBoard.isPresent()) {
-                board = client.getBoardState(selectedBoard.get(), numOfPlayers);
+                board = client.getBoardState(selectedBoard.get(), gameId, numOfPlayers);
                 // Sets number of players here!
                 for (int i = 0; i < numOfPlayers; i++) {
                     TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());

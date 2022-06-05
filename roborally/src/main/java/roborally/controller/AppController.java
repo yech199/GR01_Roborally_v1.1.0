@@ -24,11 +24,11 @@ package roborally.controller;
 import designpatterns.observer.Subject;
 import designpatterns.observer.Observer;
 
+import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import roborally.RoboRally;
 
 import roborally.client.GameClient;
-import roborally.util.ResourcesUtil;
 import fileaccess.SaveBoard;
 import model.Board;
 
@@ -82,7 +82,7 @@ public class AppController implements Observer {
 
             final List<String> BOARD_NAMES;
             try {
-                BOARD_NAMES = ResourcesUtil.getBoardFileNames();
+                BOARD_NAMES = IOUtil.getBoardFileNames();
             } catch (NullPointerException e) {
                 // If this happens, then the player then can't start a game to make a savegame.
                 System.out.println("Could not find Resource folder or there is not any board templates available");
@@ -179,7 +179,7 @@ public class AppController implements Observer {
 
             final List<String> BOARD_NAMES;
             try {
-                BOARD_NAMES = ResourcesUtil.getSaveGameFiles();
+                BOARD_NAMES = IOUtil.getSaveGameFiles();
             } catch (NullPointerException e) {
                 System.out.println("Could not find Resource folder or there is not any save games available");
                 return;

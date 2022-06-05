@@ -65,7 +65,7 @@ public class LoadBoard {
      *
      * @return board object with the game state
      */
-    private static Board deserializeGame(String jsonGameState, String gameName) {
+    private static Board deserializeGame(String jsonGameState) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
@@ -74,7 +74,7 @@ public class LoadBoard {
         BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
 
         // load board state values into board from templates
-        Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
+        Board board = new Board(template.width, template.height, template.checkPointAmount, template.boardName);
         loadSpaces(template, board);
         loadPlayers(template, board);
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
@@ -84,7 +84,7 @@ public class LoadBoard {
         return board;
     }
 
-    private static Board deserializeBoard(String jsonGameState, String gameName, int numberOfPlayers) {
+    private static Board deserializeBoard(String jsonGameState, int numberOfPlayers) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
@@ -92,7 +92,7 @@ public class LoadBoard {
 
         BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
 
-        Board board = new Board(template.width, template.height, template.checkPointAmount, gameName);
+        Board board = new Board(template.width, template.height, template.checkPointAmount, template.boardName);
 
         loadSpaces(template, board);
 
@@ -117,17 +117,17 @@ public class LoadBoard {
         String gameState = IOUtil.readGame(gameName, saveGame);
         if (gameState != null) {
             loadedBoard = true;
-            return deserializeGame(gameState, gameName);
+            return deserializeGame(gameState);
         }
         return new Board(8, 8, 1);
     }
 
     /**
-     *
+     * Load a board object given a json string
      */
-    public static Board loadGameState(String jsonGameState, String gameName) {
+    public static Board loadGameState(String jsonGameState) {
         try {
-            return deserializeGame(jsonGameState, gameName);
+            return deserializeGame(jsonGameState);
         } catch (Exception e) {
             System.out.println("Loading of game state failed");
             return new Board(8, 8, 1);
@@ -142,11 +142,13 @@ public class LoadBoard {
      */
     public static Board newBoard(String boardName, int numberOfPlayers) {
         String gameState = IOUtil.readGame(boardName, false);
-        return deserializeBoard(gameState, boardName, numberOfPlayers);
+        return deserializeBoard(gameState, numberOfPlayers);
     }
 
-    public static Board newBoardState(String jsonBoardState, String boardName, int numberOfPlayers) {
-        return deserializeBoard(jsonBoardState, boardName, numberOfPlayers);
+    public static Board newBoardState(String jsonBoardState, int gameId, int numberOfPlayers) {
+        Board board = deserializeBoard(jsonBoardState, numberOfPlayers);
+        board.setGameId(gameId);
+        return board;
     }
 
     public static boolean getLoadedBoard() {

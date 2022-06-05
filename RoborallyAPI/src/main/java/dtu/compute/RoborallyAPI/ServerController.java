@@ -17,13 +17,13 @@ public class ServerController {
 
     @PostMapping("/game/")
     public ResponseEntity<Integer> createGame() {
-        int gameId = gameService.startGame();
+        int gameId = gameService.createGame();
         return ResponseEntity.ok().body(gameId);
     }
 
     @PostMapping("/game/{boardname}")
     public ResponseEntity<Integer> createGameFromBoard(@PathVariable String boardname) {
-        int gameId = gameService.startGame();
+        int gameId = gameService.createGame();
         gameService.updateGame(gameId, gameService.getBoard(boardname));
         return ResponseEntity.ok().body(gameId);
     }

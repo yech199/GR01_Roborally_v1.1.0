@@ -4,7 +4,7 @@ public interface IGameService {
 
     String getGameById(int id);
     void updateGame(int id, String gameData);
-    int startGame();
+    int createGame();
     String getListOfGames();
     String getListOfBoards();
     String getBoard(String boardName);

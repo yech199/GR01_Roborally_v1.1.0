@@ -37,7 +37,7 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public int startGame() {
+    public int createGame() {
         games.add(new Game(id));
         int gameId = id;
         id++;

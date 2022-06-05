@@ -10,6 +10,11 @@ public class ServerController {
     @Autowired
     private IGameService gameService;
 
+    @GetMapping("/game")
+    public ResponseEntity<String> getListOfGames() {
+        return ResponseEntity.ok().body(gameService.getListOfGames());
+    }
+
     @PostMapping("/game")
     public ResponseEntity<Integer> startGame() {
         int gameId = gameService.startGame();
@@ -22,7 +27,7 @@ public class ServerController {
     }
 
     @PutMapping("/game/{id}")
-    public ResponseEntity<String> setGame(@PathVariable int id, @RequestBody String gameData) {
+    public ResponseEntity<String> setGameState(@PathVariable int id, @RequestBody String gameData) {
         gameService.updateGame(id, gameData);
         return ResponseEntity.ok().body("OK");
     }

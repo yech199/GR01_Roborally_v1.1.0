@@ -1,8 +1,13 @@
 package roborally.client;
 
 // import fileaccess.LoadSaveBoard;
+import com.google.gson.Gson;
 import fileaccess.LoadBoard;
 import model.Board;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GameClient {
 
@@ -23,5 +28,17 @@ public class GameClient {
 
     public void setGame(int id, String jsonGameState) {
         data.updateGame(id, jsonGameState);
+    }
+
+    public List<String> getListOfGames() {
+        Gson gson = new Gson();
+        String games = data.getListOfGames();
+        int[] id = gson.fromJson(games, int[].class);
+        List<String> gameIDs = new ArrayList<>();
+        for (int j : id) {
+            gameIDs.add(String.valueOf(j));
+        }
+        return gameIDs;
+
     }
 }

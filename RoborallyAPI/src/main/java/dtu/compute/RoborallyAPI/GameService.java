@@ -47,13 +47,9 @@ public class GameService implements IGameService {
     @Override
     public String getListOfGames() {
         Gson gson = new Gson();
-
-        ArrayList<Game> ListOfGames = new ArrayList<>();
-        games.forEach(e -> {
-            if (e.getAmountOfPlayers() != 6) {
-                ListOfGames.add(e);
-            }
-        });
+        ArrayList<Integer> ListOfGames = new ArrayList<>();
+        // Get a list of game IDs
+        games.forEach(e -> ListOfGames.add(e.getId()));
         return gson.toJson(ListOfGames);
     }
 

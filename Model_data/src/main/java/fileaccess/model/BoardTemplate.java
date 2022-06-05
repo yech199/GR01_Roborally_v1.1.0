@@ -36,6 +36,8 @@ import java.util.List;
  */
 public class BoardTemplate {
 
+    public int gameId;
+    public String boardName;
     public int width;
     public int height;
     public int checkPointAmount;

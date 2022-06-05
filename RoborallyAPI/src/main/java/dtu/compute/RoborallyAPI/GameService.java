@@ -46,11 +46,10 @@ public class GameService implements IGameService {
 
     @Override
     public String getListOfGames() {
-        Gson gson = new Gson();
         List<Integer> listOfGames = new ArrayList<>();
         // Get a list of game IDs
         games.forEach(game -> listOfGames.add(game.getId()));
-        return gson.toJson(listOfGames);
+        return new Gson().toJson(listOfGames);
     }
 
     @Override

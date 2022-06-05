@@ -15,9 +15,16 @@ public class ServerController {
         return ResponseEntity.ok().body(gameService.getListOfGames());
     }
 
-    @PostMapping("/game")
-    public ResponseEntity<Integer> startGame() {
+    @PostMapping("/game/")
+    public ResponseEntity<Integer> createGame() {
         int gameId = gameService.startGame();
+        return ResponseEntity.ok().body(gameId);
+    }
+
+    @PostMapping("/game/{boardname}")
+    public ResponseEntity<Integer> createGameFromBoard(@PathVariable String boardname) {
+        int gameId = gameService.startGame();
+        gameService.updateGame(gameId, gameService.getBoard(boardname));
         return ResponseEntity.ok().body(gameId);
     }
 

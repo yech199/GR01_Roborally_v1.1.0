@@ -19,7 +19,7 @@ public class ClientController implements IGameService {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://localhost:8080/game/" + id))
-                .setHeader("User-Agent", "Product Client")
+                .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -42,7 +42,7 @@ public class ClientController implements IGameService {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
                 .uri(URI.create("http://localhost:8080/game" + id))
-                .setHeader("User-Agent", "RoboRally Client")
+                .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
         CompletableFuture<HttpResponse<String>> response =
@@ -65,7 +65,7 @@ public class ClientController implements IGameService {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/game"))
-                .setHeader("User-Agent", "Product Client")
+                .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -87,7 +87,7 @@ public class ClientController implements IGameService {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://localhost:8080/game"))
-                .setHeader("User-Agent", "Product Client")
+                .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -109,7 +109,7 @@ public class ClientController implements IGameService {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://localhost:8080/board"))
-                .setHeader("User-Agent", "Product Client")
+                .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -131,7 +131,7 @@ public class ClientController implements IGameService {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://localhost:8080/board/" + boardName))
-                .setHeader("User-Agent", "Product Client")
+                .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
 

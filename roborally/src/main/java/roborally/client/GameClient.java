@@ -11,28 +11,28 @@ import java.util.List;
 
 public class GameClient {
 
-    ClientController data;
+    ClientController clientController;
 
     public GameClient() {
-        data = new ClientController();
+        clientController = new ClientController();
     }
 
     public int createGame() {
-        return data.startGame();
+        return clientController.startGame();
     }
 
     public Board getGame(String gameName) {
-        String json = data.getGame();
+        String json = clientController.getGame();
         return LoadBoard.loadGameState(json, gameName);
     }
 
     public void setGame(int id, String jsonGameState) {
-        data.updateGame(id, jsonGameState);
+        clientController.updateGame(id, jsonGameState);
     }
 
     public List<String> getListOfGames() {
         Gson gson = new Gson();
-        String games = data.getListOfGames();
+        String games = clientController.getListOfGames();
         int[] id = gson.fromJson(games, int[].class);
         List<String> gameIDs = new ArrayList<>();
         for (int j : id) {
@@ -43,13 +43,13 @@ public class GameClient {
 
     public List<String> getListOfBoards() {
         Gson gson = new Gson();
-        String boards = data.getListOfBoards();
+        String boards = clientController.getListOfBoards();
         String[] boardNames = gson.fromJson(boards, String[].class);
         return new ArrayList<>(Arrays.asList(boardNames));
     }
 
     public Board getBoard(String boardName, int numOfPlayers) {
-        String json = data.getBoard(boardName);
+        String json = clientController.getBoard(boardName);
         return LoadBoard.newBoardState(json, boardName, numOfPlayers);
     }
 }

@@ -161,6 +161,10 @@ public class AppController implements Observer {
         }
     }
 
+    public void saveServerGame() {
+
+    }
+
     public void saveGame() {
         TextInputDialog dialogS = new TextInputDialog();
         dialogS.setTitle("SAVE GAME");

@@ -11,7 +11,6 @@ public class Board {
     public void setGameState(String jsonBoardState) {
         this.boardState = jsonBoardState;
     }
-
     public String getBoardState() {
         return boardState;
     }

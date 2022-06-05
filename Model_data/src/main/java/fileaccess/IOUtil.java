@@ -29,7 +29,10 @@ import com.google.gson.stream.JsonWriter;
 import model.boardElements.SpaceElement;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A utility class reading strings from resources and arbitrary input streams.
@@ -85,6 +88,34 @@ public class IOUtil {
     public static String getResourceFile(String folderName, String fileName, String ext) throws NullPointerException {
         ClassLoader classLoader = SaveBoard.class.getClassLoader();
         return classLoader.getResource(folderName).getPath() + "/" + fileName + "." + ext;
+    }
+
+    private static File[] getResourceFolderFiles (String folder) throws NullPointerException {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        URL url = loader.getResource(folder);
+        String path = url.getPath();
+        return new File(path).listFiles();
+    }
+
+    public static List<String> getBoardFileNames() throws NullPointerException {
+        File[] boardnames = getResourceFolderFiles("boards");
+
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = 0; i < boardnames.length; i++) {
+            String name = boardnames[i].getName();
+            result.add(name.substring(0, name.lastIndexOf(".")));
+        }
+        return result;
+    }
+    public static List<String> getSaveGameFiles() throws NullPointerException {
+        File[] savegames = getResourceFolderFiles("savedgames");
+
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = 0; i < savegames.length; i++) {
+            String name = savegames[i].getName();
+            result.add(name.substring(0, name.lastIndexOf(".")));
+        }
+        return result;
     }
 
     /**

@@ -24,7 +24,6 @@ package roborally.controller;
 import designpatterns.observer.Subject;
 import designpatterns.observer.Observer;
 
-import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import roborally.RoboRally;
 
@@ -119,12 +118,22 @@ public class AppController implements Observer {
         }
     }
 
-    public void serverGame() {
-        int gameId = client.createGame();
+    public void createServerGame() {
+        //int gameId = client.createGame();
         // Right now we just post the board on the client to the server.
         // Users should be able to join, create and see other players games.
         // make the user select the board to be created on the server
-        client.setGame(gameId, IOUtil.readGame(null, false));
+        //client.setGame(gameId, IOUtil.readGame(null, false));
+        List<String> games = client.getListOfGames();
+
+        ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
+        dialogL.setTitle("Select board");
+        dialogL.setHeaderText("Select a board to load");
+        Optional<String> resultS = dialogL.showAndWait();
+
+        if(resultS.isPresent()) {
+
+        }
     }
 
     public void saveGame() {

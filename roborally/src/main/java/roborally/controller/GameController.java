@@ -23,6 +23,7 @@ package roborally.controller;
 
 import controller.AGameController;
 import model.*;
+import model.boardElements.Checkpoint;
 import model.boardElements.ConveyorBelt;
 import model.boardElements.Pit;
 import model.boardElements.SpaceElement;
@@ -47,7 +48,7 @@ public class GameController extends AGameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
-        // TODO Assignment V1: method should be implemented by the students:
+        // method should be implemented by the students:
         //   - the current player should be moved to the given space
         //     (if it is free()
         //   - and the current player should be set to the player
@@ -141,7 +142,7 @@ public class GameController extends AGameController {
                 board.setCurrentPlayer(board.getPlayer(0));
             }
             executeNextStep();
-        } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
+        } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode() && board.getWinner() == null);
     }
 
     // XXX: V2
@@ -165,11 +166,6 @@ public class GameController extends AGameController {
                 Space space = currentPlayer.getSpace();
                 for (SpaceElement action : space.getActions()) {
                     action.doAction(this, space);
-                }
-
-                //Check winner
-                if (currentPlayer.isWinner()) {
-                    Winner(currentPlayer);
                 }
 
                 // Next Player
@@ -282,7 +278,7 @@ public class GameController extends AGameController {
      * @param player who wants to push another player
      * @param target the space of the player being pushed
      * @return Whether the push is a valid move
-     * @throws ImpossibleMoveException
+     * @throws ImpossibleMoveException if the move isn't a valid move
      */
     private boolean checkIfMoveToTargetWithPlayerIsValid(@NotNull Player player, Space target) throws ImpossibleMoveException {
 
@@ -311,7 +307,7 @@ public class GameController extends AGameController {
 
             if (tmpTarget.getActions().size() > 0) {
                 for (SpaceElement space : tmpTarget.getActions()) {
-                    if (!(space instanceof ConveyorBelt)) {
+                    if (!(space instanceof ConveyorBelt) && !(space instanceof Checkpoint)) {
                         space.doAction(this, targetPlayer.getSpace());
                     }
                 }
@@ -375,14 +371,6 @@ public class GameController extends AGameController {
         // }
         
         rebootTokenSpace.setPlayer(player);
-    }
-
-    public void Winner(Player player) {
-        // Player has won
-        System.out.println(player.getName() + " har vundet");
-        JOptionPane.showMessageDialog(null, player.getName()
-                + " har vundet", "InfoBox: " + player.getName() + " har vundet", JOptionPane.INFORMATION_MESSAGE);
-        //Platform.exit();
     }
 
     class ImpossibleMoveException extends Exception {

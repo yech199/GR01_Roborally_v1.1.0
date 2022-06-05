@@ -21,25 +21,23 @@
  */
 package roborally.controller;
 
-import designpatterns.observer.Subject;
 import designpatterns.observer.Observer;
-
+import designpatterns.observer.Subject;
 import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
-import roborally.RoboRally;
-
-import roborally.client.GameClient;
 import fileaccess.SaveBoard;
-import model.Board;
-
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
+import model.Board;
 import org.jetbrains.annotations.NotNull;
+import roborally.RoboRally;
+import roborally.client.GameClient;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +46,6 @@ import java.util.Optional;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class AppController implements Observer {
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
@@ -99,22 +96,27 @@ public class AppController implements Observer {
             if (resultS.isPresent()) {
                 board = LoadBoard.newBoard(resultS.get(), numberOfPlayers);
                 // Sets number of players here!
-                for (int i = 0; i < numberOfPlayers; i++) {
-                    TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
-                    name.setTitle("Player name");
-                    name.setHeaderText("Write the name of the player");
-                    name.setContentText("Name: ");
-                    Optional<String> resultName = name.showAndWait();
-
-                    if (resultName.isPresent()) {
-                        board.getPlayer(i).setName(resultName.get());
-                    }
-                }
-            } else {
+                choosePlayerNames(numberOfPlayers, board);
+            }
+            else {
                 board = LoadBoard.newBoard(null, numberOfPlayers);
             }
 
             setupGameController(board);
+        }
+    }
+
+    private void choosePlayerNames(int numberOfPlayers, Board board) {
+        for (int i = 0; i < numberOfPlayers; i++) {
+            TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
+            name.setTitle("Player name");
+            name.setHeaderText("Write the name of the player");
+            name.setContentText("Name: ");
+            Optional<String> resultName = name.showAndWait();
+
+            if (resultName.isPresent()) {
+                board.getPlayer(i).setName(resultName.get());
+            }
         }
     }
 
@@ -129,7 +131,7 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> selectedNumOfPlayers = dialog.showAndWait();
         int numOfPlayers;
-        if(selectedNumOfPlayers.isPresent()) {
+        if (selectedNumOfPlayers.isPresent()) {
             numOfPlayers = selectedNumOfPlayers.get();
 
             List<String> games = client.getListOfBoards();
@@ -140,21 +142,12 @@ public class AppController implements Observer {
             Optional<String> selectedBoard = dialogL.showAndWait();
 
             Board board;
-            if(selectedBoard.isPresent()) {
+            if (selectedBoard.isPresent()) {
                 board = client.getBoardState(selectedBoard.get(), numOfPlayers);
                 // Sets number of players here!
-                for (int i = 0; i < numOfPlayers; i++) {
-                    TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
-                    name.setTitle("Player name");
-                    name.setHeaderText("Write the name of the player");
-                    name.setContentText("Name: ");
-                    Optional<String> resultName = name.showAndWait();
-
-                    if (resultName.isPresent()) {
-                        board.getPlayer(i).setName(resultName.get());
-                    }
-                }
-            } else {
+                choosePlayerNames(numOfPlayers, board);
+            }
+            else {
                 board = LoadBoard.newBoard(null, numOfPlayers);
             }
             setupGameController(board);
@@ -195,25 +188,25 @@ public class AppController implements Observer {
             Optional<String> result = dialogL.showAndWait();
 
             if (result.isPresent()) {
-                String boardname = result.get();
-                Board board = LoadBoard.loadGame(boardname, true);
+                String boardName = result.get();
+                Board board = LoadBoard.loadGame(boardName, true);
                 setupGameController(board);
-            }  else {
-                // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
-                return;
+            }
+            else {
+                // TODO: The UI should not allow this, but in case this happens anyway.
+                //  give the user the option to save the game or abort this operation!
             }
         }
     }
 
     private void setupGameController(Board board) {
+        board.attach(this);
         gameController = new GameController(board);
 
         // If game is new (eg. not loaded), then we set up the programming phase. Else we skip it.
         if (!LoadBoard.getLoadedBoard()) {
             gameController.startProgrammingPhase();
         }
-
         roboRally.createBoardView(gameController);
     }
 
@@ -241,13 +234,27 @@ public class AppController implements Observer {
 
     public void exit() {
         if (gameController != null) {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Exit RoboRally?");
-            alert.setContentText("Are you sure you want to exit RoboRally?");
-            Optional<ButtonType> result = alert.showAndWait();
+            // If there is a winner, don't save game. Just exit program
+            if (gameController.board.getWinner() != null) {
+                System.out.println(gameController.board.getWinner().getName() + " har vundet");
 
-            if (!result.isPresent() || result.get() != ButtonType.OK) {
-                return; // return without exiting the application
+                JOptionPane.showMessageDialog(null, gameController.board.getWinner().getName()
+                        + " har vundet", "InfoBox: " + gameController.board.getWinner().getName()
+                        + " har vundet", JOptionPane.INFORMATION_MESSAGE);
+
+                gameController = null;
+                roboRally.createBoardView(null);
+            }
+
+            else {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Exit RoboRally?");
+                alert.setContentText("Are you sure you want to exit RoboRally?");
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isEmpty() || result.get() != ButtonType.OK) {
+                    return; // return without exiting the application
+                }
             }
         }
 
@@ -264,7 +271,9 @@ public class AppController implements Observer {
 
     @Override
     public void update(Subject subject) {
-        // XXX do nothing for now
+        if (gameController != null) {
+            if (gameController.board.getWinner() != null) exit();
+        }
     }
 
 }

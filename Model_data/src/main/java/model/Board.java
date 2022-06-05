@@ -51,19 +51,23 @@ public class Board extends Subject {
 
     private Player current;
 
+    private Player winner = null;
+
     private Phase phase = INITIALISATION;
 
+    // zero indexed
     private int step = 0;
 
-    public int checkPointAmount; // How many checkpoint are there in total
+    // How many checkpoint are there in total
+    public final int totalNoOfCheckpoints;
 
     private boolean stepMode;
 
-    public Board(int width, int height, int checkPointAmount, @NotNull String boardName) {
+    public Board(int width, int height, int totalNoOfCheckpoints, @NotNull String boardName) {
         this.boardName = boardName;
         this.width = width;
         this.height = height;
-        this.checkPointAmount = checkPointAmount;
+        this.totalNoOfCheckpoints = totalNoOfCheckpoints;
         spaces = new Space[width][height];
 
         for (int x = 0; x < width; x++) {
@@ -75,8 +79,8 @@ public class Board extends Subject {
         this.stepMode = false;
     }
 
-    public Board(int width, int height, int checkPointAmount) {
-        this(width, height, checkPointAmount, "defaultboard");
+    public Board(int width, int height, int totalNoOfCheckpoints) {
+        this(width, height, totalNoOfCheckpoints, "defaultboard");
     }
 
     public Integer getGameId() {
@@ -205,40 +209,22 @@ public class Board extends Subject {
         int x = space.x;
         int y = space.y;
 
-        // Check for Walls
-
-
         // Update Placing/Check for collision
         switch (heading) {
-            case SOUTH:
-                y = (y + 1); //% height;
-                break;
-            case WEST:
-                x = (x - 1); //% width;
-                break;
-            case NORTH:
-                y = (y - 1); //% height;
-                break;
-            case EAST:
-                x = (x + 1); // % width;
-                break;
+            case SOUTH -> y = (y + 1); //% height;
+            case WEST -> x = (x - 1); //% width;
+            case NORTH -> y = (y - 1); //% height;
+            case EAST -> x = (x + 1); // % width;
         }
 
         // Check for out of bounds
-        if (y > height || y < 0 && x > width || x < 0)
-        {
-            // Pushed out of bounds
+        if (y > height || y < 0 && x > width || x < 0) {
             return null;
         }
-        else
-        {
+        else {
             // Moved within board
             return getSpace(x, y);
         }
-    }
-
-    public int getCheckPointAmount() {
-        return checkPointAmount;
     }
 
     public String getStatusMessage() {
@@ -251,8 +237,14 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
-    
-    public int getSpaceAmount() {
-        return spaces.length;
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        if (this.winner == null && winner.isWinner())
+            this.winner = winner;
+        notifyChange();
     }
 }

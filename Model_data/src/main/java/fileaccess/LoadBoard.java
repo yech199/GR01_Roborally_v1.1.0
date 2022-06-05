@@ -34,7 +34,6 @@ public class LoadBoard {
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
 
-            // -----------------------------SAVED GAME-------------------------------------
             newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
             newPlayer.setProgram(loadCommandCardFields(player.registers, newPlayer));
 
@@ -144,6 +143,10 @@ public class LoadBoard {
     public static Board newBoard(String boardName, int numberOfPlayers) {
         String gameState = IOUtil.readGame(boardName, false);
         return deserializeBoard(gameState, boardName, numberOfPlayers);
+    }
+
+    public static Board newBoardState(String jsonBoardState, String boardName, int numberOfPlayers) {
+        return deserializeBoard(jsonBoardState, boardName, numberOfPlayers);
     }
 
     public static boolean getLoadedBoard() {

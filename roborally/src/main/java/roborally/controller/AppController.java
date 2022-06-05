@@ -119,11 +119,8 @@ public class AppController implements Observer {
     }
 
     public void createServerGame() {
-        //int gameId = client.createGame();
-        // Right now we just post the board on the client to the server.
-        // Users should be able to join, create and see other players games.
-        // make the user select the board to be created on the server
-        //client.setGame(gameId, IOUtil.readGame(null, false));
+        int gameId = client.createGame();
+
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
@@ -157,11 +154,19 @@ public class AppController implements Observer {
             } else {
                 board = LoadBoard.newBoard(null, numOfPlayers);
             }
+
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Game created succesfully. Your game ID is: " + gameId, ButtonType.OK);
+            alert.showAndWait();
+
             setupGameController(board);
         }
     }
 
     public void saveServerGame() {
+
+    }
+
+    public void joinGame() {
 
     }
 

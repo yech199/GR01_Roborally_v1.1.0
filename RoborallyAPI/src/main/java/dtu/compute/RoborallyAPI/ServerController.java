@@ -15,7 +15,7 @@ public class ServerController {
         return ResponseEntity.ok().body(gameService.getListOfGames());
     }
 
-    @PostMapping("/game/")
+    @PostMapping("/game")
     public ResponseEntity<Integer> createGame() {
         int gameId = gameService.createGame();
         return ResponseEntity.ok().body(gameId);

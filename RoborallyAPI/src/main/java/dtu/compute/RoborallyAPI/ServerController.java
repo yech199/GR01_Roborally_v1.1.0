@@ -21,7 +21,7 @@ public class ServerController {
         return ResponseEntity.ok().body(gameService.getGameById(id));
     }
 
-    @PostMapping("/game/{id}")
+    @PutMapping("/game/{id}")
     public ResponseEntity<String> setGame(@PathVariable int id, @RequestBody String gameData) {
         gameService.updateGame(id, gameData);
         return ResponseEntity.ok().body("OK");

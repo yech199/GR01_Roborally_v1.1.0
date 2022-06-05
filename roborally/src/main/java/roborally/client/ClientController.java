@@ -56,11 +56,6 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String getGame() {
-        return null;
-    }
-
-    @Override
     public int startGame() {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(""))

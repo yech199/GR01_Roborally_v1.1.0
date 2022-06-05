@@ -21,8 +21,8 @@ public class GameClient {
         return clientController.startGame();
     }
 
-    public Board getGameState(String gameName) {
-        String json = clientController.getGame();
+    public Board getGameState(int id, String gameName) {
+        String json = clientController.getGameById(id);
         return LoadBoard.loadGameState(json, gameName);
     }
 

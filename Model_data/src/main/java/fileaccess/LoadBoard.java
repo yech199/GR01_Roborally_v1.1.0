@@ -124,6 +124,18 @@ public class LoadBoard {
     }
 
     /**
+     *
+     */
+    public static Board loadGameState(String jsonGameState, String gameName) {
+        try {
+            return deserializeGame(jsonGameState, gameName);
+        } catch (Exception e) {
+            System.out.println("Loading of game state failed");
+            return new Board(8, 8, 1);
+        }
+    }
+
+    /**
      * Create a new game by loading a gameboard from the predefined board configurations in resource folder
      *
      * @param boardName name of the game board

@@ -1,7 +1,7 @@
 package dtu.compute.RoborallyAPI.Model;
 
 public class Game {
-    private int id;
+    private final int id;
     private transient String gameState;
     private int amountOfPlayers;
 

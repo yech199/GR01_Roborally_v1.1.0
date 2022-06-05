@@ -1,23 +1,29 @@
 package dtu.compute.RoborallyAPI;
 
 import com.google.gson.Gson;
+import dtu.compute.RoborallyAPI.Model.Board;
 import dtu.compute.RoborallyAPI.Model.Game;
+import fileaccess.IOUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GameService implements IGameService {
 
     ArrayList<Game> games = new ArrayList<>();
+    ArrayList<Board> boards = new ArrayList<>();
     int id = 0;
-    //private String gameData;
 
-    //DataFile dataFile = new DataFile("defaultboard.json");
-
-    public void getGamesList() {
-
+    public GameService() {
+        List<String> boardNames = IOUtil.getBoardFileNames();
+        for (String boardName : boardNames) {
+            Board board = new Board(boardName);
+            boards.add(board);
+            board.setGameState(IOUtil.readGame(boardName, false));
+        }
     }
 
     @Override
@@ -31,12 +37,6 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public String getGame() {
-        //return gameData;
-        return null;
-    }
-
-    @Override
     public int startGame() {
         games.add(new Game(id));
         int gameId = id;
@@ -47,10 +47,28 @@ public class GameService implements IGameService {
     @Override
     public String getListOfGames() {
         Gson gson = new Gson();
-        ArrayList<Integer> ListOfGames = new ArrayList<>();
+        List<Integer> listOfGames = new ArrayList<>();
         // Get a list of game IDs
-        games.forEach(e -> ListOfGames.add(e.getId()));
-        return gson.toJson(ListOfGames);
+        games.forEach(game -> listOfGames.add(game.getId()));
+        return gson.toJson(listOfGames);
+    }
+
+    @Override
+    public String getListOfBoards() {
+        List<String> listOfBoards = new ArrayList<>();
+        // Get a list of board names
+        boards.forEach(board -> listOfBoards.add(board.getName()));
+        return new Gson().toJson(listOfBoards);
+    }
+
+    @Override
+    public String getBoard(String boardName) {
+        for (Board board : boards) {
+            if (board.getName().equals(boardName)) {
+                return board.getBoardState();
+            }
+        }
+        return null;
     }
 
     @Override

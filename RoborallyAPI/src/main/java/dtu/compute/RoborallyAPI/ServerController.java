@@ -31,4 +31,14 @@ public class ServerController {
         gameService.updateGame(id, gameData);
         return ResponseEntity.ok().body("OK");
     }
+    
+    @GetMapping("/board")
+    public ResponseEntity<String> getListOfBoards() {
+        return ResponseEntity.ok().body(gameService.getListOfBoards());
+    }
+
+    @GetMapping("/board/{name}")
+    public ResponseEntity<String> getBoard(@PathVariable String name) {
+        return ResponseEntity.ok().body(gameService.getBoard(name));
+    }
 }

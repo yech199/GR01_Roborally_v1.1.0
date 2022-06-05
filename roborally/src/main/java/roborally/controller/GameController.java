@@ -22,10 +22,9 @@
 package roborally.controller;
 
 import controller.AGameController;
-
-import model.boardElements.SpaceElement;
 import model.*;
-
+import model.boardElements.Pit;
+import model.boardElements.SpaceElement;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -208,7 +207,7 @@ public class GameController extends AGameController {
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
             switch (command) {
-                case FORWARD -> this.moveForward(player);
+                case FORWARD -> this.moveForward(player, player.getHeading());
                 case RIGHT -> this.turnRight(player);
                 case LEFT -> this.turnLeft(player);
                 case FAST_FORWARD -> this.moveXForward(player, 2);
@@ -243,9 +242,14 @@ public class GameController extends AGameController {
         continuePrograms();
     }
 
-    public void moveForward(@NotNull Player player) {
+    /**
+     * Moves the player in the direction of the heading if possible
+     * @param player being moved
+     * @param playerHeading of the player or of the spaceElement moving you
+     */
+    public void moveForward(@NotNull Player player, Heading playerHeading) {
         try {
-            Heading playerHeading = player.getHeading();
+            // Heading playerHeading = player.getHeading();
             Space target = board.getNeighbour(player.getSpace(), playerHeading);
 
             // Target out of board. You cannot move out of the board or into an antenna (you can only be pushed out)
@@ -256,9 +260,8 @@ public class GameController extends AGameController {
             else if (target.getPlayer() != null) {
                 boolean isValid = checkIfMoveToTargetWithPlayerIsValid(player, target);
                 if (!isValid) throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
-
-
             }
+
             else {
                 if (player.getSpace().hasWallPointing(playerHeading) || target.hasWallPointing(playerHeading.next().next())
                         || target == this.antennaSpace) {
@@ -267,9 +270,7 @@ public class GameController extends AGameController {
             }
             // Free? Then move player
             target.setPlayer(player);
-
         } catch (ImpossibleMoveException e) {
-            // reboot(player,board);
             System.out.println("Move impossible");
         }
 
@@ -312,7 +313,14 @@ public class GameController extends AGameController {
 
     public void moveXForward(@NotNull Player player, int moves) {
         for (int i = 0; i < moves; i++) {
-            moveForward(player);
+            if (player.getSpace().getActions().size() > 0) {
+                for (SpaceElement space : player.getSpace().getActions()) {
+                    if (space instanceof Pit)
+                        return;
+                }
+            }
+
+            moveForward(player, player.getHeading());
         }
     }
 

@@ -433,7 +433,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "GREEN"
           }
         }
       ],
@@ -448,7 +449,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "BLUE"
           }
         }
       ],
@@ -463,7 +465,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -476,7 +479,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -489,7 +493,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -502,7 +507,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -515,7 +521,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -528,7 +535,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -543,7 +551,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "EAST"
+            "heading": "EAST",
+            "color": "BLUE"
           }
         }
       ],
@@ -558,7 +567,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "SOUTH"
+            "heading": "SOUTH",
+            "color": "GREEN"
           }
         }
       ],
@@ -573,7 +583,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "GREEN"
           }
         }
       ],
@@ -588,7 +599,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -603,7 +615,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "EAST"
+            "heading": "EAST",
+            "color": "GREEN"
           }
         }
       ],
@@ -623,6 +636,19 @@
       ],
       "x": 7,
       "y": 7
+    },
+    {
+      "walls": [
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.Pit",
+          "INSTANCE": {
+          }
+        }
+      ],
+      "x": 4,
+      "y": 2
     },
     {
       "walls": [

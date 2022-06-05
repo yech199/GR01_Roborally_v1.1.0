@@ -1,19 +1,27 @@
 package roborally.client;
 
 // import fileaccess.LoadSaveBoard;
+import fileaccess.LoadBoard;
 import model.Board;
 
 public class GameClient {
 
-    DataController data;
+    ClientController data;
 
     public GameClient() {
-        data = new DataController();
+        data = new ClientController();
     }
 
-    public Board getBoard(String boardName) {
-        //String json = data.getGame();
-        //return data.getGame();
-        return null;
+    public int createGame() {
+        return data.startGame();
+    }
+
+    public Board getGame(String gameName) {
+        String json = data.getGame();
+        return LoadBoard.loadGameState(json, gameName);
+    }
+
+    public void setGame(int id, String jsonGameState) {
+        data.updateGame(id, jsonGameState);
     }
 }

@@ -16,19 +16,9 @@ public class ClientController implements IGameService {
 
     @Override
     public String getGameById(int id) {
-        return null;
-    }
-
-    @Override
-    public void updateGame(String gameData) {
-
-    }
-
-    @Override
-    public String getGame() {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/game"))
+                .uri(URI.create("http://localhost:8080/game/" + id))
                 .setHeader("User-Agent", "Product Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -45,5 +35,60 @@ public class ClientController implements IGameService {
         }
 
         return result;
+    }
+
+    @Override
+    public void updateGame(int id, String gameData) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(gameData))
+                .uri(URI.create("http://localhost:8080/game" + id))
+                .setHeader("User-Agent", "RoboRally Client")
+                .setHeader("Content-Type", "application/json")
+                .build();
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+            // Ignore response
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String getGame() {
+        return null;
+    }
+
+    @Override
+    public int startGame() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(""))
+                .uri(URI.create("http://localhost:8080/game"))
+                .setHeader("User-Agent", "Product Client")
+                .header("Content-Type", "application/json")
+                .build();
+
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+        String result;
+        try {
+            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = null;
+        }
+        return Integer.valueOf(result);
+    }
+
+    @Override
+    public String getListOfGames() {
+        return null;
+    }
+
+    @Override
+    public String joinGame(int id) {
+        return null;
     }
 }

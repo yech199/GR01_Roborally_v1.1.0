@@ -10,7 +10,6 @@ import model.*;
 import model.boardElements.SpaceElement;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class LoadBoard {
     private static boolean loadedBoard = false;
@@ -130,7 +129,7 @@ public class LoadBoard {
      * @param boardName name of the game board
      * @return the new board
      */
-    public static Board newGame(String boardName, int numberOfPlayers) {
+    public static Board newBoard(String boardName, int numberOfPlayers) {
         String gameState = IOUtil.readGame(boardName, false);
         return deserializeBoard(gameState, boardName, numberOfPlayers);
     }

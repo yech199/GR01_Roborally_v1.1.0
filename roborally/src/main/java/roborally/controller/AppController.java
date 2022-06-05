@@ -39,7 +39,6 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -96,7 +95,7 @@ public class AppController implements Observer {
             Board board;
 
             if (resultS.isPresent()) {
-                board = LoadBoard.newGame(resultS.get(), numberOfPlayers);
+                board = LoadBoard.newBoard(resultS.get(), numberOfPlayers);
                 // Sets number of players here!
                 for (int i = 0; i < numberOfPlayers; i++) {
                     TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
@@ -110,7 +109,7 @@ public class AppController implements Observer {
                     }
                 }
             } else {
-                board = LoadBoard.newGame(null, numberOfPlayers);
+                board = LoadBoard.newBoard(null, numberOfPlayers);
             }
 
             setupGameController(board);

@@ -56,7 +56,7 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public int startGame() {
+    public int createGame() {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/game"))

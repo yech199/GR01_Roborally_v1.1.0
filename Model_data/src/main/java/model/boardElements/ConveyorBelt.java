@@ -36,8 +36,8 @@ import org.jetbrains.annotations.NotNull;
 public class ConveyorBelt extends SpaceElement {
 
     public enum ConveyorBeltColor {
-        green,
-        blue
+        GREEN,
+        BLUE
     }
 
     private ConveyorBeltColor color;
@@ -76,8 +76,8 @@ public class ConveyorBelt extends SpaceElement {
                 player.setHeading(action.heading);
 
                 // Move the player
-                if (color == ConveyorBeltColor.green) {
                     gameController.moveForward(player);
+                if (color == ConveyorBeltColor.GREEN) {
                 } else {
                     // Move player, then update direction, then move again
                     gameController.moveForward(player);

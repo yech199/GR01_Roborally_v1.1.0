@@ -36,6 +36,7 @@ public class RoboRallyMenuBar extends MenuBar {
     private AppController appController;
 
     private Menu controlMenu;
+    private Menu serverMenu;
 
     private MenuItem saveGame;
 
@@ -53,24 +54,16 @@ public class RoboRallyMenuBar extends MenuBar {
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
 
+        /**
+         * LOCAL ACTIONS MENU
+         */
+
         controlMenu = new Menu("File");
         this.getMenus().add(controlMenu);
 
         newGame = new MenuItem("New Game");
         newGame.setOnAction(e -> this.appController.newGame());
         controlMenu.getItems().add(newGame);
-
-        serverGame = new MenuItem("Create Server Game");
-        serverGame.setOnAction(e -> this.appController.createServerGame());
-        controlMenu.getItems().add(serverGame);
-
-        joinGame = new MenuItem("Join Game");
-        joinGame.setOnAction(e -> this.appController.joinGame());
-        controlMenu.getItems().add(joinGame);
-
-        saveServerGame = new MenuItem("Save Server game");
-        saveServerGame.setOnAction(e -> this.appController.saveServerGame());
-        controlMenu.getItems().add(saveServerGame);
 
         stopGame = new MenuItem("Stop Game");
         stopGame.setOnAction(e -> this.appController.stopGame());
@@ -90,6 +83,35 @@ public class RoboRallyMenuBar extends MenuBar {
 
         controlMenu.setOnShowing(e -> update());
         controlMenu.setOnShown(e -> this.updateBounds());
+
+        update();
+
+        /**
+         * SERVER ACTIONS MENU
+         */
+        serverMenu = new Menu("Server");
+        this.getMenus().add(serverMenu);
+
+        serverGame = new MenuItem("Create Server Game");
+        serverGame.setOnAction(e -> this.appController.createServerGame());
+        serverMenu.getItems().add(serverGame);
+
+        joinGame = new MenuItem("Join Game");
+        joinGame.setOnAction(e -> this.appController.joinGame());
+        serverMenu.getItems().add(joinGame);
+
+        saveServerGame = new MenuItem("Save Server game");
+        saveServerGame.setOnAction(e -> this.appController.saveServerGame());
+        serverMenu.getItems().add(saveServerGame);
+
+        exitApp = new MenuItem("Exit");
+        exitApp.setOnAction(e -> this.appController.exit());
+        serverMenu.getItems().add(exitApp);
+
+        serverMenu.setOnShowing(e -> update());
+        serverMenu.setOnShown(e -> this.updateBounds());
+
+
         update();
     }
 

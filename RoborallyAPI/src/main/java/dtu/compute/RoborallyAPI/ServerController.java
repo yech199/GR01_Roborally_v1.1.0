@@ -23,7 +23,8 @@ public class ServerController {
 
     @GetMapping("/game/{id}")
     public ResponseEntity<String> getGameState(@PathVariable int id) {
-        return ResponseEntity.ok().body( SaveBoard.serializeBoard(gameService.getGameById(id)));
+        Board board = gameService.getGameById(id);
+        return ResponseEntity.ok().body(SaveBoard.serializeBoard(board));
     }
 
     @PutMapping("/game/{id}")

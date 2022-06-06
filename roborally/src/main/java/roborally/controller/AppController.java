@@ -139,7 +139,6 @@ public class AppController implements Observer {
 
             Board board;
             if (selectedBoard.isPresent()) {
-                // TODO Fix always getting 6 players from server
                 board = client.createGame(selectedBoard.get(), numOfPlayers);
                 // Sets number of players here!
                 choosePlayerNames(numOfPlayers, board);
@@ -157,10 +156,18 @@ public class AppController implements Observer {
     }
 
     public void saveServerGame() {
-        int id = gameController.board.getGameId();
-        String json = SaveBoard.serializeBoard(gameController.board);
-
-        client.setGameState(id, json);
+        String msg;
+        try {
+            int id = gameController.board.getGameId();
+            String json = SaveBoard.serializeBoard(gameController.board);
+            client.setGameState(id, json);
+            msg = "Succesfully saved game to server";
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Failed to save game to server";
+        }
+        Alert alert = new Alert(AlertType.CONFIRMATION, msg, ButtonType.OK);
+        alert.showAndWait();
     }
 
     public void joinGame() {

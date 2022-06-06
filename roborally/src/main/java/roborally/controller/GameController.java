@@ -143,25 +143,30 @@ public class GameController extends AGameController {
     // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
+
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
-                if (card != null) {
-                    if (card.command == Command.OPTION_LEFT_RIGHT) {
-                        board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
+                if (!currentPlayer.isRebooted) {
+                    CommandCard card = currentPlayer.getProgramField(step).getCard();
+                    if (card != null) {
+                        if (card.command == Command.OPTION_LEFT_RIGHT) {
+                            board.setPhase(Phase.PLAYER_INTERACTION);
+                            return;
+                        }
+                        Command command = card.command;
+                        executeCommand(currentPlayer, command);
                     }
-                    Command command = card.command;
-                    executeCommand(currentPlayer, command);
-                }
 
-                //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
-                // executing the actions on the space a player moves to
-                Space space = currentPlayer.getSpace();
-                for (SpaceElement action : space.getActions()) {
-                    action.doAction(this, space);
+                    //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
+                    // executing the actions on the space a player moves to
+                    Space space = currentPlayer.getSpace();
+                    for (SpaceElement action : space.getActions()) {
+                        action.doAction(this, space);
+                    }
                 }
+                if (currentPlayer.isRebooted && board.getStep() == Player.NO_REGISTERS - 1)
+                    currentPlayer.isRebooted = false;
 
                 // Next Player
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -393,21 +398,9 @@ public class GameController extends AGameController {
     }
 
     public void reboot(Player player) {
-        // int checkpoint = player.getCheckPoints();
-        // if (checkpoint == 1) {
-        //     player.setSpace(board.getSpace(0, 0));
-        // }
-        // else {
-        //     for (int x = 0; x < board.getSpaces().length; x++) {
-        //         for (int y = 0; y < board.getSpaces()[0].length; y++) {
-        //             if (board.getSpace(x, y).checkpointNumber == checkpoint - 1) {
-        //                 player.setSpace(board.getSpace(x, y));
-        //             }
-        //         }
-        //     }
-        // }
-        
+        player.isRebooted = true;
         rebootTokenSpace.setPlayer(player);
+        rebootToken.doAction(this, rebootTokenSpace);
     }
 
     class ImpossibleMoveException extends Exception {

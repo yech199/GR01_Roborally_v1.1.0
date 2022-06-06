@@ -15,8 +15,4 @@ public class RebootToken extends SpaceElement {
     public Heading getHeading() {
         return heading;
     }
-
-    public void setHeading(Heading heading) {
-        this.heading = heading;
-    }
 }

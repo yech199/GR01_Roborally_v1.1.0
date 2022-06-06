@@ -168,6 +168,10 @@ public class AppController implements Observer {
         alert.showAndWait();
     }
 
+    public void leaveGame() {
+        // TODO add functionality so that a player can leave the game
+    }
+
     public void joinGame() {
         TextInputDialog name = new TextInputDialog();
         name.setTitle("Player name");

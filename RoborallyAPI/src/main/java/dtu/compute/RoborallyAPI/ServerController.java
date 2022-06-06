@@ -1,6 +1,7 @@
 package dtu.compute.RoborallyAPI;
 
 import fileaccess.SaveBoard;
+import model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

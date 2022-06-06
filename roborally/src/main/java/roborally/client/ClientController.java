@@ -77,6 +77,7 @@ public class ClientController implements IGameService {
         return result;
     }
 
+
     @Override
     public String getListOfGames() {
         HttpRequest request = HttpRequest.newBuilder()

@@ -1,6 +1,7 @@
 package dtu.compute.RoborallyAPI;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
@@ -52,10 +53,24 @@ public class GameService implements IGameService {
     @Override
     public String getListOfGames() {
         List<Integer> listOfGames = new ArrayList<>();
-        // Get a list of game IDs
+        List<String> listOfBoardNames = new ArrayList<>();
         games.forEach(game -> listOfGames.add(game.getGameId()));
-        return new Gson().toJson(listOfGames);
+        games.forEach(game -> listOfBoardNames.add(game.getBoardName()));
+
+
+        JsonObject jsonObj = new JsonObject();
+        // array to JsonArray
+        JsonArray jsonArray1 = new Gson().toJsonTree(listOfGames).getAsJsonArray();
+
+        JsonArray jsonArray2 = new Gson().toJsonTree(listOfBoardNames).getAsJsonArray();
+        jsonObj.add("gameId", jsonArray1);
+        jsonObj.add("boardNames", jsonArray2);
+
+        return new Gson().toJson(jsonObj);
     }
+
+
+}
 
     @Override
     public String getListOfBoards() {

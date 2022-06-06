@@ -38,9 +38,15 @@ public class GameClient {
         Gson gson = new Gson();
         String games = clientController.getListOfGames();
         int[] id = gson.fromJson(games, int[].class);
+        String[] boardName = gson.fromJson(games, String[].class);
+
         List<String> gameIDs = new ArrayList<>();
         for (int j : id) {
             gameIDs.add(String.valueOf(j));
+        }
+        for(int i = 0; i < gameIDs.size(); i++) {
+            boardName[i] = clientController.getGameById(Integer.parseInt(gameIDs.get(i)));
+            gameIDs.add(i, " " + boardName[i]);
         }
         return gameIDs;
     }

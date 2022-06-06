@@ -139,7 +139,6 @@ public class AppController implements Observer {
 
             Board board;
             if (selectedBoard.isPresent()) {
-                // TODO Fix always getting 6 players from server
                 board = client.createGame(selectedBoard.get(), numOfPlayers);
                 // Sets number of players here!
                 choosePlayerNames(numOfPlayers, board);

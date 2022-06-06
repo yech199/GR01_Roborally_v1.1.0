@@ -258,8 +258,7 @@ public class GameController extends AGameController {
             }
 
             else {
-                if (player.getSpace().hasWallPointing(playerHeading) || target.hasWallPointing(playerHeading.next().next())
-                        || target == this.antennaSpace) {
+                if (player.getSpace().hasWallPointing(playerHeading) || target.hasWallPointing(playerHeading.next().next())) {
                     throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
                 }
             }

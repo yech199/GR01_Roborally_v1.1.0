@@ -1,6 +1,8 @@
 package dtu.compute.RoborallyAPI;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
@@ -13,6 +15,7 @@ import java.util.List;
 @Service
 public class GameService implements IGameService {
 
+    // A game is a board with a set gameId and saved player cards/registers
     ArrayList<Board> games = new ArrayList<>();
     ArrayList<Board> boards = new ArrayList<>();
     int id = 1;
@@ -41,21 +44,21 @@ public class GameService implements IGameService {
         for (Board game : games) {
             if (game.getGameId() == id) {
                 // TODO Explore if it's good enough to serialize->deserialize, or a better copy-board-method can be found
-                Board newGame = LoadBoard.loadGameState(gameState);
-                games.set(i, newGame);
+                game = LoadBoard.loadGameState(gameState);
+                games.set(i, game);
                 i++;
             }
         }
     }
 
     @Override
-    public Board createGame(String boardName, int numOfPlayers) {
+    public String createGame(String boardName, int numOfPlayers) {
         for (Board board : boards) {
             if (board.getBoardName().equals(boardName)) {
                 Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
                 games.add(game);
                 id++;
-                return game;
+                return SaveBoard.serializeBoard(game);
             }
         }
         // TODO Add game not found Exeption
@@ -65,9 +68,21 @@ public class GameService implements IGameService {
     @Override
     public String getListOfGames() {
         List<Integer> listOfGames = new ArrayList<>();
+        List<String> listOfBoardNames = new ArrayList<>();
+
         // Get a list of game IDs
         games.forEach(game -> listOfGames.add(game.getGameId()));
-        return new Gson().toJson(listOfGames);
+        games.forEach(game -> listOfBoardNames.add(game.getBoardName()));
+
+
+        JsonObject jsonObj = new JsonObject();
+        // array to JsonArray
+        JsonArray jsonArray1 = new Gson().toJsonTree(listOfGames).getAsJsonArray();
+        // ArrayList to JsonArray
+        JsonArray jsonArray2 = new Gson().toJsonTree(listOfBoardNames).getAsJsonArray();
+        jsonObj.add("gameId", jsonArray1);
+        jsonObj.add("boardNames", jsonArray2);
+        return new Gson().toJson(jsonObj);
     }
 
     @Override
@@ -83,16 +98,6 @@ public class GameService implements IGameService {
         for (Board board : boards) {
             if (board.getBoardName().equals(boardName)) {
                 return SaveBoard.serializeBoard(board);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Board getBoard(String boardName) {
-        for (Board board : boards) {
-            if (board.getBoardName().equals(boardName)) {
-                return board;
             }
         }
         return null;

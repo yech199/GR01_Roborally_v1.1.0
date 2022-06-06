@@ -33,6 +33,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import model.Board;
+import model.Phase;
 import org.jetbrains.annotations.NotNull;
 import roborally.RoboRally;
 import roborally.client.GameClient;
@@ -138,7 +139,6 @@ public class AppController implements Observer {
 
             Board board;
             if (selectedBoard.isPresent()) {
-                // TODO Fix always getting 6 players from server
                 board = client.createGame(selectedBoard.get(), numOfPlayers);
                 // Sets number of players here!
                 choosePlayerNames(numOfPlayers, board);
@@ -156,7 +156,18 @@ public class AppController implements Observer {
     }
 
     public void saveServerGame() {
-
+        String msg;
+        try {
+            int id = gameController.board.getGameId();
+            String json = SaveBoard.serializeBoard(gameController.board);
+            client.setGameState(id, json);
+            msg = "Succesfully saved game to server";
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Failed to save game to server";
+        }
+        Alert alert = new Alert(AlertType.CONFIRMATION, msg, ButtonType.OK);
+        alert.showAndWait();
     }
 
     public void joinGame() {
@@ -225,7 +236,7 @@ public class AppController implements Observer {
         gameController = new GameController(board);
 
         // If game is new (eg. not loaded), then we set up the programming phase. Else we skip it.
-        if (!LoadBoard.getLoadedBoard()) {
+        if (board.getPhase() == Phase.INITIALISATION) {
             gameController.startProgrammingPhase();
         }
         roboRally.createBoardView(gameController);

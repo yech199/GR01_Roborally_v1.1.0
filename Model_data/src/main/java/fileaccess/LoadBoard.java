@@ -12,7 +12,6 @@ import model.boardElements.SpaceElement;
 import java.util.ArrayList;
 
 public class LoadBoard {
-    private static boolean loadedBoard = false;
 
     private static void loadSpaces(BoardTemplate template, Board board) {
         for (SpaceTemplate spaceTemplate : template.spaces) {
@@ -117,7 +116,6 @@ public class LoadBoard {
     public static Board loadGame(String gameName, boolean saveGame) {
         String gameState = IOUtil.readGame(gameName, saveGame);
         if (gameState != null) {
-            loadedBoard = true;
             return deserializeGame(gameState);
         }
         return new Board(8, 8, 1);
@@ -150,9 +148,5 @@ public class LoadBoard {
         Board board = deserializeBoard(jsonBoardState, numberOfPlayers);
         board.setGameId(gameId);
         return board;
-    }
-
-    public static boolean getLoadedBoard() {
-        return loadedBoard;
     }
 }

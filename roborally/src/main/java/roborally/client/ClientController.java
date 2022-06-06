@@ -3,7 +3,6 @@ package roborally.client;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +41,7 @@ public class ClientController implements IGameService {
     public void updateGame(int id, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
-                .uri(URI.create("http://localhost:8080/game" + id))
+                .uri(URI.create("http://localhost:8080/game/" + id))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
@@ -123,7 +122,7 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String getBoard(String boardName) {
+    public String getBoardState(String boardName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://localhost:8080/board/" + boardName))

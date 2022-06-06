@@ -1,6 +1,5 @@
 package dtu.compute.RoborallyAPI;
 
-import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +19,13 @@ public class ServerController {
 
     @PostMapping("/game/{boardname}")
     public ResponseEntity<String> createGameFromBoard(@PathVariable String boardname, @RequestBody int numOfPlayers) {
-        return ResponseEntity.ok().body(SaveBoard.serializeBoard(gameService.createGame(boardname, numOfPlayers)));
+        return ResponseEntity.ok().body(gameService.createGame(boardname, numOfPlayers));
     }
 
     @GetMapping("/game/{id}")
     public ResponseEntity<String> getGameState(@PathVariable int id) {
-        return ResponseEntity.ok().body( SaveBoard.serializeBoard(gameService.getGameById(id)));
+        Board board = gameService.getGameById(id);
+        return ResponseEntity.ok().body(SaveBoard.serializeBoard(board));
     }
 
     @PutMapping("/game/{id}")

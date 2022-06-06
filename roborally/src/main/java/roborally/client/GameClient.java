@@ -30,6 +30,7 @@ public class GameClient {
     public void setGameState(int id, String jsonGameState) {
         clientController.updateGame(id, jsonGameState);
     }
+
     public void setGameState(Board board) {
         clientController.updateGame(board.getGameId(), SaveBoard.serializeBoard(board));
     }
@@ -53,7 +54,7 @@ public class GameClient {
     }
 
     public Board getBoardState(String boardName, int gameId, int numOfPlayers) {
-        String json = clientController.getBoard(boardName);
+        String json = clientController.getBoardState(boardName);
         return LoadBoard.newBoardState(json, gameId, numOfPlayers);
     }
 }

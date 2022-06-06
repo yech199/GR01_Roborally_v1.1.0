@@ -31,6 +31,7 @@ import model.boardElements.SpaceElement;
 import model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is responsible for reading(load) and writing(save) game state to and from json files.

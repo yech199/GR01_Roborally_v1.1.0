@@ -286,6 +286,9 @@ public class GameController extends AGameController {
             // Free? Then move player
             target.setPlayer(player);
         } catch (ImpossibleMoveException e) {
+            if (rebootTokenSpace.getPlayer() != null) {
+                moveForward(player, moveDirection.next());
+            }
             System.out.println("Move impossible");
         }
 

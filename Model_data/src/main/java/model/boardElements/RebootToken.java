@@ -9,7 +9,6 @@ public class RebootToken extends SpaceElement {
 
     @Override
     public void doAction(AGameController gameController, Space space) {
-    //    TODO: If more than one stands on this they push in the direction of the token
     }
 
     public Heading getHeading() {

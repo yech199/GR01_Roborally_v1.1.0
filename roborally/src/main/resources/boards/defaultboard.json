@@ -708,7 +708,7 @@
     },
     {
       "walls": [
-        "EAST"
+        "EAST", "SOUTH"
       ],
       "actions": [
         {

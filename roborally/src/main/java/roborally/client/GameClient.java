@@ -40,15 +40,15 @@ public class GameClient {
         int[] id = gson.fromJson(games, int[].class);
         String[] boardName = gson.fromJson(games, String[].class);
 
-        List<String> gameIDs = new ArrayList<>();
+        List<String> gameInfo = new ArrayList<>();
         for (int j : id) {
-            gameIDs.add(String.valueOf(j));
+            gameInfo.add(String.valueOf(j));
         }
-        for(int i = 0; i < gameIDs.size(); i++) {
-            boardName[i] = clientController.getGameById(Integer.parseInt(gameIDs.get(i)));
-            gameIDs.add(i, " " + boardName[i]);
+        for(int i = 0; i < gameInfo.size(); i++) {
+            boardName[i] = clientController.getGameById(Integer.parseInt(gameInfo.get(i)));
+            gameInfo.add(i, " " + boardName[i]);
         }
-        return gameIDs;
+        return gameInfo;
     }
 
     public List<String> getListOfBoards() {

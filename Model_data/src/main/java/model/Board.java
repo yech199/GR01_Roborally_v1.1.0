@@ -279,7 +279,7 @@ public class Board extends Subject {
     // Return the index of a free robot
     public int getRobot() {
         for (Player player : players) {
-            if(!player.activePlayer) {
+            if (!player.activePlayer) {
                 return players.indexOf(player);
             }
         }

@@ -27,17 +27,16 @@ public class LoadBoard {
      */
     private static void loadPlayers(BoardTemplate template, Board board) {
         // Loading players
-        int playerNo = 1;
         for (PlayerTemplate player : template.players) {
-            Player newPlayer = new Player(board, player.color, "Player " + playerNo);
+            Player newPlayer = new Player(board, player.color, player.name);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
 
             newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
             newPlayer.setProgram(loadCommandCardFields(player.registers, newPlayer));
 
+            newPlayer.activePlayer = true;
             board.addPlayer(newPlayer);
-            playerNo++;
         }
     }
 

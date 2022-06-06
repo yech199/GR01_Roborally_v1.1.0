@@ -108,9 +108,10 @@ public class GameService implements IGameService {
         Player player = new Player(game, color, playerName);
         player.setSpace(template.getSpace());
         player.setHeading(template.getHeading());
+        player.activePlayer = true;
         game.setRobot(player);
 
-        return "OK";
+        return SaveBoard.serializeBoard(game);
     }
 
 

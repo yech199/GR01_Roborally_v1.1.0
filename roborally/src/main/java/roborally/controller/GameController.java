@@ -309,17 +309,27 @@ public class GameController extends AGameController {
 
         boolean isValid = true;
 
+        // Check for out of board
         if (tmpTarget == null) {
             reboot(targetPlayer);
             return true;
         }
+        // Check for walls and antenna
         else if (target.hasWallPointing(pushDirection) || tmpTarget.hasWallPointing(pushDirection.next().next())
                 || tmpTarget == this.antennaSpace) {
             return false;
         }
-
+        // Check for player
         else if (tmpTarget.getPlayer() != null) {
             isValid = checkIfMoveToTargetWithPlayerIsValid(player, tmpTarget);
+        }
+        // Check for push panels
+        else if (tmpTarget.getActions().size() > 0) {
+            for (SpaceElement space : tmpTarget.getActions()) {
+                if (space instanceof PushPanel pushPanel && player.getHeading() == pushPanel.getHeading()) {
+                    throw new ImpossibleMoveException(player, player.getSpace(), player.getHeading());
+                }
+            }
         }
 
         // Moves the pushed player(s) recursively

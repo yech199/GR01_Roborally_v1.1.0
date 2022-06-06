@@ -298,6 +298,7 @@ public class GameController extends AGameController {
         Player targetPlayer = target.getPlayer();
         Space tmpTarget = board.getNeighbour(targetPlayer.getSpace(), pushDirection);
 
+        // If the player being pushed is standing ON a push panel, and is being pushed into a "wall" throw exception
         if (targetPlayer.getSpace().getActions().size() > 0) {
             for (SpaceElement space : targetPlayer.getSpace().getActions()) {
                 if (space instanceof PushPanel pushPanel) {
@@ -338,6 +339,8 @@ public class GameController extends AGameController {
         if (isValid) {
             tmpTarget.setPlayer(targetPlayer);
 
+            // Only do action for the player which was placed onto a new space if that space isn't
+            // a conveyor belt, a checkpoint or a push panel
             if (tmpTarget.getActions().size() > 0) {
                 for (SpaceElement space : tmpTarget.getActions()) {
                     if (!(space instanceof ConveyorBelt) && !(space instanceof Checkpoint)

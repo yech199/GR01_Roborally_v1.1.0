@@ -42,7 +42,7 @@ public class ClientController implements IGameService {
     public void updateGame(int id, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
-                .uri(URI.create("http://localhost:8080/game" + id))
+                .uri(URI.create("http://localhost:8080/game/" + id))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();

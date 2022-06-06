@@ -33,6 +33,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import model.Board;
+import model.Phase;
 import org.jetbrains.annotations.NotNull;
 import roborally.RoboRally;
 import roborally.client.GameClient;
@@ -156,7 +157,10 @@ public class AppController implements Observer {
     }
 
     public void saveServerGame() {
+        int id = gameController.board.getGameId();
+        String json = SaveBoard.serializeBoard(gameController.board);
 
+        client.setGameState(id, json);
     }
 
     public void joinGame() {
@@ -225,7 +229,7 @@ public class AppController implements Observer {
         gameController = new GameController(board);
 
         // If game is new (eg. not loaded), then we set up the programming phase. Else we skip it.
-        if (!LoadBoard.getLoadedBoard()) {
+        if (board.getPhase() == Phase.INITIALISATION) {
             gameController.startProgrammingPhase();
         }
         roboRally.createBoardView(gameController);

@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 public class GameService implements IGameService {
 
+    // A game is a board with a set gameId and saved player cards/registers
     ArrayList<Board> games = new ArrayList<>();
     ArrayList<Board> boards = new ArrayList<>();
     int id = 1;
@@ -41,8 +42,8 @@ public class GameService implements IGameService {
         for (Board game : games) {
             if (game.getGameId() == id) {
                 // TODO Explore if it's good enough to serialize->deserialize, or a better copy-board-method can be found
-                Board newGame = LoadBoard.loadGameState(gameState);
-                games.set(i, newGame);
+                game = LoadBoard.loadGameState(gameState);
+                games.set(i, game);
                 i++;
             }
         }

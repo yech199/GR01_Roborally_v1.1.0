@@ -50,13 +50,13 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Board createGame(String boardName, int numOfPlayers) {
+    public String createGame(String boardName, int numOfPlayers) {
         for (Board board : boards) {
             if (board.getBoardName().equals(boardName)) {
                 Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
                 games.add(game);
                 id++;
-                return game;
+                return SaveBoard.serializeBoard(game);
             }
         }
         // TODO Add game not found Exeption
@@ -84,16 +84,6 @@ public class GameService implements IGameService {
         for (Board board : boards) {
             if (board.getBoardName().equals(boardName)) {
                 return SaveBoard.serializeBoard(board);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Board getBoard(String boardName) {
-        for (Board board : boards) {
-            if (board.getBoardName().equals(boardName)) {
-                return board;
             }
         }
         return null;

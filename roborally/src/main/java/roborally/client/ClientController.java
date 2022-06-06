@@ -123,7 +123,7 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String getBoard(String boardName) {
+    public String getBoardState(String boardName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://localhost:8080/board/" + boardName))

@@ -1,4 +1,6 @@
 {
+  "gameId": 0,
+  "boardName": "defaultboard",
   "width": 8,
   "height": 8,
   "checkPointAmount": 2,

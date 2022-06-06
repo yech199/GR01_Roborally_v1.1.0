@@ -33,6 +33,12 @@ public class ServerController {
         gameService.updateGame(id, gameData);
         return ResponseEntity.ok().body("OK");
     }
+
+    @PostMapping("/game/join/{id}")
+    public ResponseEntity<String> joinGame(@PathVariable int id, @RequestBody String playerName) {
+        gameService.joinGame(id, playerName);
+        return ResponseEntity.ok().body("OK");
+    }
     
     @GetMapping("/board")
     public ResponseEntity<String> getListOfBoards() {

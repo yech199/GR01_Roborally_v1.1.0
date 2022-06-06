@@ -7,6 +7,7 @@ import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import model.Board;
+import model.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -60,7 +61,6 @@ public class GameService implements IGameService {
         games.forEach(game -> listOfGames.add(game.getGameId()));
         games.forEach(game -> listOfBoardNames.add(game.getBoardName()));
 
-
         JsonObject jsonObj = new JsonObject();
         // array to JsonArray
         JsonArray jsonArray1 = new Gson().toJsonTree(listOfGames).getAsJsonArray();
@@ -90,8 +90,13 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public String joinGame(int id) {
-        return null;
+    public String joinGame(int id, String playerName) {
+        Board game = findGame(id);
+        /*assert game != null;
+        if(game.getPlayers().size()) return "Game Full";
+        Player player = new Player(game, "red", playerName);
+        game.addPlayer(player);
+        return null;*/
     }
 
     private Board findGame(int id) {

@@ -399,8 +399,11 @@ public class GameController extends AGameController {
 
     public void reboot(Player player) {
         player.isRebooted = true;
-        rebootTokenSpace.setPlayer(player);
+        if (rebootTokenSpace.getPlayer() != null) {
+            this.moveForward(rebootTokenSpace.getPlayer(), rebootToken.getHeading());
+        }
         rebootToken.doAction(this, rebootTokenSpace);
+        rebootTokenSpace.setPlayer(player);
     }
 
     class ImpossibleMoveException extends Exception {

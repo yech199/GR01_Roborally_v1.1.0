@@ -39,6 +39,7 @@ import roborally.RoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -171,10 +172,21 @@ public class AppController implements Observer {
     }
 
     public void joinGame() {
-        // List all available games
-        List<String> games = client.getListOfGames();
+        TextInputDialog name = new TextInputDialog();
+        name.setTitle("Player name");
+        name.setHeaderText("Write the name of your player");
+        name.setContentText("Name: ");
+        Optional<String> resultName = name.showAndWait();
 
-        ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
+        String playerName = "Player";
+        if (resultName.isPresent()) {
+            playerName = resultName.get();
+        }
+
+        // List all available games
+        ArrayList<String> listOfGames = client.getListOfGames();
+
+        ChoiceDialog<String> dialogL = new ChoiceDialog<>(listOfGames.get(0), listOfGames);
         dialogL.setTitle("Join Game");
         dialogL.setHeaderText("Select a game to join");
         Optional<String> selectedGame = dialogL.showAndWait();
@@ -183,7 +195,7 @@ public class AppController implements Observer {
         if (selectedGame.isPresent()) {
             // Join the selected game
             int gameId = Integer.parseInt(selectedGame.get());
-            board = client.getGameState(gameId);
+            board = client.joinGame(gameId, playerName);
         } else {
             board = LoadBoard.newBoard(null, 6);
         }

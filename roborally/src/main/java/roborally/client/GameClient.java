@@ -1,6 +1,7 @@
 package roborally.client;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import model.Board;
@@ -34,21 +35,44 @@ public class GameClient {
         clientController.updateGame(board.getGameId(), SaveBoard.serializeBoard(board));
     }
 
-    public List<String> getListOfGames() {
+    public ArrayList<String> getListOfGames() {
         Gson gson = new Gson();
         String games = clientController.getListOfGames();
-        int[] id = gson.fromJson(games, int[].class);
-        String[] boardName = gson.fromJson(games, String[].class);
+        JsonObject data = gson.fromJson(games, JsonObject.class);
 
-        List<String> gameInfo = new ArrayList<>();
-        for (int j : id) {
-            gameInfo.add(String.valueOf(j));
+        int[] gameID = gson.fromJson(data.get("gameId"), int[].class);
+        String[] boardNames = gson.fromJson(data.get("boardNames"), String[].class);
+
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
+            // TODO Add boardname in some smart way
+            result.add(String.valueOf(gameID[i])/* + "," + boardNames[i]*/);
         }
-        for(int i = 0; i < gameInfo.size(); i++) {
-            boardName[i] = clientController.getGameById(Integer.parseInt(gameInfo.get(i)));
-            gameInfo.add(i, " " + boardName[i]);
-        }
-        return gameInfo;
+        return result;
+    }
+
+    public ArrayList<String> getFormattedListOfGameIDs() {
+        /*ArrayList<String> games = getListOfGames();
+        ArrayList<String> result = new ArrayList<>();
+        String[] id = new String[2];
+        result.forEach((s -> {
+            id[0] = s.split(",")[0];
+            result.add(id[0]);
+        }));
+        return result;*/
+        return null;
+    }
+
+    public ArrayList<String> getFormattedListOfBoardNames() {
+        /*ArrayList<String> games = getListOfGames();
+        ArrayList<String> result = new ArrayList<>();
+        String[] names = new String[2];
+        result.forEach((s -> {
+            names[0] = s.split(",")[0];
+            result.add(names[0]);
+        }));
+        return result;*/
+        return null;
     }
 
     public List<String> getListOfBoards() {
@@ -61,5 +85,10 @@ public class GameClient {
     public Board getBoardState(String boardName, int gameId, int numOfPlayers) {
         String json = clientController.getBoardState(boardName);
         return LoadBoard.newBoardState(json, gameId, numOfPlayers);
+    }
+
+    public Board joinGame(int id, String playerName) {
+        String json = clientController.joinGame(id, playerName);
+        return LoadBoard.loadGameState(json);
     }
 }

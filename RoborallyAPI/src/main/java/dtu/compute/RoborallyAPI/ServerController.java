@@ -1,5 +1,6 @@
 package dtu.compute.RoborallyAPI;
 
+import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class ServerController {
 
     @PostMapping("/game/join/{id}")
     public ResponseEntity<String> joinGame(@PathVariable int id, @RequestBody String playerName) {
-        if (gameService.joinGame(id, playerName).equals("OK")) return ResponseEntity.ok().body("OK");
+        if (gameService.joinGame(id, playerName).equals("OK")) return ResponseEntity.ok().body(SaveBoard.serializeBoard(gameService.getGameById(id)));
         else if(gameService.joinGame(id, playerName).equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
         else if(gameService.joinGame(id, playerName).equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
         return ResponseEntity.badRequest().body("error");

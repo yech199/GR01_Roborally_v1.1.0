@@ -61,6 +61,7 @@ public class GameService implements IGameService {
         games.forEach(game -> listOfGames.add(game.getGameId()));
         games.forEach(game -> listOfBoardNames.add(game.getBoardName()));
 
+        // https://www.tutorialspoint.com/how-to-convert-java-array-or-arraylist-to-jsonarray-using-gson-in-java
         JsonObject jsonObj = new JsonObject();
         // array to JsonArray
         JsonArray jsonArray1 = new Gson().toJsonTree(listOfGames).getAsJsonArray();
@@ -97,6 +98,7 @@ public class GameService implements IGameService {
         Player player = new Player(game, "red", playerName);
         game.addPlayer(player);
         return null;*/
+        return null;
     }
 
     private Board findGame(int id) {

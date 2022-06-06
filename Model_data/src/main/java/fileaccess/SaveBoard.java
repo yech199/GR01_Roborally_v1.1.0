@@ -57,12 +57,12 @@ public class SaveBoard {
         return spaceTemplates;
     }
 
-    private static ArrayList<PlayerTemplate> savePlayers(Board board) {
+    private static ArrayList<PlayerTemplate> savePlayers(List<Player> players) {
         int playerCounter = 0;
         ArrayList<PlayerTemplate> playerTemplates = new ArrayList<>();
         // Save state of player
-        for (Player player : board.getPlayers()) {
-            if (playerCounter >= board.getPlayersNumber()) break;
+        for (Player player : players) {
+            if (playerCounter > players.size()) break;
             PlayerTemplate playerTemplate = new PlayerTemplate();
             Space space = player.getSpace();
             playerTemplate.spaceX = space.x;
@@ -75,6 +75,7 @@ public class SaveBoard {
             playerTemplate.cards = saveCommandCardFields(player.getCards());
 
             playerTemplates.add(playerTemplate);
+            playerCounter++;
         }
         return playerTemplates;
     }
@@ -111,11 +112,16 @@ public class SaveBoard {
         template.height = board.height;
 
         template.spaces = saveSpaces(board);
-        template.players = savePlayers(board);
+        template.players = savePlayers(board.getPlayers());
 
-        template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
+        if (board.getCurrentPlayer() == null) template.currentPlayer = 0;
+        else template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
+
         template.step = board.getStep();
         template.phase = String.valueOf(board.getPhase());
+        template.boardName = board.getBoardName();
+        template.checkPointAmount = board.getCheckPointAmount();
+        if (board.getGameId() != null) template.gameId = board.getGameId();
 
         // Saving the board template using GSON
         GsonBuilder simpleBuilder = new GsonBuilder().
@@ -137,4 +143,7 @@ public class SaveBoard {
         IOUtil.writeGame(gameName, json);
     }
 
+    public static String serializeBoard(Board board) {
+        return serialize(board);
+    }
 }

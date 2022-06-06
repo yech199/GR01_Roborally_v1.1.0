@@ -61,6 +61,9 @@ public class Board extends Subject {
     // How many checkpoint are there in total
     public final int totalNoOfCheckpoints;
 
+    private int amountOfActivePlayers = 0;
+    public Integer maxAmountOfPlayers;
+
     private boolean stepMode;
 
     public Board(int width, int height, int totalNoOfCheckpoints, @NotNull String boardName) {
@@ -130,6 +133,12 @@ public class Board extends Subject {
         else {
             return null;
         }
+    }
+    public Player getPlayer(String playerName) {
+        for (Player player : players) {
+            if (player.getName().equals(playerName)) return player;
+        }
+        return null;
     }
 
     public List<Player> getPlayers() {
@@ -250,5 +259,36 @@ public class Board extends Subject {
         if (this.winner == null && winner.isWinner())
             this.winner = winner;
         notifyChange();
+    }
+
+    public int getAmountOfActivePlayers() {
+        return amountOfActivePlayers;
+    }
+
+    public void setMaxAmountOfPlayers(int maxAmountOfPlayers) {
+        if (this.maxAmountOfPlayers == null) {
+            this.maxAmountOfPlayers = maxAmountOfPlayers;
+        }
+        else {
+            if (!this.maxAmountOfPlayers.equals(maxAmountOfPlayers)) {
+                throw new IllegalStateException("A game with a set id may not be assigned a new id!");
+            }
+        }
+    }
+
+    // Return the index of a free robot
+    public int getRobot() {
+        for (Player player : players) {
+            if(!player.activePlayer) {
+                return players.indexOf(player);
+            }
+        }
+        return 0;
+    }
+
+    public void setRobot(Player player) {
+        amountOfActivePlayers++;
+        int freeIndex = getRobot();
+        players.set(freeIndex, player);
     }
 }

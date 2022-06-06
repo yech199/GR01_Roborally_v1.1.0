@@ -10,11 +10,14 @@ import model.Board;
 import model.Player;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class GameService implements IGameService {
+
+    private final Color[] COLORS = {Color.red, Color.blue, Color.green, Color.yellow, Color.cyan, Color.magenta};
 
     // A game is a board with a set gameId and saved player cards/registers
     ArrayList<Board> games = new ArrayList<>();
@@ -46,9 +49,12 @@ public class GameService implements IGameService {
     @Override
     public String createGame(String boardName, int numOfPlayers) {
         Board board = findBoard(boardName);
+        if (board == null) return "Board not found";
+        // TODO we serialize to deserialize again. Find better way
         Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
-        games.add(game);
         id++;
+        game.setMaxAmountOfPlayers(numOfPlayers);
+        games.add(game);
         return SaveBoard.serializeBoard(game);
     }
 
@@ -93,13 +99,17 @@ public class GameService implements IGameService {
     @Override
     public String joinGame(int id, String playerName) {
         Board game = findGame(id);
-        /*assert game != null;
-        if(game.getPlayers().size()) return "Game Full";
-        Player player = new Player(game, "red", playerName);
-        game.addPlayer(player);
-        return null;*/
-        return null;
+        if(game == null) return "Game not found";
+        if(game.getAmountOfActivePlayers() >= game.maxAmountOfPlayers) return "Game Full";
+        String color = game.getPlayer(game.getRobot()).getColor();
+
+        // Add new player and replace dummy player
+        Player player = new Player(game, color, playerName);
+        game.setRobot(player);
+
+        return "OK";
     }
+
 
     private Board findGame(int id) {
         for (Board game : games) {

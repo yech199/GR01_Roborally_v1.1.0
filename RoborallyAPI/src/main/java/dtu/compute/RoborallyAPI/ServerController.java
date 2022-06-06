@@ -36,7 +36,7 @@ public class ServerController {
 
     @PostMapping("/game/join/{id}")
     public ResponseEntity<String> joinGame(@PathVariable int id, @RequestBody String playerName) {
-        if (gameService.joinGame(id, playerName).equals("OK")) return ResponseEntity.ok().body("ok");
+        if (gameService.joinGame(id, playerName).equals("OK")) return ResponseEntity.ok().body("OK");
         else if(gameService.joinGame(id, playerName).equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
         else if(gameService.joinGame(id, playerName).equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
         return ResponseEntity.badRequest().body("error");

@@ -101,10 +101,13 @@ public class GameService implements IGameService {
         Board game = findGame(id);
         if(game == null) return "Game not found";
         if(game.getAmountOfActivePlayers() >= game.maxAmountOfPlayers) return "Game Full";
-        String color = game.getPlayer(game.getRobot()).getColor();
+        Player template = game.getPlayer(game.getRobot());
+        String color = template.getColor();
 
         // Add new player and replace dummy player
         Player player = new Player(game, color, playerName);
+        player.setSpace(template.getSpace());
+        player.setHeading(template.getHeading());
         game.setRobot(player);
 
         return "OK";

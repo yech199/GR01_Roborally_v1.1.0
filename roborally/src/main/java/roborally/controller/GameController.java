@@ -244,11 +244,12 @@ public class GameController extends AGameController {
             // Heading moveDirection = player.getHeading();
             Space target = board.getNeighbour(player.getSpace(), moveDirection);
 
+            // If the player is standing ON a push panel, and is trying to walk into the wall throw exception
             if (player.getSpace().getActions().size() > 0) {
                 for (SpaceElement space : player.getSpace().getActions()) {
-                    if (space instanceof PushPanel pushPanel && player.getHeading() == pushPanel.getHeading().next().next()
-                            && target == board.getNeighbour(player.getSpace(), player.getHeading())) {
-                        throw new ImpossibleMoveException(player, player.getSpace(), player.getHeading());
+                    if (space instanceof PushPanel pushPanel && moveDirection == pushPanel.getHeading().next().next()
+                            && target == board.getNeighbour(player.getSpace(), moveDirection)) {
+                        throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
                     }
                 }
             }
@@ -268,10 +269,11 @@ public class GameController extends AGameController {
                     throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
                 }
 
+                // If the player is trying to walk onto a push panel THROUGH a wall throw exception
                 if (target.getActions().size() > 0) {
                     for (SpaceElement space : target.getActions()) {
-                        if (space instanceof PushPanel pushPanel && player.getHeading() == pushPanel.getHeading()) {
-                            throw new ImpossibleMoveException(player, player.getSpace(), player.getHeading());
+                        if (space instanceof PushPanel pushPanel && moveDirection == pushPanel.getHeading()) {
+                            throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
                         }
                     }
                 }

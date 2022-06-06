@@ -428,6 +428,32 @@
       "y": 1
     },
     {
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.PushPanel",
+          "INSTANCE": {
+            "heading": "EAST",
+            "pushPanelLabel": ["0", "1", "0", "1", "0"]
+          }
+        }
+      ],
+      "x": 4,
+      "y": 1
+    },
+    {
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.PushPanel",
+          "INSTANCE": {
+            "heading": "SOUTH",
+            "pushPanelLabel": ["1", "0", "0", "0", "1"]
+          }
+        }
+      ],
+      "x": 6,
+      "y": 0
+    },
+    {
       "walls": [
         "SOUTH"
       ],

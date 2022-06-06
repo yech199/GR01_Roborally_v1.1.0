@@ -17,8 +17,8 @@ public class GameClient {
         clientController = new ClientController();
     }
 
-    public int createGame() {
-        return clientController.createGame();
+    public int createGame(String boardName) {
+        return clientController.createGame(boardName);
     }
 
     public Board getGameState(int id) {

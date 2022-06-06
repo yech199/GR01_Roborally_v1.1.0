@@ -119,7 +119,7 @@ public class AppController implements Observer {
     }
 
     public void createServerGame() {
-        int gameId = client.createGame();
+        int gameId;
 
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
@@ -138,6 +138,7 @@ public class AppController implements Observer {
 
             Board board;
             if(selectedBoard.isPresent()) {
+                gameId = client.createGame(selectedBoard.get());
                 board = client.getBoardState(selectedBoard.get(), gameId, numOfPlayers);
                 // Sets number of players here!
                 for (int i = 0; i < numOfPlayers; i++) {
@@ -153,6 +154,7 @@ public class AppController implements Observer {
                 }
             } else {
                 board = LoadBoard.newBoard(null, numOfPlayers);
+                gameId = 0;
             }
 
             Alert alert = new Alert(AlertType.CONFIRMATION, "Game created succesfully. Your game ID is: " + gameId, ButtonType.OK);

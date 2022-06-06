@@ -430,7 +430,6 @@
         {
           "CLASSNAME": "model.boardElements.PushPanel",
           "INSTANCE": {
-            "pushPanelInsert": "PushPanel2-4.png",
             "heading": "EAST",
             "pushPanelLabel": ["0", "1", "0", "1", "0"]
           }
@@ -444,7 +443,6 @@
         {
           "CLASSNAME": "model.boardElements.PushPanel",
           "INSTANCE": {
-            "pushPanelInsert": "PushPanel1-4.png",
             "heading": "EAST",
             "pushPanelLabel": ["1", "0", "0", "0", "1"]
           }

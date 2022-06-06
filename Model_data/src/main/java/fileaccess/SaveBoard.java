@@ -121,7 +121,7 @@ public class SaveBoard {
         template.step = board.getStep();
         template.phase = String.valueOf(board.getPhase());
         template.boardName = board.getBoardName();
-        template.checkPointAmount = board.getCheckPointAmount();
+        template.checkPointAmount = board.totalNoOfCheckpoints;
         if (board.getGameId() != null) template.gameId = board.getGameId();
 
         // Saving the board template using GSON

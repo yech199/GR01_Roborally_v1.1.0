@@ -121,8 +121,6 @@ public class AppController implements Observer {
     }
 
     public void createServerGame() {
-        int gameId;
-
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
@@ -140,17 +138,17 @@ public class AppController implements Observer {
 
             Board board;
             if (selectedBoard.isPresent()) {
-                gameId = client.createGame(selectedBoard.get());
-                board = client.getBoardState(selectedBoard.get(), gameId, numOfPlayers);
+                // TODO Fix always getting 6 players from server
+                board = client.createGame(selectedBoard.get());
                 // Sets number of players here!
                 choosePlayerNames(numOfPlayers, board);
+                client.setGameState(board);
             }
             else {
                 board = LoadBoard.newBoard(null, numOfPlayers);
-                gameId = 0;
             }
 
-            Alert alert = new Alert(AlertType.CONFIRMATION, "Game created succesfully. Your game ID is: " + gameId, ButtonType.OK);
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
             alert.showAndWait();
 
             setupGameController(board);
@@ -162,7 +160,23 @@ public class AppController implements Observer {
     }
 
     public void joinGame() {
+        // List all available games
+        List<String> games = client.getListOfGames();
 
+        ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
+        dialogL.setTitle("Join Game");
+        dialogL.setHeaderText("Select a game to join");
+        Optional<String> selectedGame = dialogL.showAndWait();
+
+        Board board;
+        if (selectedGame.isPresent()) {
+            // Join the selected game
+            int gameId = Integer.parseInt(selectedGame.get());
+            board = client.getGameState(gameId);
+        } else {
+            board = LoadBoard.newBoard(null, 6);
+        }
+        setupGameController(board);
     }
 
     public void saveGame() {

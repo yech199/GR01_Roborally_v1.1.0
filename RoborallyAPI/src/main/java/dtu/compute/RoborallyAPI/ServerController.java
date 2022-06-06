@@ -2,6 +2,7 @@ package dtu.compute.RoborallyAPI;
 
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
+import model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,8 @@ public class ServerController {
     }
 
     @PostMapping("/game/{boardname}")
-    public ResponseEntity<Integer> createGameFromBoard(@PathVariable String boardname) {
-        int gameId = gameService.createGame(boardname).getGameId();
-        return ResponseEntity.ok().body(gameId);
+    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardname) {
+        return ResponseEntity.ok().body(SaveBoard.serializeBoard(gameService.createGame(boardname)));
     }
 
     @GetMapping("/game/{id}")

@@ -57,7 +57,7 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public int createGame(String boardName) {
+    public String createGame(String boardName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(boardName))
                 .uri(URI.create("http://localhost:8080/game/" + boardName))
@@ -75,7 +75,7 @@ public class ClientController implements IGameService {
             e.printStackTrace();
             result = null;
         }
-        return Integer.valueOf(result);
+        return result;
     }
 
     @Override

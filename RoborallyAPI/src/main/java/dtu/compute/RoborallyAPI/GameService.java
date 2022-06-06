@@ -40,7 +40,7 @@ public class GameService implements IGameService {
         int i = 0;
         for (Board game : games) {
             if (game.getGameId() == id) {
-                // TODO Expore if it's good enough to serialize->deserialize, or a better copy-board-method can be found
+                // TODO Explore if it's good enough to serialize->deserialize, or a better copy-board-method can be found
                 Board newGame = LoadBoard.loadGameState(gameState);
                 games.set(i, newGame);
                 i++;

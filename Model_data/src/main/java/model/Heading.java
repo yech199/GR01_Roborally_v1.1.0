@@ -28,7 +28,6 @@ package model;
  *
  */
 public enum Heading {
-
     SOUTH, WEST, NORTH, EAST;
 
     public Heading next() {

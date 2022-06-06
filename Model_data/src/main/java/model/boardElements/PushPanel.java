@@ -8,7 +8,6 @@ import model.Space;
 
 public class PushPanel extends SpaceElement {
     private Heading heading;
-    //private int pushPanelAmount = 0;
     private int[] pushPanelLabel;
     public String pushPanelStart = "-fx-background-image: url('graphics/";
     public String pushPanelInsert;

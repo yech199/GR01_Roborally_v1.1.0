@@ -40,7 +40,7 @@ public class SaveBoard {
     private static ArrayList<SpaceTemplate> saveSpaces(Board board) {
         ArrayList<SpaceTemplate> spaceTemplates = new ArrayList<>();
         // Add all spaces
-        // TODO: Make sure all the needed attributes are saved. e.g. the boolean value on DefaultTile
+        // TODO: Make sure all the needed attributes are saved. e.g. the heading and color of ConveyorBelt
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
                 Space space = board.getSpace(i, j);

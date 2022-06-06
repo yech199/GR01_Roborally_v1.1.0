@@ -24,6 +24,8 @@ package designpatterns.observer;
 /**
  * This is the observer of the observer design pattern roughly following
  * the definition of the GoF.
+ * <br><br>
+ * OBS! ViewObserver and Appcontroller extends this interface!
  * 
  * @author Ekkart Kindler, ekki@dtu.dk
  *

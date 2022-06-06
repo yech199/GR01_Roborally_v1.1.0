@@ -21,12 +21,8 @@
  */
 package fileaccess.model;
 
-import fileaccess.model.PlayerTemplate;
-import fileaccess.model.SpaceTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * ...

@@ -1,7 +1,5 @@
 package fileaccess.model;
 
-import fileaccess.model.CommandCardFieldTemplate;
-
 import java.util.ArrayList;
 
 public class PlayerTemplate {
@@ -14,6 +12,4 @@ public class PlayerTemplate {
 
     public ArrayList<CommandCardFieldTemplate> registers = new ArrayList<>();
     public ArrayList<CommandCardFieldTemplate> cards = new ArrayList<>();
-
-
 }

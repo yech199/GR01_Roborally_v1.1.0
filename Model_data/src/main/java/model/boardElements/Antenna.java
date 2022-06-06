@@ -17,7 +17,6 @@ public class Antenna extends SpaceElement {
      *
      * @param gameController the gameController of the respective game
      * @param space          the space this action should be executed for
-     * @return whether this action was successful
      */
     @Override
     public void doAction(AGameController gameController, Space space) {

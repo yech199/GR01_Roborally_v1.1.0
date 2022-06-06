@@ -23,10 +23,7 @@ package roborally.controller;
 
 import controller.AGameController;
 import model.*;
-import model.boardElements.Checkpoint;
-import model.boardElements.ConveyorBelt;
-import model.boardElements.Pit;
-import model.boardElements.SpaceElement;
+import model.boardElements.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -240,26 +237,35 @@ public class GameController extends AGameController {
     /**
      * Moves the player in the direction of the heading if possible
      * @param player being moved
-     * @param playerHeading of the player or of the spaceElement moving you
+     * @param moveDirection of the player or of the spaceElement moving you
      */
-    public void moveForward(@NotNull Player player, Heading playerHeading) {
+    public void moveForward(@NotNull Player player, Heading moveDirection) {
         try {
-            // Heading playerHeading = player.getHeading();
-            Space target = board.getNeighbour(player.getSpace(), playerHeading);
+            // Heading moveDirection = player.getHeading();
+            Space target = board.getNeighbour(player.getSpace(), moveDirection);
+
+            if (player.getSpace().getActions().size() > 0) {
+                for (SpaceElement space : player.getSpace().getActions()) {
+                    if (space instanceof PushPanel pushPanel && player.getHeading() == pushPanel.getHeading().next().next()
+                            && target == board.getNeighbour(player.getSpace(), player.getHeading())) {
+                        throw new ImpossibleMoveException(player, player.getSpace(), player.getHeading());
+                    }
+                }
+            }
 
             // Target out of board. You cannot move out of the board or into an antenna (you can only be pushed out)
             if (target == null || target == this.antennaSpace)
-                throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
+                throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
 
             // If the target contains another player
             else if (target.getPlayer() != null) {
                 boolean isValid = checkIfMoveToTargetWithPlayerIsValid(player, target);
-                if (!isValid) throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
+                if (!isValid) throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
             }
 
             else {
-                if (player.getSpace().hasWallPointing(playerHeading) || target.hasWallPointing(playerHeading.next().next())) {
-                    throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
+                if (player.getSpace().hasWallPointing(moveDirection) || target.hasWallPointing(moveDirection.next().next())) {
+                    throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
                 }
             }
             // Free? Then move player
@@ -278,23 +284,33 @@ public class GameController extends AGameController {
      * @throws ImpossibleMoveException if the move isn't a valid move
      */
     private boolean checkIfMoveToTargetWithPlayerIsValid(@NotNull Player player, Space target) throws ImpossibleMoveException {
-
-        Heading playerHeading = player.getHeading();
-
+        Heading pushDirection = player.getHeading();
         Player targetPlayer = target.getPlayer();
-        Space tmpTarget = board.getNeighbour(targetPlayer.getSpace(), playerHeading);
+        Space tmpTarget = board.getNeighbour(targetPlayer.getSpace(), pushDirection);
+
+        if (targetPlayer.getSpace().getActions().size() > 0) {
+            for (SpaceElement space : targetPlayer.getSpace().getActions()) {
+                if (space instanceof PushPanel pushPanel) {
+                    if (player.getHeading() == pushPanel.getHeading().next().next()
+                            && tmpTarget == board.getNeighbour(target, player.getHeading()))
+                        throw new ImpossibleMoveException(targetPlayer, targetPlayer.getSpace(), pushDirection);
+                    pushDirection = pushPanel.getHeading();
+                }
+            }
+        }
+
+        boolean isValid = true;
 
         if (tmpTarget == null) {
             reboot(targetPlayer);
             return true;
         }
-        if (target.hasWallPointing(playerHeading) || tmpTarget.hasWallPointing(playerHeading.next().next())
+        else if (target.hasWallPointing(pushDirection) || tmpTarget.hasWallPointing(pushDirection.next().next())
                 || tmpTarget == this.antennaSpace) {
             return false;
         }
 
-        boolean isValid = true;
-        if (tmpTarget.getPlayer() != null) {
+        else if (tmpTarget.getPlayer() != null) {
             isValid = checkIfMoveToTargetWithPlayerIsValid(player, tmpTarget);
         }
 
@@ -304,7 +320,8 @@ public class GameController extends AGameController {
 
             if (tmpTarget.getActions().size() > 0) {
                 for (SpaceElement space : tmpTarget.getActions()) {
-                    if (!(space instanceof ConveyorBelt) && !(space instanceof Checkpoint)) {
+                    if (!(space instanceof ConveyorBelt) && !(space instanceof Checkpoint)
+                            && !(space instanceof PushPanel)) {
                         space.doAction(this, targetPlayer.getSpace());
                     }
                 }

@@ -1,9 +1,7 @@
 package model.boardElements;
 
 import controller.AGameController;
-import model.CommandCard;
 import model.Heading;
-import model.Player;
 import model.Space;
 
 public class PushPanel extends SpaceElement {
@@ -14,58 +12,50 @@ public class PushPanel extends SpaceElement {
         return heading;
     }
 
-    public void setHeading(Heading heading) {
-        this.heading = heading;
-    }
-
     @Override
     public void doAction(AGameController gameController, Space space) {
         if (space.getActions().size() > 0) {
-            Space neighbour = space.board.getNeighbour(space, heading);
-            Player player = space.getPlayer();
 
-            // Used to determine what indexes push panels should activate on
+            // Determines what indexes push panels should activate on
             int n1 = 0, n2 = 1;
-            boolean firstFound = false, secFound = false;
-            for(int i = 0; i < 5; i++) {
-                if(firstFound) {
-                    if (pushPanelLabel[i] == 0 && !secFound) {
+            boolean firstFound = false;
+
+            for (int i = 0; i < 5; i++) {
+                if (firstFound) {
+                    if (pushPanelLabel[i] == 0) {
                         n2++;
-                    } else {
+                    }
+                    else {
                         if (n1 == n2) {
                             n2++;
                         }
-                        secFound = true;
+                        // Break when both have been found
+                        break;
                     }
                 }
-                if (pushPanelLabel[i] == 0 && !firstFound) {
+                else if (pushPanelLabel[i] == 0) {
                     n1++;
                     n2++;
-                } else {
+                }
+                else {
                     firstFound = true;
                 }
             }
 
-            int step = gameController.board.getStep();
             // Get the current card from the current program field
             // and check if placed in one of the activation registers for push panel
-            if(step == n1 || step == n2) {
-                CommandCard card = gameController.board.getCurrentPlayer().getProgramField(step).getCard();
-                if (card != null) {
-                    System.out.println(card.getName());
-                    if (player != null && neighbour != null) {
-                        Heading playerHeading = player.getHeading();
-                        player.setHeading(heading);
-                        gameController.moveForward(player, this.heading);
-                        player.setHeading(playerHeading);
-                    }
-                }
+            if ((gameController.board.getStep() == n1 || gameController.board.getStep() == n2) && space.getPlayer() != null) {
+                gameController.moveForward(space.getPlayer(), this.heading);
             }
+
+
+            // // Not zero indexed
+            // int[] registers = getPushPanelLabels();
         }
     }
 
     public int[] getPushPanelLabels() {
-        int[] registers = new int[] {0, 0};
+        int[] registers = new int[]{0, 0};
         int registerIndex = 0;
         for (int i = 0; i < pushPanelLabel.length; i++) {
             if (pushPanelLabel[i] == 1) {

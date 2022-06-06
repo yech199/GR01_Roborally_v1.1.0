@@ -42,9 +42,6 @@ public class RoboRally extends Application {
 
     private Stage stage;
     private BorderPane boardRoot;
-    // private RoboRallyMenuBar menuBar;
-
-    // private AppController appController;
 
     @Override
     public void init() throws Exception {

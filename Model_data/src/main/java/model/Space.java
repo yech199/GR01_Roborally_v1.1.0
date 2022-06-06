@@ -44,9 +44,6 @@ public class Space extends Subject {
     public final int y;
     private Player player;
 
-    // Field Types
-    public int checkpointNumber = 0; // What number of checkpoint are you? 0 = not a checkpoint.
-
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;

@@ -69,6 +69,4 @@ abstract public class AGameController {
     public abstract boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target);
 
     public abstract void reboot(Player player);
-
-    public abstract void Winner(Player player);
 }

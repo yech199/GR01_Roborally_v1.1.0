@@ -24,8 +24,6 @@ package model;
 import designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
-import static model.Heading.SOUTH;
-
 /**
  * ...
  *
@@ -37,7 +35,7 @@ public class Player extends Subject {
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 9;
 
-    private int checkPoints = 0;
+    private int gatheredCheckpoints = 0;
 
     final public Board board;
 
@@ -93,24 +91,20 @@ public class Player extends Subject {
         }
     }
 
+    public boolean isWinner() {
+        return board.totalNoOfCheckpoints == this.gatheredCheckpoints;
+    }
+
+    public int getGatheredCheckpoints() {
+        return gatheredCheckpoints;
+    }
+
+    public void addCheckPoint() {
+        gatheredCheckpoints++;
+    }
+
     public Space getSpace() {
         return space;
-    }
-
-    public int getCheckPoints() {
-        return checkPoints;
-    }
-
-    public void setCheckPoints(int value) {
-        checkPoints = value;
-    }
-
-    public void nextCheckPoint() {
-        checkPoints++;
-    }
-
-    public boolean isWinner() {
-        return board.checkPointAmount == this.checkPoints;
     }
 
     public void setSpace(Space space) {
@@ -141,19 +135,19 @@ public class Player extends Subject {
             }
         }
     }
-    public void setCard(@NotNull CommandCard card) {
-
-    }
 
     public void setCards(@NotNull CommandCardField[] cards) {
         this.cards = cards;
     }
+
     public CommandCardField[] getCards() {
         return cards;
     }
+
     public void setProgram(@NotNull CommandCardField[] program) {
         this.program = program;
     }
+
     public CommandCardField[] getProgram() {
         return program;
     }

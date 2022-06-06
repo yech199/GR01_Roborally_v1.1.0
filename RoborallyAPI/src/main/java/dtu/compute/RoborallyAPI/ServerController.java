@@ -19,8 +19,8 @@ public class ServerController {
     }
 
     @PostMapping("/game/{boardname}")
-    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardname) {
-        return ResponseEntity.ok().body(SaveBoard.serializeBoard(gameService.createGame(boardname)));
+    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardname, @RequestBody int numOfPlayers) {
+        return ResponseEntity.ok().body(SaveBoard.serializeBoard(gameService.createGame(boardname, numOfPlayers)));
     }
 
     @GetMapping("/game/{id}")

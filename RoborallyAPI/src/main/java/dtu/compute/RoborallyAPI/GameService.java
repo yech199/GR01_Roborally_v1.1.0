@@ -49,10 +49,10 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Board createGame(String boardName) {
+    public Board createGame(String boardName, int numOfPlayers) {
         for (Board board : boards) {
             if (board.getBoardName().equals(boardName)) {
-                Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, 6);
+                Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
                 games.add(game);
                 id++;
                 return game;

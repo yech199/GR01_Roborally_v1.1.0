@@ -1,5 +1,7 @@
 package dtu.compute.RoborallyAPI;
 
+import fileaccess.LoadBoard;
+import fileaccess.SaveBoard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,26 +17,19 @@ public class ServerController {
         return ResponseEntity.ok().body(gameService.getListOfGames());
     }
 
-    @PostMapping("/game")
-    public ResponseEntity<Integer> createGame() {
-        int gameId = gameService.createGame();
-        return ResponseEntity.ok().body(gameId);
-    }
-
     @PostMapping("/game/{boardname}")
     public ResponseEntity<Integer> createGameFromBoard(@PathVariable String boardname) {
-        int gameId = gameService.createGame();
-        gameService.updateGame(gameId, gameService.getBoard(boardname));
+        int gameId = gameService.createGame(boardname).getGameId();
         return ResponseEntity.ok().body(gameId);
     }
 
     @GetMapping("/game/{id}")
     public ResponseEntity<String> getGameState(@PathVariable int id) {
-        return ResponseEntity.ok().body(gameService.getGameById(id));
+        return ResponseEntity.ok().body( SaveBoard.serializeBoard(gameService.getGameById(id)));
     }
 
     @PutMapping("/game/{id}")
-    public ResponseEntity<String> setGameState(@PathVariable int id, @RequestBody String gameData) {
+    public ResponseEntity<String> updateGameState(@PathVariable int id, @RequestBody String gameData) {
         gameService.updateGame(id, gameData);
         return ResponseEntity.ok().body("OK");
     }
@@ -45,7 +40,7 @@ public class ServerController {
     }
 
     @GetMapping("/board/{name}")
-    public ResponseEntity<String> getBoard(@PathVariable String name) {
-        return ResponseEntity.ok().body(gameService.getBoard(name));
+    public ResponseEntity<String> getBoardState(@PathVariable String name) {
+        return ResponseEntity.ok().body(gameService.getBoardState(name));
     }
 }

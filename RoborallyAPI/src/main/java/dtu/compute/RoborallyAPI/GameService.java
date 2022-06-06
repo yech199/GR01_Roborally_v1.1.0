@@ -19,11 +19,10 @@ public class GameService implements IGameService {
 
     public GameService() {
         List<String> boardNames = IOUtil.getBoardFileNames();
-        for (String boardName : boardNames) {
-            Board board = new Board(boardName);
-            boards.add(board);
-            board.setGameState(IOUtil.readGame(boardName, false));
-        }
+            for (String boardName : boardNames) {
+                Board board = LoadBoard.newBoard(boardName, 6);
+                boards.add(board);
+            }
     }
 
     @Override
@@ -37,8 +36,16 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public void updateGame(int id, String gameData) {
-        games.get(id).setGameState(gameData);
+    public void updateGame(int id, String gameState) {
+        int i = 0;
+        for (Board game : games) {
+            if (game.getGameId() == id) {
+                // TODO Expore if it's good enough to serialize->deserialize, or a better copy-board-method can be found
+                Board newGame = LoadBoard.loadGameState(gameState);
+                games.set(i, newGame);
+                i++;
+            }
+        }
     }
 
     @Override

@@ -80,6 +80,7 @@ public class LoadBoard {
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));
         board.setStep(template.step);
+        board.setGameId(template.gameId);
 
         return board;
     }

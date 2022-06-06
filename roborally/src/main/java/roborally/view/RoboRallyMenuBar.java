@@ -58,7 +58,7 @@ public class RoboRallyMenuBar extends MenuBar {
          * LOCAL ACTIONS MENU
          */
 
-        controlMenu = new Menu("File");
+        controlMenu = new Menu("Local");
         this.getMenus().add(controlMenu);
 
         newGame = new MenuItem("New Game");

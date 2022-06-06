@@ -267,6 +267,14 @@ public class GameController extends AGameController {
                 if (player.getSpace().hasWallPointing(moveDirection) || target.hasWallPointing(moveDirection.next().next())) {
                     throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
                 }
+
+                if (target.getActions().size() > 0) {
+                    for (SpaceElement space : target.getActions()) {
+                        if (space instanceof PushPanel pushPanel && player.getHeading() == pushPanel.getHeading()) {
+                            throw new ImpossibleMoveException(player, player.getSpace(), player.getHeading());
+                        }
+                    }
+                }
             }
             // Free? Then move player
             target.setPlayer(player);

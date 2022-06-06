@@ -98,21 +98,21 @@ public class IOUtil {
     }
 
     public static List<String> getBoardFileNames() throws NullPointerException {
-        File[] boardnames = getResourceFolderFiles("boards");
+        File[] boardNames = getResourceFolderFiles("boards");
 
         ArrayList<String> result = new ArrayList<>();
-        for (int i = 0; i < boardnames.length; i++) {
-            String name = boardnames[i].getName();
+        for (File boardName : boardNames) {
+            String name = boardName.getName();
             result.add(name.substring(0, name.lastIndexOf(".")));
         }
         return result;
     }
     public static List<String> getSaveGameFiles() throws NullPointerException {
-        File[] savegames = getResourceFolderFiles("savedgames");
+        File[] savedGames = getResourceFolderFiles("savedgames");
 
         ArrayList<String> result = new ArrayList<>();
-        for (int i = 0; i < savegames.length; i++) {
-            String name = savegames[i].getName();
+        for (File savedGame : savedGames) {
+            String name = savedGame.getName();
             result.add(name.substring(0, name.lastIndexOf(".")));
         }
         return result;

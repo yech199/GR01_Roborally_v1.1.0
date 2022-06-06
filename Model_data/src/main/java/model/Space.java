@@ -36,8 +36,8 @@ import java.util.List;
 public class Space extends Subject {
     public final Board board;
 
-    private List<Heading> walls = new ArrayList<>();
-    private List<SpaceElement> actions = new ArrayList<>();
+    private final List<Heading> walls = new ArrayList<>();
+    private final List<SpaceElement> actions = new ArrayList<>();
 
     // Game Basics
     public final int x;
@@ -72,8 +72,7 @@ public class Space extends Subject {
     }
 
     public boolean hasWallPointing(Heading heading) {
-        if (this.getWalls().contains(heading)) return true;
-        else return false;
+        return this.getWalls().contains(heading);
     }
 
     public List<Heading> getWalls() {

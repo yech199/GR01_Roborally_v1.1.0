@@ -38,7 +38,6 @@ public abstract class SpaceElement {
      *
      * @param gameController the gameController of the respective game
      * @param space the space this action should be executed for
-     * @return whether the action was successfully executed
      */
     public abstract void doAction(AGameController gameController, Space space);
 }

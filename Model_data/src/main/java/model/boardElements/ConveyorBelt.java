@@ -33,22 +33,16 @@ import org.jetbrains.annotations.NotNull;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class ConveyorBelt extends SpaceElement {
-
     public enum ConveyorBeltColor {
         GREEN,
         BLUE
     }
 
     private ConveyorBeltColor color;
-
     private Heading heading;
 
     public ConveyorBeltColor getConveyorBeltColor() {
         return color;
-    }
-
-    public void setConveyorBeltColor(ConveyorBeltColor color) {
-        this.color = color;
     }
 
     public Heading getHeading() {

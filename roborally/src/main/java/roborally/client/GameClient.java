@@ -1,6 +1,5 @@
 package roborally.client;
 
-// import fileaccess.LoadSaveBoard;
 import com.google.gson.Gson;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;

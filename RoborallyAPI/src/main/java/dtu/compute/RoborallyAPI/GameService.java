@@ -19,6 +19,7 @@ public class GameService implements IGameService {
     int id = 1;
 
     public GameService() {
+        // Initialize board templates on server
         List<String> boardNames = IOUtil.getBoardFileNames();
             for (String boardName : boardNames) {
                 Board board = LoadBoard.newBoard(boardName, 6);
@@ -28,39 +29,24 @@ public class GameService implements IGameService {
 
     @Override
     public Board getGameById(int id) {
-        for (Board game : games) {
-            if (game.getGameId() == id) {
-                return game;
-            }
-        }
-        return null;
+        return findGame(id);
     }
 
     @Override
     public void updateGame(int id, String gameState) {
-        int i = 0;
-        for (Board game : games) {
-            if (game.getGameId() == id) {
-                // TODO Explore if it's good enough to serialize->deserialize, or a better copy-board-method can be found
-                game = LoadBoard.loadGameState(gameState);
-                games.set(i, game);
-                i++;
-            }
-        }
+        Board game = findGame(id);
+        int i = games.indexOf(game);
+        game = LoadBoard.loadGameState(gameState);
+        games.set(i, game);
     }
 
     @Override
     public String createGame(String boardName, int numOfPlayers) {
-        for (Board board : boards) {
-            if (board.getBoardName().equals(boardName)) {
-                Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
-                games.add(game);
-                id++;
-                return SaveBoard.serializeBoard(game);
-            }
-        }
-        // TODO Add game not found Exeption
-        return null;
+        Board board = findBoard(boardName);
+        Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
+        games.add(game);
+        id++;
+        return SaveBoard.serializeBoard(game);
     }
 
     @Override
@@ -91,6 +77,23 @@ public class GameService implements IGameService {
 
     @Override
     public String joinGame(int id) {
+        return null;
+    }
+
+    private Board findGame(int id) {
+        for (Board game : games) {
+            if (game.getGameId() == id) {
+                return game;
+            }
+        }
+        return null;
+    }
+    private Board findBoard(String boardName) {
+        for (Board board : boards) {
+            if (board.getBoardName().equals(boardName)) {
+                return board;
+            }
+        }
         return null;
     }
 }

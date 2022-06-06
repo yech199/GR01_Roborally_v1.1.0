@@ -9,9 +9,6 @@ import model.Space;
 public class PushPanel extends SpaceElement {
     private Heading heading;
     private int[] pushPanelLabel;
-    public String pushPanelStart = "-fx-background-image: url('graphics/";
-    public String pushPanelInsert;
-    public String pushPanelEnd = "'); -fx-background-size: ";
 
     public Heading getHeading() {
         return heading;
@@ -65,5 +62,17 @@ public class PushPanel extends SpaceElement {
                 }
             }
         }
+    }
+
+    public int[] getPushPanelLabels() {
+        int[] registers = new int[] {0, 0};
+        int registerIndex = 0;
+        for (int i = 0; i < pushPanelLabel.length; i++) {
+            if (pushPanelLabel[i] == 1) {
+                registers[registerIndex] = i + 1;
+                registerIndex++;
+            }
+        }
+        return registers;
     }
 }

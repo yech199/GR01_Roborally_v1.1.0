@@ -39,10 +39,7 @@ import roborally.RoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * ...
@@ -191,10 +188,12 @@ public class AppController implements Observer {
         dialogL.setHeaderText("Select a game to join");
         Optional<String> selectedGame = dialogL.showAndWait();
 
+        String clean = selectedGame.get().replaceAll("\\D+","");
+
         Board board;
         if (selectedGame.isPresent()) {
             // Join the selected game
-            int gameId = Integer.parseInt(selectedGame.get());
+            int gameId = Integer.parseInt(clean);
             board = client.joinGame(gameId, playerName);
         } else {
             board = LoadBoard.newBoard(null, 6);

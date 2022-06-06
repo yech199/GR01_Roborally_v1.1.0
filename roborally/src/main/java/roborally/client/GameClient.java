@@ -44,9 +44,11 @@ public class GameClient {
         String[] boardNames = gson.fromJson(data.get("boardNames"), String[].class);
 
         ArrayList<String> result = new ArrayList<>();
+        final String ANSI_RESET = "\u001B[0m";
+        final String ANSI_YELLOW = "\u001B[33m";
         for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
             // TODO Add boardname in some smart way
-            result.add(String.valueOf(gameID[i])/* + "," + boardNames[i]*/);
+            result.add("Board: " + boardNames[i].concat(" | Game Id: " + String.valueOf(gameID[i])));
         }
         return result;
     }

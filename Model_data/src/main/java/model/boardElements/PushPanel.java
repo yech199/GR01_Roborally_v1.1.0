@@ -41,16 +41,10 @@ public class PushPanel extends SpaceElement {
                     firstFound = true;
                 }
             }
-
-            // Get the current card from the current program field
-            // and check if placed in one of the activation registers for push panel
+            
             if ((gameController.board.getStep() == n1 || gameController.board.getStep() == n2) && space.getPlayer() != null) {
                 gameController.moveForward(space.getPlayer(), this.heading);
             }
-
-
-            // // Not zero indexed
-            // int[] registers = getPushPanelLabels();
         }
     }
 

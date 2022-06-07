@@ -43,14 +43,13 @@ public class RoboRallyMenuBar extends MenuBar {
     private MenuItem update;
 
     private MenuItem newGame;
+    private MenuItem saveGame;
     private MenuItem serverGame;
     private MenuItem saveServerGame;
     private MenuItem joinGame;
-
     private MenuItem loadGame;
-
     private MenuItem stopGame;
-
+    private MenuItem leaveGame;
     private MenuItem exitApp;
 
     public RoboRallyMenuBar(AppController appController) {
@@ -105,6 +104,10 @@ public class RoboRallyMenuBar extends MenuBar {
         saveServerGame.setOnAction(e -> this.appController.saveServerGame());
         serverMenu.getItems().add(saveServerGame);
 
+        leaveGame = new MenuItem("Leave game");
+        leaveGame.setOnAction(e -> this.appController.leaveGame());
+        serverMenu.getItems().add(leaveGame);
+
         exitApp = new MenuItem("Exit");
         exitApp.setOnAction(e -> this.appController.exit());
         serverMenu.getItems().add(exitApp);
@@ -127,12 +130,16 @@ public class RoboRallyMenuBar extends MenuBar {
             stopGame.setVisible(true);
             saveGame.setVisible(true);
             loadGame.setVisible(false);
+            //leaveGame.setVisible(true);
+            saveServerGame.setVisible(true);
         }
         else {
             newGame.setVisible(true);
             stopGame.setVisible(false);
             saveGame.setVisible(false);
             loadGame.setVisible(true);
+            //leaveGame.setVisible(false);
+            //saveServerGame.setVisible(false);
         }
     }
 

@@ -34,7 +34,12 @@ public class ServerController {
         gameService.updateGame(id, gameData);
         return ResponseEntity.ok().body("OK");
     }
-
+    @DeleteMapping("/game/{id}")
+    public ResponseEntity<String> leaveGame(@PathVariable int id, @RequestBody String playerName) {
+        String result = gameService.leaveGame(id, playerName);
+        if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
+        return ResponseEntity.ok().body("OK");
+    }
     @PostMapping("/game/join/{id}")
     public ResponseEntity<String> joinGame(@PathVariable int id, @RequestBody String playerName) {
         // TODO something is wrong when joining the second time

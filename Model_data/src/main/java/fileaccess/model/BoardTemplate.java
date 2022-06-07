@@ -40,6 +40,8 @@ public class BoardTemplate {
     public int checkPointAmount;
     public String phase;
     public int step;
+    public int activePlayers;
+
 
     public List<PlayerTemplate> players = new ArrayList<>();
     public int currentPlayer;

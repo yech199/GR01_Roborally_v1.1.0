@@ -61,7 +61,7 @@ public class Board extends Subject {
     // How many checkpoint are there in total
     public final int totalNoOfCheckpoints;
 
-    private int amountOfActivePlayers = 0;
+    public Integer amountOfActivePlayers = 0;
     public Integer maxAmountOfPlayers;
 
     private boolean stepMode;
@@ -264,6 +264,9 @@ public class Board extends Subject {
     public int getAmountOfActivePlayers() {
         return amountOfActivePlayers;
     }
+    public void setAmountOfActivePlayers(int numberOfPlayers) {
+        this.amountOfActivePlayers = numberOfPlayers;
+    }
 
     public void setMaxAmountOfPlayers(int maxAmountOfPlayers) {
         if (this.maxAmountOfPlayers == null) {
@@ -294,5 +297,9 @@ public class Board extends Subject {
 
     public void updateView() {
         notifyChange();
+    }
+    public void removeRobot(Player player, int i) {
+        amountOfActivePlayers--;
+        players.set(i, player);
     }
 }

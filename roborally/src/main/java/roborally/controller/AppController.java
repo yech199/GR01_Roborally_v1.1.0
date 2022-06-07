@@ -37,9 +37,11 @@ import model.Phase;
 import model.Player;
 import org.jetbrains.annotations.NotNull;
 import roborally.RoboRally;
+import roborally.StartRoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
+import javax.swing.text.html.Option;
 import java.util.*;
 
 /**
@@ -182,6 +184,25 @@ public class AppController implements Observer {
 
     public void leaveGame() {
         // TODO add functionality so that a player can leave the game
+        Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to leave the game?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        TextInputDialog name = new TextInputDialog();
+        name.setTitle("Select your name to leave");
+        name.setHeaderText("Select name");
+        name.setContentText("Name: ");
+
+        if(alert.showAndWait().get().equals(ButtonType.YES)) {
+            Optional<String> resultName = name.showAndWait();
+            String playerName = "";
+
+            if(resultName.isPresent()) {
+                playerName = resultName.get();
+                int id = gameController.board.getGameId();
+                client.leaveGame(id, playerName);
+                gameController = null;
+                roboRally.createBoardView(null);
+            }
+        }
     }
 
     public void joinGame() {
@@ -189,6 +210,7 @@ public class AppController implements Observer {
         name.setTitle("Player name");
         name.setHeaderText("Write the name of your player");
         name.setContentText("Name: ");
+
         Optional<String> resultName = name.showAndWait();
 
         String playerName = "Player";

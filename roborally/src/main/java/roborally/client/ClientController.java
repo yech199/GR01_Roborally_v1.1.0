@@ -143,7 +143,26 @@ public class ClientController implements IGameService {
 
         return result;
     }
+    @Override
+    public void leaveGame(int id, String playername) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create("http://localhost:8080/game/join/" + id + "/" + playername))
+                .setHeader("User-Agent", "Game Client")
+                .header("Content-Type", "application/json")
+                .build();
 
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+        String result;
+        try {
+            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = null;
+        }
+    }
     @Override
     public String joinGame(int id, String playername) {
         HttpRequest request = HttpRequest.newBuilder()

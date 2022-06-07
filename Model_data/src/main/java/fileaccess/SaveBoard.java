@@ -124,6 +124,7 @@ public class SaveBoard {
         template.boardName = board.getBoardName();
         template.checkPointAmount = board.totalNoOfCheckpoints;
         template.maxNumberOfPlayers = board.maxAmountOfPlayers;
+        template.activePlayers = board.amountOfActivePlayers;
 
         if (board.getGameId() != null) template.gameId = board.getGameId();
 

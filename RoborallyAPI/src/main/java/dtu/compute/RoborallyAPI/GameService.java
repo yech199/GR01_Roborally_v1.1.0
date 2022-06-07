@@ -59,10 +59,12 @@ public class GameService implements IGameService {
     public String getListOfGames() {
         List<Integer> listOfGames = new ArrayList<>();
         List<String> listOfBoardNames = new ArrayList<>();
+        List<Integer> listOfActivePlayers = new ArrayList<>();
 
         // Get a list of game IDs
         games.forEach(game -> listOfGames.add(game.getGameId()));
         games.forEach(game -> listOfBoardNames.add(game.getBoardName()));
+        games.forEach(game -> listOfActivePlayers.add(game.amountOfActivePlayers));
 
         // https://www.tutorialspoint.com/how-to-convert-java-array-or-arraylist-to-jsonarray-using-gson-in-java
         JsonObject jsonObj = new JsonObject();
@@ -70,8 +72,11 @@ public class GameService implements IGameService {
         JsonArray jsonArray1 = new Gson().toJsonTree(listOfGames).getAsJsonArray();
         // ArrayList to JsonArray
         JsonArray jsonArray2 = new Gson().toJsonTree(listOfBoardNames).getAsJsonArray();
+        JsonArray jsonArray3 = new Gson().toJsonTree(listOfActivePlayers).getAsJsonArray();
         jsonObj.add("gameId", jsonArray1);
         jsonObj.add("boardNames", jsonArray2);
+        jsonObj.add("activePlayers", jsonArray3);
+
         return new Gson().toJson(jsonObj);
     }
 
@@ -91,6 +96,26 @@ public class GameService implements IGameService {
             }
         }
         return null;
+    }
+    @Override
+    public String leaveGame(int id, String playerName) {
+        Board game = findGame(id);
+        if(game == null) return "Game not found";
+        Player player = game.getPlayer(playerName);
+
+        int i  = game.getPlayers().indexOf(player) + 1;
+
+        // Add new player and replace dummy player
+        Player dummy = new Player(game, player.getColor(), "Player " + i);
+        dummy.setSpace(player.getSpace());
+        dummy.setHeading(player.getHeading());
+        dummy.activePlayer = false;
+        dummy.setCards(player.getCards());
+        dummy.setProgram(player.getProgram());
+
+        game.removeRobot(dummy, i);
+
+        return "ok";
     }
 
     @Override

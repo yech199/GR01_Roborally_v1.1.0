@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import model.Board;
+import roborally.StartRoboRally;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,13 +47,13 @@ public class GameClient {
 
         int[] gameID = gson.fromJson(data.get("gameId"), int[].class);
         String[] boardNames = gson.fromJson(data.get("boardNames"), String[].class);
+        int[] activePlayers = gson.fromJson(data.get("activePlayers"), int[].class);
 
         ArrayList<String> result = new ArrayList<>();
-        final String ANSI_RESET = "\u001B[0m";
-        final String ANSI_YELLOW = "\u001B[33m";
         for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
             // TODO Add boardname in some smart way
-            result.add("Board: " + boardNames[i].concat(" | Game Id: " + String.valueOf(gameID[i])));
+            result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | active: "
+                    + String.valueOf(activePlayers[i]))));
         }
         return result;
     }
@@ -92,7 +93,9 @@ public class GameClient {
         String json = clientController.getBoardState(boardName);
         return LoadBoard.newBoardState(json, gameId, numOfPlayers);
     }
-
+    public void leaveGame(int id, String playerName) {
+        clientController.leaveGame(id, playerName);
+    }
     public Board joinGame(int id, String playerName) {
         String json = clientController.joinGame(id, playerName);
         return LoadBoard.loadGameState(json);

@@ -80,6 +80,7 @@ public class LoadBoard {
         board.setStep(template.step);
         board.setGameId(template.gameId);
         board.setMaxAmountOfPlayers(template.maxNumberOfPlayers);
+        board.setAmountOfActivePlayers(template.activePlayers);
 
         return board;
     }
@@ -105,6 +106,7 @@ public class LoadBoard {
             playerNo++;
         }
         board.setMaxAmountOfPlayers(numberOfPlayers);
+        board.setAmountOfActivePlayers(board.getAmountOfActivePlayers());
         return board;
     }
 

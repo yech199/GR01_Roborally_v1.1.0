@@ -6,7 +6,7 @@ import model.boardElements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 
 abstract public class AGameController {
-    final public Board board;
+    public Board board;
     protected Antenna antenna;
     protected Space antennaSpace;
     protected RebootToken rebootToken;

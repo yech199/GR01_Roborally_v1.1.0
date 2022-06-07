@@ -226,11 +226,24 @@ public class AppController implements Observer {
         dialogL.setHeaderText("Select a game to join");
         Optional<String> selectedGame = dialogL.showAndWait();
 
+        String numbers = selectedGame.get();
+        ArrayList<String> extraction = new ArrayList<>();
+        for(int i = 0; i < numbers.length(); i++) {
+            if(numbers.charAt(i) == '|') {
+                for(int j = i; j < i + 12; j++) {
+                    extraction.add(String.valueOf(numbers.charAt(j)));
+                }
+                break;
+            }
+        }
+        String[] extractionArray = extraction.toArray(new String[0]);
+        String clean = Arrays.toString(extractionArray);
+
+        String result = clean.replaceAll("\\D+","");
         Board board;
         if (selectedGame.isPresent()) {
-            String clean = selectedGame.get().replaceAll("\\D+","");
             // Join the selected game
-            int gameId = Integer.parseInt(clean);
+            int gameId = Integer.valueOf(result);
             board = client.joinGame(gameId, playerName);
         } else {
             board = LoadBoard.newBoard(null, 6);

@@ -160,10 +160,10 @@ public class SaveBoard {
         playerTemplate.heading = String.valueOf(player.getHeading());
         playerTemplate.color = player.getColor();
         playerTemplate.name = player.getName();
+        playerTemplate.active = player.activePlayer;
 
         playerTemplate.registers = saveCommandCardFields(player.getProgram());
         playerTemplate.cards = saveCommandCardFields(player.getCards());
-        playerTemplate.active = player.activePlayer;
 
         // Saving the board template using GSON
         GsonBuilder simpleBuilder = new GsonBuilder().

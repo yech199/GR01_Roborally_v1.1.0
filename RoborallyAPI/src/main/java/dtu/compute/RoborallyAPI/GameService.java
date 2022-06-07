@@ -60,22 +60,26 @@ public class GameService implements IGameService {
         List<Integer> listOfGames = new ArrayList<>();
         List<String> listOfBoardNames = new ArrayList<>();
         List<Integer> listOfActivePlayers = new ArrayList<>();
+        List<Integer> listOfTotalPlayers = new ArrayList<>();
 
         // Get a list of game IDs
         games.forEach(game -> listOfGames.add(game.getGameId()));
         games.forEach(game -> listOfBoardNames.add(game.getBoardName()));
         games.forEach(game -> listOfActivePlayers.add(game.amountOfActivePlayers));
+        games.forEach(game -> listOfTotalPlayers.add(game.maxAmountOfPlayers));
 
         // https://www.tutorialspoint.com/how-to-convert-java-array-or-arraylist-to-jsonarray-using-gson-in-java
         JsonObject jsonObj = new JsonObject();
-        // array to JsonArray
-        JsonArray jsonArray1 = new Gson().toJsonTree(listOfGames).getAsJsonArray();
         // ArrayList to JsonArray
+        JsonArray jsonArray1 = new Gson().toJsonTree(listOfGames).getAsJsonArray();
         JsonArray jsonArray2 = new Gson().toJsonTree(listOfBoardNames).getAsJsonArray();
         JsonArray jsonArray3 = new Gson().toJsonTree(listOfActivePlayers).getAsJsonArray();
+        JsonArray jsonArray4 = new Gson().toJsonTree(listOfTotalPlayers).getAsJsonArray();
+
         jsonObj.add("gameId", jsonArray1);
         jsonObj.add("boardNames", jsonArray2);
         jsonObj.add("activePlayers", jsonArray3);
+        jsonObj.add("maxNumberOfPlayers", jsonArray4);
 
         return new Gson().toJson(jsonObj);
     }

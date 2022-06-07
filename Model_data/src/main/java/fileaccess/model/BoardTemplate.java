@@ -42,7 +42,6 @@ public class BoardTemplate {
     public int step;
     public int activePlayers;
 
-
     public List<PlayerTemplate> players = new ArrayList<>();
     public int currentPlayer;
 

@@ -41,6 +41,23 @@ public class ClientController implements IGameService {
     public void updateGame(int id, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
+                .uri(URI.create("http://localhost:8080/game/join" + id))
+                .setHeader("User-Agent", "Game Client")
+                .setHeader("Content-Type", "application/json")
+                .build();
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+            // Ignore response
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void updateLobby(int id, String gameData) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(gameData))
                 .uri(URI.create("http://localhost:8080/game/" + id))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
@@ -144,10 +161,10 @@ public class ClientController implements IGameService {
         return result;
     }
     @Override
-    public void leaveGame(int id, String playername) {
+    public void leaveGame(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
-                .uri(URI.create("http://localhost:8080/game/join/" + id + "/" + playername))
+                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();

@@ -37,6 +37,9 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private Menu localMenu;
     private Menu serverMenu;
+    private Menu updateMenu;
+
+    private MenuItem update;
 
     private MenuItem update;
 
@@ -116,6 +119,18 @@ public class RoboRallyMenuBar extends MenuBar {
 
         serverMenu.setOnShowing(e -> update());
         serverMenu.setOnShown(e -> this.updateBounds());
+
+        update();
+
+        /**
+         * UPDATE MENU
+         */
+        updateMenu = new Menu("Update");
+        this.getMenus().add(updateMenu);
+
+        // update = new MenuItem("Update");
+        // update.setOnAction(e -> this.appController.nothing());
+        // updateMenu.getItems().add(update);
 
         update();
     }

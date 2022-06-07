@@ -43,7 +43,7 @@ public class PushPanel extends SpaceElement {
             }
             
             if ((gameController.board.getStep() == n1 || gameController.board.getStep() == n2) && space.getPlayer() != null) {
-                gameController.moveForward(space.getPlayer(), this.heading);
+                gameController.cardController.moveForward(space.getPlayer(), this.heading);
             }
         }
     }

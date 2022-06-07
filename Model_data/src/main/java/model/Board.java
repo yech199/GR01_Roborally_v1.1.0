@@ -291,4 +291,8 @@ public class Board extends Subject {
         int freeIndex = getRobot();
         players.set(freeIndex, player);
     }
+
+    public void updateView() {
+        notifyChange();
+    }
 }

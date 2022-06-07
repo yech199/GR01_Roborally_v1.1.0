@@ -163,11 +163,14 @@ public class AppController implements Observer {
     }
 
     public void saveServerGame() {
+        String playerName = "mads";
         String msg;
         try {
             int id = gameController.board.getGameId();
             String json = SaveBoard.serializeBoard(gameController.board);
+            String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
             client.setGameState(id, json);
+            client.setPlayerState(id, playerJson);
             msg = "Succesfully saved game to server";
         } catch (Exception e) {
             e.printStackTrace();
@@ -329,6 +332,12 @@ public class AppController implements Observer {
         if (gameController != null) {
             if (gameController.board.getWinner() != null) exit();
         }
+    }
+
+    public void updateServerGame() {
+        int id = gameController.board.getGameId();
+        gameController.board = client.getGameState(id);
+        gameController.board.updateView();
     }
 
 }

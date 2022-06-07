@@ -165,4 +165,26 @@ public class ClientController implements IGameService {
         }
         return result;
     }
+
+    @Override
+    public String playCards(int id, String playerData) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(playerData))
+                .uri(URI.create("http://localhost:8080/game/" + id))
+                .setHeader("User-Agent", "Game Client")
+                .setHeader("Content-Type", "application/json")
+                .build();
+
+
+        String result;
+        try {
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            result = response.body();
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = null;
+        }
+        return result;
+    }
 }

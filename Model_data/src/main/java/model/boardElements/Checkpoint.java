@@ -9,6 +9,7 @@ public class Checkpoint extends SpaceElement {
 
     @Override
     public void doAction(AGameController gameController, Space space) {
+        // In order to complete a checkpoint, you must be on it at the end of a register
         if (space.getPlayer() != null && space.getPlayer().getGatheredCheckpoints() == this.checkpointNumber - 1
                 && gameController.board.getStep() == Player.NO_REGISTERS - 1) {
             space.getPlayer().addCheckPoint();

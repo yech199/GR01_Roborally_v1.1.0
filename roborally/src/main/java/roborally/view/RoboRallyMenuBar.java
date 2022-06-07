@@ -35,10 +35,13 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private AppController appController;
 
-    private Menu controlMenu;
+    private Menu localMenu;
     private Menu serverMenu;
+    private Menu updateMenu;
 
     private MenuItem saveGame;
+
+    private MenuItem update;
 
     private MenuItem newGame;
     private MenuItem serverGame;
@@ -58,31 +61,31 @@ public class RoboRallyMenuBar extends MenuBar {
          * LOCAL ACTIONS MENU
          */
 
-        controlMenu = new Menu("Local");
-        this.getMenus().add(controlMenu);
+        localMenu = new Menu("Local");
+        this.getMenus().add(localMenu);
 
         newGame = new MenuItem("New Game");
         newGame.setOnAction(e -> this.appController.newGame());
-        controlMenu.getItems().add(newGame);
+        localMenu.getItems().add(newGame);
 
         stopGame = new MenuItem("Stop Game");
         stopGame.setOnAction(e -> this.appController.stopGame());
-        controlMenu.getItems().add(stopGame);
+        localMenu.getItems().add(stopGame);
 
         saveGame = new MenuItem("Save Game");
         saveGame.setOnAction(e -> this.appController.saveGame());
-        controlMenu.getItems().add(saveGame);
+        localMenu.getItems().add(saveGame);
 
         loadGame = new MenuItem("Load Game");
         loadGame.setOnAction(e -> this.appController.loadGame());
-        controlMenu.getItems().add(loadGame);
+        localMenu.getItems().add(loadGame);
 
         exitApp = new MenuItem("Exit");
         exitApp.setOnAction(e -> this.appController.exit());
-        controlMenu.getItems().add(exitApp);
+        localMenu.getItems().add(exitApp);
 
-        controlMenu.setOnShowing(e -> update());
-        controlMenu.setOnShown(e -> this.updateBounds());
+        localMenu.setOnShowing(e -> update());
+        localMenu.setOnShown(e -> this.updateBounds());
 
         update();
 
@@ -111,6 +114,18 @@ public class RoboRallyMenuBar extends MenuBar {
         serverMenu.setOnShowing(e -> update());
         serverMenu.setOnShown(e -> this.updateBounds());
 
+
+        update();
+
+        /**
+         * UPDATE MENU
+         */
+        updateMenu = new Menu("Update");
+        this.getMenus().add(updateMenu);
+
+        update = new MenuItem("Update");
+        update.setOnAction(e -> this.appController.nothing());
+        updateMenu.getItems().add(update);
 
         update();
     }

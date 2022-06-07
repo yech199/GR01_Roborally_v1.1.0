@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class SpaceView extends StackPane implements ViewObserver {
-    public int tileAngle = 0;
+    private int tileAngle = 0;
     final public static int SPACE_HEIGHT = 60; // 75;
     final public static int SPACE_WIDTH = 60; // 75;
 
@@ -162,7 +162,6 @@ public class SpaceView extends StackPane implements ViewObserver {
                 case WEST -> 270;
             };
 
-            // rectangle.setRotate((90 * player.getHeading().ordinal()) % 360);
             rectangle.setRotate(angle - this.tileAngle);
             rectangle.toFront();
             this.getChildren().add(rectangle);

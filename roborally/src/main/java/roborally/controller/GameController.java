@@ -23,10 +23,7 @@ package roborally.controller;
 
 import controller.AGameController;
 import model.*;
-import model.boardElements.Checkpoint;
-import model.boardElements.ConveyorBelt;
-import model.boardElements.Pit;
-import model.boardElements.SpaceElement;
+import model.boardElements.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -146,25 +143,30 @@ public class GameController extends AGameController {
     // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
+
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
-                if (card != null) {
-                    if (card.command == Command.OPTION_LEFT_RIGHT) {
-                        board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
+                if (!currentPlayer.isRebooted) {
+                    CommandCard card = currentPlayer.getProgramField(step).getCard();
+                    if (card != null) {
+                        if (card.command == Command.OPTION_LEFT_RIGHT) {
+                            board.setPhase(Phase.PLAYER_INTERACTION);
+                            return;
+                        }
+                        Command command = card.command;
+                        executeCommand(currentPlayer, command);
                     }
-                    Command command = card.command;
-                    executeCommand(currentPlayer, command);
-                }
 
-                //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
-                // executing the actions on the space a player moves to
-                Space space = currentPlayer.getSpace();
-                for (SpaceElement action : space.getActions()) {
-                    action.doAction(this, space);
+                    //doFieldEffect(currentPlayer); Implement field effects in their own classes extending FieldAction
+                    // executing the actions on the space a player moves to
+                    Space space = currentPlayer.getSpace();
+                    for (SpaceElement action : space.getActions()) {
+                        action.doAction(this, space);
+                    }
                 }
+                if (currentPlayer.isRebooted && board.getStep() == Player.NO_REGISTERS - 1)
+                    currentPlayer.isRebooted = false;
 
                 // Next Player
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -240,32 +242,53 @@ public class GameController extends AGameController {
     /**
      * Moves the player in the direction of the heading if possible
      * @param player being moved
-     * @param playerHeading of the player or of the spaceElement moving you
+     * @param moveDirection of the player or of the spaceElement moving you
      */
-    public void moveForward(@NotNull Player player, Heading playerHeading) {
+    public void moveForward(@NotNull Player player, Heading moveDirection) {
         try {
-            // Heading playerHeading = player.getHeading();
-            Space target = board.getNeighbour(player.getSpace(), playerHeading);
+            // Heading moveDirection = player.getHeading();
+            Space target = board.getNeighbour(player.getSpace(), moveDirection);
+
+            // If the player is standing ON a push panel, and is trying to walk into the wall throw exception
+            if (player.getSpace().getActions().size() > 0) {
+                for (SpaceElement space : player.getSpace().getActions()) {
+                    if (space instanceof PushPanel pushPanel && moveDirection == pushPanel.getHeading().next().next()
+                            && target == board.getNeighbour(player.getSpace(), moveDirection)) {
+                        throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
+                    }
+                }
+            }
 
             // Target out of board. You cannot move out of the board or into an antenna (you can only be pushed out)
             if (target == null || target == this.antennaSpace)
-                throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
+                throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
 
             // If the target contains another player
             else if (target.getPlayer() != null) {
                 boolean isValid = checkIfMoveToTargetWithPlayerIsValid(player, target);
-                if (!isValid) throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
+                if (!isValid) throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
             }
 
             else {
-                if (player.getSpace().hasWallPointing(playerHeading) || target.hasWallPointing(playerHeading.next().next())
-                        || target == this.antennaSpace) {
-                    throw new ImpossibleMoveException(player, player.getSpace(), playerHeading);
+                if (player.getSpace().hasWallPointing(moveDirection) || target.hasWallPointing(moveDirection.next().next())) {
+                    throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
+                }
+
+                // If the player is trying to walk onto a push panel THROUGH a wall throw exception
+                if (target.getActions().size() > 0) {
+                    for (SpaceElement space : target.getActions()) {
+                        if (space instanceof PushPanel pushPanel && moveDirection == pushPanel.getHeading()) {
+                            throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
+                        }
+                    }
                 }
             }
             // Free? Then move player
             target.setPlayer(player);
         } catch (ImpossibleMoveException e) {
+            if (rebootTokenSpace.getPlayer() != null) {
+                moveForward(player, moveDirection.next());
+            }
             System.out.println("Move impossible");
         }
 
@@ -279,33 +302,57 @@ public class GameController extends AGameController {
      * @throws ImpossibleMoveException if the move isn't a valid move
      */
     private boolean checkIfMoveToTargetWithPlayerIsValid(@NotNull Player player, Space target) throws ImpossibleMoveException {
-
-        Heading playerHeading = player.getHeading();
-
+        Heading pushDirection = player.getHeading();
         Player targetPlayer = target.getPlayer();
-        Space tmpTarget = board.getNeighbour(targetPlayer.getSpace(), playerHeading);
+        Space tmpTarget = board.getNeighbour(targetPlayer.getSpace(), pushDirection);
 
+        // If the player being pushed is standing ON a push panel, and is being pushed into a "wall" throw exception
+        if (targetPlayer.getSpace().getActions().size() > 0) {
+            for (SpaceElement space : targetPlayer.getSpace().getActions()) {
+                if (space instanceof PushPanel pushPanel) {
+                    if (player.getHeading() == pushPanel.getHeading().next().next()
+                            && tmpTarget == board.getNeighbour(target, player.getHeading()))
+                        throw new ImpossibleMoveException(targetPlayer, targetPlayer.getSpace(), pushDirection);
+                    pushDirection = pushPanel.getHeading();
+                }
+            }
+        }
+
+        boolean isValid = true;
+
+        // Check for out of board
         if (tmpTarget == null) {
             reboot(targetPlayer);
             return true;
         }
-        if (target.hasWallPointing(playerHeading) || tmpTarget.hasWallPointing(playerHeading.next().next())
+        // Check for walls and antenna
+        else if (target.hasWallPointing(pushDirection) || tmpTarget.hasWallPointing(pushDirection.next().next())
                 || tmpTarget == this.antennaSpace) {
             return false;
         }
-
-        boolean isValid = true;
-        if (tmpTarget.getPlayer() != null) {
+        // Check for player
+        else if (tmpTarget.getPlayer() != null) {
             isValid = checkIfMoveToTargetWithPlayerIsValid(player, tmpTarget);
+        }
+        // Check for push panels
+        else if (tmpTarget.getActions().size() > 0) {
+            for (SpaceElement space : tmpTarget.getActions()) {
+                if (space instanceof PushPanel pushPanel && player.getHeading() == pushPanel.getHeading()) {
+                    throw new ImpossibleMoveException(player, player.getSpace(), player.getHeading());
+                }
+            }
         }
 
         // Moves the pushed player(s) recursively
         if (isValid) {
             tmpTarget.setPlayer(targetPlayer);
 
+            // Only do action for the player which was placed onto a new space if that space isn't
+            // a conveyor belt, a checkpoint or a push panel
             if (tmpTarget.getActions().size() > 0) {
                 for (SpaceElement space : tmpTarget.getActions()) {
-                    if (!(space instanceof ConveyorBelt) && !(space instanceof Checkpoint)) {
+                    if (!(space instanceof ConveyorBelt) && !(space instanceof Checkpoint)
+                            && !(space instanceof PushPanel)) {
                         space.doAction(this, targetPlayer.getSpace());
                     }
                 }
@@ -354,20 +401,11 @@ public class GameController extends AGameController {
     }
 
     public void reboot(Player player) {
-        // int checkpoint = player.getCheckPoints();
-        // if (checkpoint == 1) {
-        //     player.setSpace(board.getSpace(0, 0));
-        // }
-        // else {
-        //     for (int x = 0; x < board.getSpaces().length; x++) {
-        //         for (int y = 0; y < board.getSpaces()[0].length; y++) {
-        //             if (board.getSpace(x, y).checkpointNumber == checkpoint - 1) {
-        //                 player.setSpace(board.getSpace(x, y));
-        //             }
-        //         }
-        //     }
-        // }
-        
+        player.isRebooted = true;
+        if (rebootTokenSpace.getPlayer() != null) {
+            this.moveForward(rebootTokenSpace.getPlayer(), rebootToken.getHeading());
+        }
+        rebootToken.doAction(this, rebootTokenSpace);
         rebootTokenSpace.setPlayer(player);
     }
 

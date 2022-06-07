@@ -41,6 +41,7 @@ public class Player extends Subject {
 
     private String name;
     private String color;
+    public boolean isRebooted = false;
 
     private Space space;
     private Heading heading;
@@ -161,5 +162,4 @@ public class Player extends Subject {
     public CommandCardField getCardField(int i) {
         return cards[i];
     }
-
 }

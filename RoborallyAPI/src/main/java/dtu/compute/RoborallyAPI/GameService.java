@@ -53,7 +53,6 @@ public class GameService implements IGameService {
         // TODO we serialize to deserialize again. Find better way
         Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
         id++;
-        game.setMaxAmountOfPlayers(numOfPlayers);
         games.add(game);
         return SaveBoard.serializeBoard(game);
     }

@@ -35,7 +35,7 @@ public class LoadBoard {
             newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
             newPlayer.setProgram(loadCommandCardFields(player.registers, newPlayer));
 
-            newPlayer.activePlayer = true;
+            newPlayer.activePlayer = player.active;
             board.addPlayer(newPlayer);
         }
     }
@@ -79,6 +79,7 @@ public class LoadBoard {
         board.setPhase(Phase.valueOf(template.phase));
         board.setStep(template.step);
         board.setGameId(template.gameId);
+        board.setMaxAmountOfPlayers(template.maxNumberOfPlayers);
 
         return board;
     }
@@ -103,6 +104,7 @@ public class LoadBoard {
             board.addPlayer(player);
             playerNo++;
         }
+        board.setMaxAmountOfPlayers(numberOfPlayers);
         return board;
     }
 

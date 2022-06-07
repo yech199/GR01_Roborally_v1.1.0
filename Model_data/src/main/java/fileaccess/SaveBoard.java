@@ -74,6 +74,7 @@ public class SaveBoard {
 
             playerTemplate.registers = saveCommandCardFields(player.getProgram());
             playerTemplate.cards = saveCommandCardFields(player.getCards());
+            playerTemplate.active = player.activePlayer;
 
             playerTemplates.add(playerTemplate);
             playerCounter++;
@@ -122,6 +123,8 @@ public class SaveBoard {
         template.phase = String.valueOf(board.getPhase());
         template.boardName = board.getBoardName();
         template.checkPointAmount = board.totalNoOfCheckpoints;
+        template.maxNumberOfPlayers = board.maxAmountOfPlayers;
+
         if (board.getGameId() != null) template.gameId = board.getGameId();
 
         // Saving the board template using GSON

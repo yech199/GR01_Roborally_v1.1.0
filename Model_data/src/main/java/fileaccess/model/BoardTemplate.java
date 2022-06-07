@@ -33,6 +33,7 @@ import java.util.List;
 public class BoardTemplate {
 
     public int gameId;
+    public int maxNumberOfPlayers;
     public String boardName;
     public int width;
     public int height;

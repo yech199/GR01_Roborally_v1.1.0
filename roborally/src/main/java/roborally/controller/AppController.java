@@ -34,6 +34,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import model.Board;
 import model.Phase;
+import model.Player;
 import org.jetbrains.annotations.NotNull;
 import roborally.RoboRally;
 import roborally.client.GameClient;
@@ -139,8 +140,27 @@ public class AppController implements Observer {
             if (selectedBoard.isPresent()) {
                 board = client.createGame(selectedBoard.get(), numOfPlayers);
                 // Sets number of players here!
-                choosePlayerNames(numOfPlayers, board);
+                //choosePlayerNames(numOfPlayers, board);
+                TextInputDialog name = new TextInputDialog();
+                name.setTitle("Player name");
+                name.setHeaderText("Write the name of your player");
+                name.setContentText("Name: ");
+                Optional<String> resultName = name.showAndWait();
+
+                String playerName = "Player";
+                if (resultName.isPresent()) {
+                    playerName = resultName.get();
+                }
+
+                Player player = board.getPlayer(0);
+                player.activePlayer = true;
+                player.setName(playerName);
+
+                board.setRobot(player);
+
                 client.setGameState(board);
+
+
             }
             else {
                 board = LoadBoard.newBoard(null, numOfPlayers);
@@ -188,10 +208,9 @@ public class AppController implements Observer {
         dialogL.setHeaderText("Select a game to join");
         Optional<String> selectedGame = dialogL.showAndWait();
 
-        String clean = selectedGame.get().replaceAll("\\D+","");
-
         Board board;
         if (selectedGame.isPresent()) {
+            String clean = selectedGame.get().replaceAll("\\D+","");
             // Join the selected game
             int gameId = Integer.parseInt(clean);
             board = client.joinGame(gameId, playerName);

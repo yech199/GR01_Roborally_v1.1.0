@@ -17,8 +17,6 @@ import java.util.List;
 @Service
 public class GameService implements IGameService {
 
-    private final Color[] COLORS = {Color.red, Color.blue, Color.green, Color.yellow, Color.cyan, Color.magenta};
-
     // A game is a board with a set gameId and saved player cards/registers
     ArrayList<Board> games = new ArrayList<>();
     ArrayList<Board> boards = new ArrayList<>();

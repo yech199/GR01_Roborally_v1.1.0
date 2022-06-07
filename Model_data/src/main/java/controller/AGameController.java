@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 abstract public class AGameController {
     public Board board;
+    public final ProgrammingCardController cardController;
     protected Antenna antenna;
     protected Space antennaSpace;
     protected RebootToken rebootToken;
@@ -14,6 +15,7 @@ abstract public class AGameController {
 
     public AGameController(@NotNull Board board) {
         this.board = board;
+        cardController = new ProgrammingCardController(this);
 
         // Finds antenna if it exists
         for (var x : board.getSpaces()) {
@@ -58,15 +60,15 @@ abstract public class AGameController {
 
     public abstract void executeCommandOptionAndContinue(Command option);
 
-    public abstract void moveForward(@NotNull Player player, Heading playerHeading);
-
-    public abstract void moveXForward(@NotNull Player player, int moves);
-
-    public abstract void turnRight(@NotNull Player player);
-
-    public abstract void turnLeft(@NotNull Player player);
-
-    public abstract boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target);
+    // public abstract void moveForward(@NotNull Player player, Heading playerHeading);
+    //
+    // public abstract void moveXForward(@NotNull Player player, int moves);
+    //
+    // public abstract void turnRight(@NotNull Player player);
+    //
+    // public abstract void turnLeft(@NotNull Player player);
+    //
+    // public abstract boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target);
 
     public abstract void reboot(Player player);
 }

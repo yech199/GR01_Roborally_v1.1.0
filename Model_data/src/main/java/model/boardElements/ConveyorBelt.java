@@ -61,7 +61,7 @@ public class ConveyorBelt extends SpaceElement {
 
             // If there is a player on the field
             if (player != null) {
-                gameController.moveForward(player, conveyorBelt.heading);
+                gameController.cardController.moveForward(player, conveyorBelt.heading);
 
                 if (this.color == ConveyorBeltColor.BLUE) {
                     if (player.getSpace().getActions().size() > 0) {
@@ -70,7 +70,7 @@ public class ConveyorBelt extends SpaceElement {
                                 return;
                         }
                     }
-                    gameController.moveForward(player, conveyorBelt.heading);
+                    gameController.cardController.moveForward(player, conveyorBelt.heading);
                 }
             }
 

@@ -123,9 +123,9 @@ public class RoboRallyMenuBar extends MenuBar {
         updateMenu = new Menu("Update");
         this.getMenus().add(updateMenu);
 
-        update = new MenuItem("Update");
-        update.setOnAction(e -> this.appController.nothing());
-        updateMenu.getItems().add(update);
+        // update = new MenuItem("Update");
+        // update.setOnAction(e -> this.appController.nothing());
+        // updateMenu.getItems().add(update);
 
         update();
     }

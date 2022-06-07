@@ -20,8 +20,8 @@ public class Gear extends SpaceElement {
     public void doAction(AGameController gameController, Space space) {
         if (space.getActions().size() > 0) {
             switch (this.direction) {
-                case LEFT -> gameController.turnLeft(space.getPlayer());
-                case RIGHT -> gameController.turnRight(space.getPlayer());
+                case LEFT -> gameController.cardController.turnLeft(space.getPlayer());
+                case RIGHT -> gameController.cardController.turnRight(space.getPlayer());
             }
         }
     }

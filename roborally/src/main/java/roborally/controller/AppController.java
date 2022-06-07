@@ -131,6 +131,17 @@ public class AppController implements Observer {
 
             List<String> games = client.getListOfBoards();
 
+            TextInputDialog name = new TextInputDialog();
+            name.setTitle("Player name");
+            name.setHeaderText("Write the name of your player");
+            name.setContentText("Name: ");
+            Optional<String> resultName = name.showAndWait();
+
+            String playerName = "Player";
+            if (resultName.isPresent()) {
+                playerName = resultName.get();
+            }
+
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
             dialogL.setTitle("Select board");
             dialogL.setHeaderText("Select a board to load");
@@ -139,28 +150,7 @@ public class AppController implements Observer {
             Board board;
             if (selectedBoard.isPresent()) {
                 board = client.createGame(selectedBoard.get(), numOfPlayers);
-                // Sets number of players here!
-                //choosePlayerNames(numOfPlayers, board);
-                TextInputDialog name = new TextInputDialog();
-                name.setTitle("Player name");
-                name.setHeaderText("Write the name of your player");
-                name.setContentText("Name: ");
-                Optional<String> resultName = name.showAndWait();
-
-                String playerName = "Player";
-                if (resultName.isPresent()) {
-                    playerName = resultName.get();
-                }
-
-                Player player = board.getPlayer(0);
-                player.activePlayer = true;
-                player.setName(playerName);
-
-                board.setRobot(player);
-
-                client.setGameState(board);
-
-
+                board = client.joinGame(board.getGameId(), playerName);
             }
             else {
                 board = LoadBoard.newBoard(null, numOfPlayers);
@@ -168,7 +158,6 @@ public class AppController implements Observer {
 
             Alert alert = new Alert(AlertType.CONFIRMATION, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
             alert.showAndWait();
-
             setupGameController(board);
         }
     }

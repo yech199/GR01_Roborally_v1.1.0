@@ -184,17 +184,20 @@ public class AppController implements Observer {
         // TODO add functionality so that a player can leave the game
         Alert alert = new Alert(AlertType.INFORMATION, "Do you want to leave the game?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
+        /*
         TextInputDialog name = new TextInputDialog();
         name.setTitle("Select your name to leave");
         name.setHeaderText("Select name");
         name.setContentText("Name: ");
 
-        if(alert.showAndWait().get().equals(ButtonType.YES)) {
-            Optional<String> resultName = name.showAndWait();
-            String playerName = "";
+         */
 
-            if(resultName.isPresent()) {
-                playerName = resultName.get();
+        if(alert.showAndWait().get().equals(ButtonType.YES)) {
+            //Optional<String> resultName = name.showAndWait();
+            String playerName = client.getPlayerName();
+
+            if(playerName != null) {
+                //playerName = resultName.get();
                 int id = gameController.board.getGameId();
                 String result = client.leaveGame(id, playerName);
 
@@ -347,7 +350,6 @@ public class AppController implements Observer {
                 gameController = null;
                 roboRally.createBoardView(null);
             }
-
             else {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Exit RoboRally?");
@@ -356,6 +358,9 @@ public class AppController implements Observer {
 
                 if (result.isEmpty() || result.get() != ButtonType.OK) {
                     return; // return without exiting the application
+                }
+                else{
+                    client.leaveGame(gameController.board.getGameId(), client.getPlayerName());
                 }
             }
         }
@@ -381,6 +386,7 @@ public class AppController implements Observer {
     public void updateServerGame() {
         int id = gameController.board.getGameId();
         gameController.board = client.getGameState(id);
+        gameController.board.setPhase(Phase.PROGRAMMING);
         gameController.board.updateView();
     }
 

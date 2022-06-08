@@ -14,6 +14,7 @@ import java.util.List;
 public class GameClient {
 
     ClientController clientController;
+    String playerName = "guest";
 
     public GameClient() {
         clientController = new ClientController();
@@ -27,6 +28,11 @@ public class GameClient {
         String json = clientController.getGameById(id);
         return LoadBoard.loadGameState(json);
     }
+
+    public String getPlayerName()
+    {
+        return playerName;
+    };
 
     public void setPlayerState(int id, String playerName, String playerData) {
         clientController.playCards(id, playerData, playerName);
@@ -104,6 +110,7 @@ public class GameClient {
         return clientController.leaveGame(id, playerName);
     }
     public Board joinGame(int id, String playerName) {
+        this.playerName = playerName;
         String json = clientController.joinGame(id, playerName);
         return LoadBoard.loadGameState(json);
     }

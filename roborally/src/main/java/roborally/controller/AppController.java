@@ -21,6 +21,7 @@
  */
 package roborally.controller;
 
+import controller.GameController;
 import designpatterns.observer.Observer;
 import designpatterns.observer.Subject;
 import fileaccess.IOUtil;

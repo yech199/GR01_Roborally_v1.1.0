@@ -25,10 +25,10 @@ import designpatterns.observer.Subject;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import controller.GameController;
 import model.Board;
 import model.Player;
 import javafx.scene.control.TabPane;
-import roborally.controller.GameController;
 
 /**
  * ...

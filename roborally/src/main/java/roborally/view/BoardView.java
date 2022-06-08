@@ -22,7 +22,7 @@
 package roborally.view;
 
 import designpatterns.observer.Subject;
-import roborally.controller.GameController;
+import controller.GameController;
 import model.Board;
 import model.Phase;
 import model.Space;

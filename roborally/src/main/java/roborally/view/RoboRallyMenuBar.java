@@ -131,7 +131,7 @@ public class RoboRallyMenuBar extends MenuBar {
         serverMenu.getItems().add(exitApp);
 
         update = new MenuItem("Refresh View");
-        update.setOnAction(e -> this.appController.updateServerGame());
+        update.setOnAction(e -> this.appController.updateServerView());
         serverMenu.getItems().add(update);
 
         serverMenu.setOnShowing(e -> update());

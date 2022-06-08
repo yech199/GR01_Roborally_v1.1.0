@@ -31,22 +31,24 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 public class Player extends Subject {
-    private int gatheredCheckpoints = 0;
-
-    final public Board board;
-
     private String name;
     private String color;
-    public boolean isRebooted = false;
 
     private Space space;
     private Heading heading;
 
-    private CommandCardField[] program;
+    private int gatheredCheckpoints = 0;
+
     private CommandCardField[] cards;
+    private CommandCardField[] registers;
+
+    public boolean isRebooted = false;
 
     public boolean activePlayer = false;
+
     public int playerId = 0;
+
+    final public Board board;
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -54,9 +56,9 @@ public class Player extends Subject {
         this.color = color;
         this.space = null;
 
-        program = new CommandCardField[Globals.NO_REGISTERS];
-        for (int i = 0; i < program.length; i++) {
-            program[i] = new CommandCardField(this);
+        registers = new CommandCardField[Globals.NO_REGISTERS];
+        for (int i = 0; i < registers.length; i++) {
+            registers[i] = new CommandCardField(this);
         }
 
         cards = new CommandCardField[Globals.NO_CARDS];
@@ -143,16 +145,16 @@ public class Player extends Subject {
         return cards;
     }
 
-    public void setProgram(@NotNull CommandCardField[] program) {
-        this.program = program;
+    public void setRegisters(@NotNull CommandCardField[] registers) {
+        this.registers = registers;
     }
 
-    public CommandCardField[] getProgram() {
-        return program;
+    public CommandCardField[] getRegisters() {
+        return registers;
     }
 
     public CommandCardField getProgramField(int i) {
-        return program[i];
+        return registers[i];
     }
 
     public CommandCardField getCardField(int i) {

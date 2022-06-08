@@ -136,6 +136,7 @@ public class Board extends Subject {
             return null;
         }
     }
+
     public Player getPlayer(String playerName) {
         for (Player player : players) {
             if (player.getName().equals(playerName)) return player;

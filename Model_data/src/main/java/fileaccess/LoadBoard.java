@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoadBoard {
-
     private static void loadSpaces(BoardTemplate template, Board board) {
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -23,6 +22,7 @@ public class LoadBoard {
             }
         }
     }
+
     /**
      * Only used when loading a saved game. Not a new game
      */
@@ -93,6 +93,8 @@ public class LoadBoard {
 
         return board;
     }
+
+
 
     private static Board deserializeBoard(String jsonGameState, int numberOfPlayers) {
         // In simple cases, we can create a Gson object with new Gson():

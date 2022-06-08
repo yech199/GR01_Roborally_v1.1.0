@@ -190,7 +190,6 @@ public class ClientController implements IGameService {
         return result;
     }
 
-
     @Override
     public String playCards(int id, String playername, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -211,7 +210,6 @@ public class ClientController implements IGameService {
         }
         return result;
     }
-
 
     // This method does NOT exist in the interface
     public void updateLobby(int id, String gameData) {

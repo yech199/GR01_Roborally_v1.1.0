@@ -432,11 +432,10 @@ public class AppController implements Observer {
         }
     }
 
-    public void updateServerGame() {
+    public void updateServerView() {
         int id = gameController.board.getGameId();
-        gameController.board = client.getGameState(id);
-        gameController.board.setPhase(Phase.PROGRAMMING);
-        gameController.board.updateView();
+        Board board = client.getGameState(id);
+        setupGameController(board);
     }
 
     public AppState getAppState() {

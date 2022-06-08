@@ -4,9 +4,6 @@ public interface IGameService {
 
     String getGameById(int id);
     void updateGame(int id, String gameData);
-
-    void updateLobby(int id, String gameData);
-
     String createGame(String boardName, int numOfPlayers);
     String getListOfGames();
     String getListOfBoards();

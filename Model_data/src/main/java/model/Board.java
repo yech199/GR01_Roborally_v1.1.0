@@ -62,6 +62,8 @@ public class Board extends Subject {
     public final int totalNoOfCheckpoints;
 
     public Integer amountOfActivePlayers = 0;
+
+    // maxAmount on THIS board
     public Integer maxAmountOfPlayers;
 
     private boolean stepMode;

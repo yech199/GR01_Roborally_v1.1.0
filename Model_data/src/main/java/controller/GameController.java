@@ -72,12 +72,12 @@ public class GameController extends AGameController {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
             if (player != null) {
-                for (int j = 0; j < Player.NO_REGISTERS; j++) {
+                for (int j = 0; j < Globals.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
                     field.setCard(null);
                     field.setVisible(true);
                 }
-                for (int j = 0; j < Player.NO_CARDS; j++) {
+                for (int j = 0; j < Globals.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
                     field.setCard(generateRandomCommandCard());
                     field.setVisible(true);
@@ -101,7 +101,7 @@ public class GameController extends AGameController {
     }
 
     private void makeProgramFieldsVisible(int register) {
-        if (register >= 0 && register < Player.NO_REGISTERS) {
+        if (register >= 0 && register < Globals.NO_REGISTERS) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
                 Player player = board.getPlayer(i);
                 CommandCardField field = player.getProgramField(register);
@@ -113,7 +113,7 @@ public class GameController extends AGameController {
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
-            for (int j = 0; j < Player.NO_REGISTERS; j++) {
+            for (int j = 0; j < Globals.NO_REGISTERS; j++) {
                 CommandCardField field = player.getProgramField(j);
                 field.setVisible(false);
             }
@@ -146,7 +146,7 @@ public class GameController extends AGameController {
 
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
-            if (step >= 0 && step < Player.NO_REGISTERS) {
+            if (step >= 0 && step < Globals.NO_REGISTERS) {
                 if (!currentPlayer.isRebooted) {
                     CommandCard card = currentPlayer.getProgramField(step).getCard();
                     if (card != null) {
@@ -165,7 +165,7 @@ public class GameController extends AGameController {
                         action.doAction(this, space);
                     }
                 }
-                if (currentPlayer.isRebooted && board.getStep() == Player.NO_REGISTERS - 1)
+                if (currentPlayer.isRebooted && board.getStep() == Globals.NO_REGISTERS - 1)
                     currentPlayer.isRebooted = false;
 
                 // Next Player
@@ -175,7 +175,7 @@ public class GameController extends AGameController {
                 }
                 else {
                     step++;
-                    if (step < Player.NO_REGISTERS) {
+                    if (step < Globals.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
@@ -227,7 +227,7 @@ public class GameController extends AGameController {
         }
         else {
             step++;
-            if (step < Player.NO_REGISTERS) {
+            if (step < Globals.NO_REGISTERS) {
                 makeProgramFieldsVisible(step);
                 board.setStep(step);
                 board.setCurrentPlayer(board.getPlayer(0));

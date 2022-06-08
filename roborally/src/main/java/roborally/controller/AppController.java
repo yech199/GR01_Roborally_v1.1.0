@@ -34,6 +34,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import model.Board;
+import model.Globals;
 import model.Phase;
 import org.jetbrains.annotations.NotNull;
 import roborally.RoboRally;
@@ -254,7 +255,7 @@ public class AppController implements Observer {
             int gameId = Integer.parseInt(result);
             board = client.joinGame(gameId, playerName);
         } else {
-            board = LoadBoard.newBoard(null, 6);
+            board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
         }
         setupGameController(board);
     }

@@ -31,10 +31,6 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 public class Player extends Subject {
-
-    final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 9;
-
     private int gatheredCheckpoints = 0;
 
     final public Board board;
@@ -57,12 +53,12 @@ public class Player extends Subject {
         this.color = color;
         this.space = null;
 
-        program = new CommandCardField[NO_REGISTERS];
+        program = new CommandCardField[Globals.NO_REGISTERS];
         for (int i = 0; i < program.length; i++) {
             program[i] = new CommandCardField(this);
         }
 
-        cards = new CommandCardField[NO_CARDS];
+        cards = new CommandCardField[Globals.NO_CARDS];
         for (int i = 0; i < cards.length; i++) {
             cards[i] = new CommandCardField(this);
         }

@@ -8,6 +8,7 @@ import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import model.Board;
+import model.Globals;
 import model.Player;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class GameService implements IGameService {
         // Initialize board templates on server
         List<String> boardNames = IOUtil.getBoardFileNames();
             for (String boardName : boardNames) {
-                Board board = LoadBoard.newBoard(boardName, 6);
+                Board board = LoadBoard.newBoard(boardName, Globals.MAX_NO_PLAYERS);
                 boards.add(board);
             }
     }

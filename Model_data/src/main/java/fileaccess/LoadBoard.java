@@ -81,7 +81,13 @@ public class LoadBoard {
         board.setStep(template.step);
         board.setGameId(template.gameId);
         board.setMaxAmountOfPlayers(template.maxNumberOfPlayers);
-        board.setAmountOfActivePlayers(template.activePlayers);
+
+        // Count active players in game
+        AtomicInteger i = new AtomicInteger();
+        board.getPlayers().forEach((player) -> {
+            if (player.activePlayer) i.getAndIncrement();
+        });
+        board.amountOfActivePlayers = i.get();
 
         return board;
     }

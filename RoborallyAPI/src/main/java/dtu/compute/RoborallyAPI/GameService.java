@@ -32,8 +32,8 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Board getGameById(int id) {
-        return findGame(id);
+    public String getGameById(int id) {
+        return SaveBoard.serializeBoard(findGame(id));
     }
 
     @Override
@@ -101,6 +101,7 @@ public class GameService implements IGameService {
         }
         return null;
     }
+
     @Override
     public String leaveGame(int id, String playerName) {
         Board game = findGame(id);
@@ -150,8 +151,7 @@ public class GameService implements IGameService {
         return null;
     }
 
-
-    private Board findGame(int id) {
+    public Board findGame(int id) {
         for (Board game : games) {
             if (game.getGameId() == id) {
                 return game;
@@ -159,6 +159,7 @@ public class GameService implements IGameService {
         }
         return null;
     }
+
     private Board findBoard(String boardName) {
         for (Board board : boards) {
             if (board.getBoardName().equals(boardName)) {

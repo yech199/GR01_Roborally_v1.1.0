@@ -27,8 +27,7 @@ public class ServerController {
     // Returns the game state of a game
     @GetMapping("/game/{id}")
     public ResponseEntity<String> getGameState(@PathVariable int id) {
-        Board board = gameService.getGameById(id);
-        return ResponseEntity.ok().body(SaveBoard.serializeBoard(board));
+        return ResponseEntity.ok().body(gameService.getGameById(id));
     }
 
     // Updates the game state of a game
@@ -52,7 +51,7 @@ public class ServerController {
         String result = gameService.joinGame(id, playerName);
         if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
         else if(result.equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
-        return ResponseEntity.ok().body(SaveBoard.serializeBoard(gameService.getGameById(id)));
+        return ResponseEntity.ok().body(result);
     }
 
     // Return list of board templates

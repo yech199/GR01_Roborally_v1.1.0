@@ -206,13 +206,13 @@ public class AppController implements Observer {
     public void leaveServerGame() {
         // TODO add functionality so that a player can leave the game
         Alert alert = new Alert(AlertType.INFORMATION, "Do you want to leave the game?", ButtonType.YES, ButtonType.NO);
-        alert.showAndWait();
+        Optional<ButtonType> resultS = alert.showAndWait();
         // TextInputDialog name = new TextInputDialog();
         // name.setTitle("Select your name to leave");
         // name.setHeaderText("Select name");
         // name.setContentText("Name: ");
 
-        if (alert.showAndWait().get().equals(ButtonType.YES)) {
+        if (resultS.get().equals(ButtonType.YES)) {
             // Optional<String> resultName = name.showAndWait();
             String playerName = client.getPlayerName();
 
@@ -231,11 +231,12 @@ public class AppController implements Observer {
                 else {
                     confirmation = new Alert(AlertType.ERROR, "Something went wrong", ButtonType.CLOSE);
                 }
+                appState = AppState.UNDECIDED;
+                stopGame();
 
                 confirmation.showAndWait();
                 gameController = null;
-                appState = AppState.UNDECIDED;
-                stopGame();
+
             }
         }
     }

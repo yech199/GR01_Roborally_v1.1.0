@@ -41,8 +41,6 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private MenuItem update;
 
-    private MenuItem update;
-
     private MenuItem newGame;
     private MenuItem saveGame;
     private MenuItem serverGame;

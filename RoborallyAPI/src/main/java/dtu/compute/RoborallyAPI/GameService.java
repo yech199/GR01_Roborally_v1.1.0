@@ -22,7 +22,8 @@ public class GameService implements IGameService {
     // A game is a board with a set gameId and saved player cards/registers
     ArrayList<Board> games = new ArrayList<>();
     ArrayList<Board> boards = new ArrayList<>();
-    int id = 1;
+    int gameId = 1;
+    int playerId = 1;
 
     public GameService() {
         // Initialize board templates on server
@@ -51,8 +52,8 @@ public class GameService implements IGameService {
         Board board = findBoard(boardName);
         if (board == null) return "Board not found";
         // TODO we serialize to deserialize again. Find better way
-        Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
-        id++;
+        Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), gameId, numOfPlayers);
+        gameId++;
         games.add(game);
         return SaveBoard.serializeBoard(game);
     }
@@ -117,6 +118,8 @@ public class GameService implements IGameService {
         player.setSpace(template.getSpace());
         player.setHeading(template.getHeading());
         player.activePlayer = true;
+        player.playerId = playerId;
+        playerId++;
         game.setRobot(player);
 
         return SaveBoard.serializeBoard(game);

@@ -209,6 +209,7 @@ public class GameController extends AGameController {
                 case MOVE_3 -> cardController.moveXForward(player, 3);
                 case RIGHT -> cardController.turnRight(player);
                 case LEFT -> cardController.turnLeft(player);
+                case U_TURN -> cardController.uTurn(player);
                 default -> {
                 }
                 // DO NOTHING (for now)
@@ -238,6 +239,19 @@ public class GameController extends AGameController {
             }
         }
         continuePrograms();
+    }
+
+    public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
+        CommandCard sourceCard = source.getCard();
+        CommandCard targetCard = target.getCard();
+        if (sourceCard != null && targetCard == null) {
+            target.setCard(sourceCard);
+            source.setCard(null);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void reboot(Player player) {

@@ -36,6 +36,7 @@ public enum Command {
     FORWARD("Move 1"),
     FAST_FORWARD("Move 2"),
     MOVE_3("Move 3"),
+    U_TURN("U-Turn"), 
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);

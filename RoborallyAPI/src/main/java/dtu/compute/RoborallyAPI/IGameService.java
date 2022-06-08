@@ -12,5 +12,6 @@ public interface IGameService {
     String getBoardState(String boardName);
     String leaveGame(int id, String playername);
     String joinGame(int id, String playerName);
+    String playCards(int id, String playername, String playerData);
 
 }

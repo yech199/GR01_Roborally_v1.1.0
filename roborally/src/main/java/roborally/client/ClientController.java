@@ -203,14 +203,13 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String playCards(int id, String playerData) {
+    public String playCards(int id, String playername, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(playerData))
-                .uri(URI.create("http://localhost:8080/game/" + id))
+                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playername))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
-
 
         String result;
         try {

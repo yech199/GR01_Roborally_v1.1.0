@@ -140,6 +140,12 @@ public class GameService implements IGameService {
         return SaveBoard.serializeBoard(game);
     }
 
+    @Override
+    public String playCards(int id, String playername, String playerData) {
+        // TODO Execute game logic
+        return null;
+    }
+
 
     private Board findGame(int id) {
         for (Board game : games) {

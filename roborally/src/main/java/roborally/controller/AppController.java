@@ -172,7 +172,6 @@ public class AppController implements Observer {
             String json = SaveBoard.serializeBoard(gameController.board);
             String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
             client.setGameState(id, json);
-            client.setPlayerState(id, playerJson);
             msg = "Succesfully saved game to server";
         } catch (Exception e) {
             e.printStackTrace();

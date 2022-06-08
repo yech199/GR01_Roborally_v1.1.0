@@ -10,7 +10,7 @@ public interface IGameService {
     String getBoardState(String boardName);
     String joinGame(int id, String playername);
     void leaveGame(int id, String playername);
-    String playCards(int id, String playerData);
+    String playCards(int id, String playername, String playerData);
 
 }
 

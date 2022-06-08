@@ -28,8 +28,8 @@ public class GameClient {
         return LoadBoard.loadGameState(json);
     }
 
-    public void setPlayerState(int id, String playerData) {
-        clientController.playCards(id, playerData);
+    public void setPlayerState(int id, String playerName, String playerData) {
+        clientController.playCards(id, playerData, playerName);
     }
 
     public void setGameState(int id, String jsonGameState) {

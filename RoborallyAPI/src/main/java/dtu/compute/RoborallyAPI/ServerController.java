@@ -1,5 +1,6 @@
 package dtu.compute.RoborallyAPI;
 
+import client_server.IGameService;
 import fileaccess.SaveBoard;
 import model.Board;
 import org.springframework.beans.factory.annotation.Autowired;

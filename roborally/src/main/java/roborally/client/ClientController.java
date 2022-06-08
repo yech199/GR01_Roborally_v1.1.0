@@ -1,5 +1,7 @@
 package roborally.client;
 
+import client_server.IGameService;
+
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -42,24 +44,6 @@ public class ClientController implements IGameService {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
                 .uri(URI.create("http://localhost:8080/game/join" + id))
-                .setHeader("User-Agent", "Game Client")
-                .setHeader("Content-Type", "application/json")
-                .build();
-        CompletableFuture<HttpResponse<String>> response =
-                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-        try {
-            String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
-            // Ignore response
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void updateLobby(int id, String gameData) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .PUT(HttpRequest.BodyPublishers.ofString(gameData))
-                .uri(URI.create("http://localhost:8080/game/" + id))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
@@ -163,27 +147,6 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String leaveGame(int id, String playerName) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .DELETE()
-                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
-                .setHeader("User-Agent", "Game Client")
-                .header("Content-Type", "application/json")
-                .build();
-
-        CompletableFuture<HttpResponse<String>> response =
-                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-
-        String result;
-        try {
-            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return result;
-    }
-    @Override
     public String joinGame(int id, String playername) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playername)))
@@ -206,6 +169,29 @@ public class ClientController implements IGameService {
     }
 
     @Override
+    public String leaveGame(int id, String playerName) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
+                .setHeader("User-Agent", "Game Client")
+                .header("Content-Type", "application/json")
+                .build();
+
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+        String result;
+        try {
+            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return result;
+    }
+
+
+    @Override
     public String playCards(int id, String playername, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(playerData))
@@ -224,5 +210,24 @@ public class ClientController implements IGameService {
             result = null;
         }
         return result;
+    }
+
+
+    // This method does NOT exist in the interface
+    public void updateLobby(int id, String gameData) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(gameData))
+                .uri(URI.create("http://localhost:8080/game/" + id))
+                .setHeader("User-Agent", "Game Client")
+                .setHeader("Content-Type", "application/json")
+                .build();
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+            // Ignore response
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

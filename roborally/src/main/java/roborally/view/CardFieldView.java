@@ -22,7 +22,7 @@
 package roborally.view;
 
 import designpatterns.observer.Subject;
-import roborally.controller.GameController;
+import controller.GameController;
 import model.CommandCard;
 import model.CommandCardField;
 import model.Phase;

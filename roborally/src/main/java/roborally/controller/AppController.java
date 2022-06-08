@@ -21,6 +21,7 @@
  */
 package roborally.controller;
 
+import controller.GameController;
 import designpatterns.observer.Observer;
 import designpatterns.observer.Subject;
 import fileaccess.IOUtil;
@@ -34,7 +35,6 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import model.Board;
 import model.Phase;
-import model.Player;
 import org.jetbrains.annotations.NotNull;
 import roborally.RoboRally;
 import roborally.client.GameClient;

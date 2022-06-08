@@ -22,7 +22,7 @@
 package roborally;
 
 import roborally.controller.AppController;
-import roborally.controller.GameController;
+import controller.GameController;
 import roborally.view.BoardView;
 import roborally.view.RoboRallyMenuBar;
 import javafx.application.Application;

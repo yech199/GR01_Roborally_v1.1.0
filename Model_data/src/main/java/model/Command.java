@@ -33,10 +33,11 @@ import java.util.List;
 public enum Command {
     // This is a very simplistic way of realizing different commands.
 
-    FORWARD("Fwd"),
+    FORWARD("Move 1"),
+    FAST_FORWARD("Move 2"),
+    MOVE_3("Move 3"),
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
-    FAST_FORWARD("Fast Fwd"),
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
 
     final public String displayName;

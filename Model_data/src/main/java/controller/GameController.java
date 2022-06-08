@@ -205,9 +205,10 @@ public class GameController extends AGameController {
 
             switch (command) {
                 case FORWARD -> cardController.moveForward(player, player.getHeading());
+                case FAST_FORWARD -> cardController.moveXForward(player, 2);
+                case MOVE_3 -> cardController.moveXForward(player, 3);
                 case RIGHT -> cardController.turnRight(player);
                 case LEFT -> cardController.turnLeft(player);
-                case FAST_FORWARD -> cardController.moveXForward(player, 2);
                 default -> {
                 }
                 // DO NOTHING (for now)

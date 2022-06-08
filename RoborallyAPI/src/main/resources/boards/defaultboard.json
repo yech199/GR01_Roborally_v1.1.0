@@ -1,11 +1,10 @@
 {
   "gameId": 0,
   "boardName": "defaultboard",
-  "maxNumberOfPlayers": 6,
   "width": 8,
   "height": 8,
   "checkPointAmount": 2,
-  "phase": "PROGRAMMING",
+  "phase": "INITIALISATION",
   "step": 0,
   "players": [
     {
@@ -14,66 +13,8 @@
       "spaceX": 4,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "LEFT",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "RIGHT",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 2",
@@ -81,66 +22,8 @@
       "spaceX": 1,
       "spaceY": 1,
       "heading": "EAST",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 3",
@@ -148,66 +31,8 @@
       "spaceX": 2,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 4",
@@ -215,66 +40,8 @@
       "spaceX": 3,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 5",
@@ -282,66 +49,8 @@
       "spaceX": 5,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 6",
@@ -349,66 +58,8 @@
       "spaceX": 6,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     }
   ],
   "currentPlayer": 0,
@@ -429,6 +80,32 @@
       "y": 1
     },
     {
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.PushPanel",
+          "INSTANCE": {
+            "heading": "EAST",
+            "pushPanelLabel": ["0", "1", "0", "1", "0"]
+          }
+        }
+      ],
+      "x": 3,
+      "y": 2
+    },
+    {
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.PushPanel",
+          "INSTANCE": {
+            "heading": "SOUTH",
+            "pushPanelLabel": ["1", "0", "0", "0", "1"]
+          }
+        }
+      ],
+      "x": 6,
+      "y": 0
+    },
+    {
       "walls": [
         "SOUTH"
       ],
@@ -436,7 +113,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "GREEN"
           }
         }
       ],
@@ -451,7 +129,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "BLUE"
           }
         }
       ],
@@ -466,7 +145,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -479,7 +159,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -492,7 +173,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -505,7 +187,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -518,25 +201,13 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
       "x": 1,
       "y": 5
-    },
-    {
-      "walls": [],
-      "actions": [
-        {
-          "CLASSNAME": "model.boardElements.ConveyorBelt",
-          "INSTANCE": {
-            "heading": "NORTH"
-          }
-        }
-      ],
-      "x": 1,
-      "y": 6
     },
     {
       "walls": [
@@ -546,7 +217,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "EAST"
+            "heading": "EAST",
+            "color": "BLUE"
           }
         }
       ],
@@ -561,7 +233,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "SOUTH"
+            "heading": "SOUTH",
+            "color": "GREEN"
           }
         }
       ],
@@ -576,7 +249,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "GREEN"
           }
         }
       ],
@@ -591,7 +265,8 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "BLUE"
           }
         }
       ],
@@ -606,12 +281,41 @@
         {
           "CLASSNAME": "model.boardElements.ConveyorBelt",
           "INSTANCE": {
-            "heading": "EAST"
+            "heading": "EAST",
+            "color": "GREEN"
           }
         }
       ],
       "x": 6,
       "y": 6
+    },
+    {
+      "walls": [
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.Gear",
+          "INSTANCE": {
+            "direction": "LEFT"
+          }
+        }
+      ],
+      "x": 3,
+      "y": 0
+    },
+    {
+      "walls": [
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "model.boardElements.Gear",
+          "INSTANCE": {
+            "direction": "RIGHT"
+          }
+        }
+      ],
+      "x": 5,
+      "y": 0
     },
     {
       "walls": [
@@ -632,6 +336,19 @@
       ],
       "actions": [
         {
+          "CLASSNAME": "model.boardElements.Pit",
+          "INSTANCE": {
+          }
+        }
+      ],
+      "x": 4,
+      "y": 2
+    },
+    {
+      "walls": [
+      ],
+      "actions": [
+        {
           "CLASSNAME": "model.boardElements.RebootToken",
           "INSTANCE": {
             "heading": "NORTH"
@@ -643,7 +360,7 @@
     },
     {
       "walls": [
-        "EAST"
+        "EAST", "SOUTH"
       ],
       "actions": [
         {

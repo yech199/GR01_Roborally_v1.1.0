@@ -13,66 +13,8 @@
       "spaceX": 4,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "LEFT",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "RIGHT",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 2",
@@ -80,66 +22,8 @@
       "spaceX": 1,
       "spaceY": 1,
       "heading": "EAST",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 3",
@@ -147,66 +31,8 @@
       "spaceX": 2,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 4",
@@ -214,66 +40,8 @@
       "spaceX": 3,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 5",
@@ -281,66 +49,8 @@
       "spaceX": 5,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     },
     {
       "name": "Player 6",
@@ -348,66 +58,8 @@
       "spaceX": 6,
       "spaceY": 1,
       "heading": "SOUTH",
-      "cards": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ],
-      "registers": [
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        },
-        {
-          "command": "",
-          "visible": "true"
-        }
-      ]
+      "cards": [],
+      "registers": []
     }
   ],
   "currentPlayer": 0,

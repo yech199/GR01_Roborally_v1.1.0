@@ -104,6 +104,24 @@ public class GameService implements IGameService {
     }
 
     @Override
+    public String joinGame(int id, String playerName) {
+        Board game = findGame(id);
+        if(game == null) return "Game not found";
+        if(game.getAmountOfActivePlayers() >= game.maxAmountOfPlayers) return "Game Full";
+        Player template = game.getPlayer(game.getRobot());
+        String color = template.getColor();
+
+        // Add new player and replace dummy player
+        Player player = new Player(game, color, playerName);
+        player.setSpace(template.getSpace());
+        player.setHeading(template.getHeading());
+        player.activePlayer = true;
+        game.setRobot(player);
+
+        return SaveBoard.serializeBoard(game);
+    }
+
+    @Override
     public String leaveGame(int id, String playerName) {
         Board game = findGame(id);
         if(game == null) return "Game not found";
@@ -126,24 +144,6 @@ public class GameService implements IGameService {
         game.removeRobot(dummy, i);
 
         return "ok";
-    }
-
-    @Override
-    public String joinGame(int id, String playerName) {
-        Board game = findGame(id);
-        if(game == null) return "Game not found";
-        if(game.getAmountOfActivePlayers() >= game.maxAmountOfPlayers) return "Game Full";
-        Player template = game.getPlayer(game.getRobot());
-        String color = template.getColor();
-
-        // Add new player and replace dummy player
-        Player player = new Player(game, color, playerName);
-        player.setSpace(template.getSpace());
-        player.setHeading(template.getHeading());
-        player.activePlayer = true;
-        game.setRobot(player);
-
-        return SaveBoard.serializeBoard(game);
     }
 
     @Override

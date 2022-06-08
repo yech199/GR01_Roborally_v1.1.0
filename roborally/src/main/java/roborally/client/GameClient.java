@@ -14,6 +14,7 @@ import java.util.List;
 public class GameClient {
 
     ClientController clientController;
+    String playerName = "guest";
 
     public GameClient() {
         clientController = new ClientController();
@@ -27,6 +28,11 @@ public class GameClient {
         String json = clientController.getGameById(id);
         return LoadBoard.loadGameState(json);
     }
+
+    public String getPlayerName()
+    {
+        return playerName;
+    };
 
     public void setPlayerState(int id, String playerName, String playerData) {
         clientController.playCards(id, playerData, playerName);
@@ -52,13 +58,10 @@ public class GameClient {
 
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
-            // TODO Add boardname in some smart way
             if(activePlayers[i] != totalPlayers[i]) {
-                result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: "
-                        + String.valueOf(activePlayers[i]))));
+                result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: " + String.valueOf(activePlayers[i]))));
             } else {
-                result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: "
-                        + "FULL!")));
+                result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: ").concat("FULL!")));
             }
         }
         return result;
@@ -104,6 +107,7 @@ public class GameClient {
         return clientController.leaveGame(id, playerName);
     }
     public Board joinGame(int id, String playerName) {
+        this.playerName = playerName;
         String json = clientController.joinGame(id, playerName);
         return LoadBoard.loadGameState(json);
     }

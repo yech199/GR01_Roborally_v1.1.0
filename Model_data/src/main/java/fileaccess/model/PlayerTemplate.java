@@ -7,6 +7,7 @@ public class PlayerTemplate {
     public String color;
 
     public boolean active;
+    public int playerId;
     public int spaceX;
     public int spaceY;
     public String heading;

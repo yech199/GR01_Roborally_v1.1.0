@@ -11,6 +11,7 @@ import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import fileaccess.model.PlayerTemplate;
 import model.Board;
+import model.Globals;
 import model.Player;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,6 @@ public class GameService implements IGameService {
     // A game is a board with a set gameId and saved player cards/registers
     ArrayList<GameController> games = new ArrayList<>();
     ArrayList<Board> boards = new ArrayList<>();
-    //GameController gameController = new GameController(null);
 
     ArrayList<PlayerTemplate> playerData = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class GameService implements IGameService {
         // Initialize board templates on server
         List<String> boardNames = IOUtil.getBoardFileNames();
             for (String boardName : boardNames) {
-                Board board = LoadBoard.newBoard(boardName, 6);
+                Board board = LoadBoard.newBoard(boardName, Globals.MAX_NO_PLAYERS);
                 boards.add(board);
             }
     }
@@ -166,7 +166,7 @@ public class GameService implements IGameService {
         dummy.setHeading(player.getHeading());
         dummy.activePlayer = false;
         dummy.setCards(player.getCards());
-        dummy.setProgram(player.getProgram());
+        dummy.setRegisters(player.getRegisters());
 
         board.removeRobot(dummy, i);
 

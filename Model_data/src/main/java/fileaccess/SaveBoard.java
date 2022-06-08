@@ -70,8 +70,9 @@ public class SaveBoard {
             playerTemplate.heading = String.valueOf(player.getHeading());
             playerTemplate.color = player.getColor();
             playerTemplate.name = player.getName();
+            playerTemplate.playerId = player.playerId;
 
-            playerTemplate.registers = saveCommandCardFields(player.getProgram());
+            playerTemplate.registers = saveCommandCardFields(player.getRegisters());
             playerTemplate.cards = saveCommandCardFields(player.getCards());
             playerTemplate.active = player.activePlayer;
 
@@ -166,7 +167,9 @@ public class SaveBoard {
         playerTemplate.name = player.getName();
         playerTemplate.active = player.activePlayer;
 
-        playerTemplate.registers = saveCommandCardFields(player.getProgram());
+        playerTemplate.playerId = player.playerId;
+
+        playerTemplate.registers = saveCommandCardFields(player.getRegisters());
         playerTemplate.cards = saveCommandCardFields(player.getCards());
 
         // Saving the board template using GSON

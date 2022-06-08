@@ -160,16 +160,9 @@ public class ProgrammingCardController {
         }
     }
 
-    public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        CommandCard sourceCard = source.getCard();
-        CommandCard targetCard = target.getCard();
-        if (sourceCard != null && targetCard == null) {
-            target.setCard(sourceCard);
-            source.setCard(null);
-            return true;
-        }
-        else {
-            return false;
+    public void uTurn(@NotNull Player player) {
+        if (player.board == gameController.board) {
+            player.setHeading(player.getHeading().next().next());
         }
     }
 

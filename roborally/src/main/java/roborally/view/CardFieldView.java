@@ -23,10 +23,7 @@ package roborally.view;
 
 import designpatterns.observer.Subject;
 import controller.GameController;
-import model.CommandCard;
-import model.CommandCardField;
-import model.Phase;
-import model.Player;
+import model.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -102,14 +99,14 @@ public class CardFieldView extends GridPane implements ViewObserver {
     private String cardFieldRepresentation(CommandCardField cardField) {
         if (cardField.player != null) {
 
-            for (int i = 0; i < Player.NO_REGISTERS; i++) {
+            for (int i = 0; i < Globals.NO_REGISTERS; i++) {
                 CommandCardField other = cardField.player.getProgramField(i);
                 if (other == cardField) {
                     return "P," + i;
                 }
             }
 
-            for (int i = 0; i < Player.NO_CARDS; i++) {
+            for (int i = 0; i < Globals.NO_CARDS; i++) {
                 CommandCardField other = cardField.player.getCardField(i);
                 if (other == cardField) {
                     return "C," + i;
@@ -126,12 +123,12 @@ public class CardFieldView extends GridPane implements ViewObserver {
             if (strings.length == 2) {
                 int i = Integer.parseInt(strings[1]);
                 if ("P".equals(strings[0])) {
-                    if (i < Player.NO_REGISTERS) {
+                    if (i < Globals.NO_REGISTERS) {
                         return field.player.getProgramField(i);
                     }
                 }
                 else if ("C".equals(strings[0])) {
-                    if (i < Player.NO_CARDS) {
+                    if (i < Globals.NO_CARDS) {
                         return field.player.getCardField(i);
                     }
                 }
@@ -270,7 +267,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
                         Object object = db.getContent(ROBO_RALLY_CARD);
                         if (object instanceof String) {
                             CommandCardField source = cardFieldFromRepresentation((String) object);
-                            if (source != null && gameController.cardController.moveCards(source, cardField)) {
+                            if (source != null && gameController.moveCards(source, cardField)) {
                                 // CommandCard card = source.getCard();
                                 // if (card != null) {
                                 // if (gameController.moveCards(source, cardField)) {

@@ -1,7 +1,7 @@
 package model.boardElements;
 
 import controller.AGameController;
-import model.Player;
+import model.Globals;
 import model.Space;
 
 public class Checkpoint extends SpaceElement {
@@ -11,7 +11,7 @@ public class Checkpoint extends SpaceElement {
     public void doAction(AGameController gameController, Space space) {
         // In order to complete a checkpoint, you must be on it at the end of a register
         if (space.getPlayer() != null && space.getPlayer().getGatheredCheckpoints() == this.checkpointNumber - 1
-                && gameController.board.getStep() == Player.NO_REGISTERS - 1) {
+                && gameController.board.getStep() == Globals.NO_REGISTERS - 1) {
             space.getPlayer().addCheckPoint();
 
             System.out.println(space.getPlayer().getName() + " has gathered "

@@ -78,8 +78,8 @@ public class PlayerView extends Tab implements ViewObserver {
         programPane = new GridPane();
         programPane.setVgap(2.0);
         programPane.setHgap(2.0);
-        programCardViews = new CardFieldView[Player.NO_REGISTERS];
-        for (int i = 0; i < Player.NO_REGISTERS; i++) {
+        programCardViews = new CardFieldView[Globals.NO_REGISTERS];
+        for (int i = 0; i < Globals.NO_REGISTERS; i++) {
             CommandCardField cardField = player.getProgramField(i);
             if (cardField != null) {
                 programCardViews[i] = new CardFieldView(gameController, cardField);
@@ -113,8 +113,8 @@ public class PlayerView extends Tab implements ViewObserver {
         cardsPane = new GridPane();
         cardsPane.setVgap(2.0);
         cardsPane.setHgap(2.0);
-        cardViews = new CardFieldView[Player.NO_CARDS];
-        for (int i = 0; i < Player.NO_CARDS; i++) {
+        cardViews = new CardFieldView[Globals.NO_CARDS];
+        for (int i = 0; i < Globals.NO_CARDS; i++) {
             CommandCardField cardField = player.getCardField(i);
             if (cardField != null) {
                 cardViews[i] = new CardFieldView(gameController, cardField);
@@ -136,7 +136,7 @@ public class PlayerView extends Tab implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == player.board) {
-            for (int i = 0; i < Player.NO_REGISTERS; i++) {
+            for (int i = 0; i < Globals.NO_REGISTERS; i++) {
                 CardFieldView cardFieldView = programCardViews[i];
                 if (cardFieldView != null) {
                     if (player.board.getPhase() == Phase.PROGRAMMING) {
@@ -167,7 +167,7 @@ public class PlayerView extends Tab implements ViewObserver {
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
                     programPane.getChildren().remove(playerInteractionPanel);
-                    programPane.add(buttonPanel, Player.NO_REGISTERS, 0);
+                    programPane.add(buttonPanel, Globals.NO_REGISTERS, 0);
                 }
                 switch (player.board.getPhase()) {
                     case INITIALISATION:
@@ -201,7 +201,7 @@ public class PlayerView extends Tab implements ViewObserver {
             else {
                 if (!programPane.getChildren().contains(playerInteractionPanel)) {
                     programPane.getChildren().remove(buttonPanel);
-                    programPane.add(playerInteractionPanel, Player.NO_REGISTERS, 0);
+                    programPane.add(playerInteractionPanel, Globals.NO_REGISTERS, 0);
                 }
                 playerInteractionPanel.getChildren().clear();
 

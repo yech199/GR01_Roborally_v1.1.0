@@ -10,6 +10,7 @@ import model.*;
 import model.boardElements.SpaceElement;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoadBoard {
@@ -26,20 +27,31 @@ public class LoadBoard {
     /**
      * Only used when loading a saved game. Not a new game
      */
-    private static void loadPlayers(BoardTemplate template, Board board) {
+    public static void loadPlayers(List<PlayerTemplate> players, Board board) {
         // Loading players
-        for (PlayerTemplate player : template.players) {
-            Player newPlayer = new Player(board, player.color, player.name);
-            newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
-            newPlayer.setHeading(Heading.valueOf(player.heading));
+        for (PlayerTemplate player : players) {
+            loadPlayer(player, board);
+        }
+    }
 
-            newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
-            newPlayer.setRegisters(loadCommandCardFields(player.registers, newPlayer));
+    public static void loadPlayer(PlayerTemplate player, Board board) {
+        //board.setPlayers(new ArrayList<>());
+        Player newPlayer = new Player(board, player.color, player.name);
+        newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
+        newPlayer.setHeading(Heading.valueOf(player.heading));
 
+        newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
+        newPlayer.setRegisters(loadCommandCardFields(player.registers, newPlayer));
+
+        if(board.getPhase() == Phase.INITIALISATION) {
             newPlayer.activePlayer = player.active;
-            newPlayer.playerId = player.playerId;
-
-            board.addPlayer(newPlayer);
+            board.getRobot().ifPresent(integer -> board.getPlayers().set(integer, newPlayer));
+        } else {
+            for(int i = 0; i < board.getPlayers().size(); i++) {
+                if(board.getPlayers().get(i).getName().equals(newPlayer.getName())) {
+                    board.getPlayers().set(i, newPlayer);
+                }
+            }
         }
     }
 
@@ -77,7 +89,7 @@ public class LoadBoard {
         // load board state values into board from templates
         Board board = new Board(template.width, template.height, template.checkPointAmount, template.boardName);
         loadSpaces(template, board);
-        loadPlayers(template, board);
+        loadPlayers(template.players, board);
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));
         board.setStep(template.step);
@@ -94,9 +106,7 @@ public class LoadBoard {
         return board;
     }
 
-
-
-    private static Board deserializeBoard(String jsonGameState, int numberOfPlayers) {
+    private static Board deserializeBoard(String jsonGameState, int numOfPlayers) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
@@ -108,22 +118,39 @@ public class LoadBoard {
 
         loadSpaces(template, board);
 
-        int playerNo = 1;
-        for(int i = 0; i < numberOfPlayers; i++) {
-            Player player = new Player(board, template.players.get(i).color, "Player " + playerNo);
-            player.setSpace(board.getSpace(template.players.get(i).spaceX, template.players.get(i).spaceY));
-            player.setHeading(Heading.valueOf(template.players.get(i).heading));
-            board.addPlayer(player);
-            playerNo++;
+        if (board.getPhase() == Phase.INITIALISATION) {
+            int playerNo = 1;
+            for(int i = 0; i < numOfPlayers; i++) {
+                Player player = new Player(board, template.players.get(i).color, "Player " + playerNo);
+                player.setSpace(board.getSpace(template.players.get(i).spaceX, template.players.get(i).spaceY));
+                player.setHeading(Heading.valueOf(template.players.get(i).heading));
+                board.addPlayer(player);
+                playerNo++;
+            }
+            AtomicInteger i = new AtomicInteger();
+            board.getPlayers().forEach((player) -> {
+                if (player.activePlayer) i.getAndIncrement();
+            });
+            board.amountOfActivePlayers = i.get();
         }
-        board.setMaxAmountOfPlayers(numberOfPlayers);
+        board.setMaxAmountOfPlayers(numOfPlayers);
 
-        // Count active players in game
-        AtomicInteger i = new AtomicInteger();
-        board.getPlayers().forEach((player) -> {
-            if (player.activePlayer) i.getAndIncrement();
-        });
-        board.amountOfActivePlayers = i.get();
+        return board;
+    }
+
+    private static Board deserializeActivation(String jsonGameState) {
+        // In simple cases, we can create a Gson object with new Gson():
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
+        Gson gson = simpleBuilder.create();
+
+        BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
+
+        Board board = new Board(template.width, template.height, template.checkPointAmount, template.boardName);
+
+        loadSpaces(template, board);
+
+        board.setMaxAmountOfPlayers(template.maxNumberOfPlayers);
 
         return board;
     }
@@ -160,14 +187,15 @@ public class LoadBoard {
      * @param boardName name of the game board
      * @return the new board
      */
-    public static Board newBoard(String boardName, int numberOfPlayers) {
+    public static Board newBoard(String boardName, int numOfPlayers) {
         String gameState = IOUtil.readGame(boardName, false);
-        return deserializeBoard(gameState, numberOfPlayers);
+        Board board = deserializeBoard(gameState, numOfPlayers);
+        //board.maxAmountOfPlayers = numOfPlayers;
+        return board;
     }
 
-    public static Board newBoardState(String jsonBoardState, int gameId, int numberOfPlayers) {
-        Board board = deserializeBoard(jsonBoardState, numberOfPlayers);
-        board.setGameId(gameId);
-        return board;
+    public static Board newBoardState(String jsonBoardState, int numOfPlayers) {
+        return deserializeBoard(jsonBoardState, numOfPlayers);
+        //return deserializeBoard(jsonBoardState);
     }
 }

@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import model.Board;
-import roborally.StartRoboRally;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +24,7 @@ public class GameClient {
     }
 
     public Board getGameState(int id) {
-        String json = clientController.getGameById(id);
+        String json = clientController.getGameById(id, playerName);
         return LoadBoard.loadGameState(json);
     }
 
@@ -35,7 +34,7 @@ public class GameClient {
     };
 
     public void setPlayerState(int id, String playerName, String playerData) {
-        clientController.playCards(id, playerData, playerName);
+        clientController.setPlayerState(id, playerData, playerName);
     }
 
     public void setGameState(int id, String jsonGameState) {
@@ -67,30 +66,6 @@ public class GameClient {
         return result;
     }
 
-    public ArrayList<String> getFormattedListOfGameIDs() {
-        /*ArrayList<String> games = getListOfGames();
-        ArrayList<String> result = new ArrayList<>();
-        String[] id = new String[2];
-        result.forEach((s -> {
-            id[0] = s.split(",")[0];
-            result.add(id[0]);
-        }));
-        return result;*/
-        return null;
-    }
-
-    public ArrayList<String> getFormattedListOfBoardNames() {
-        /*ArrayList<String> games = getListOfGames();
-        ArrayList<String> result = new ArrayList<>();
-        String[] names = new String[2];
-        result.forEach((s -> {
-            names[0] = s.split(",")[0];
-            result.add(names[0]);
-        }));
-        return result;*/
-        return null;
-    }
-
     public List<String> getListOfBoards() {
         Gson gson = new Gson();
         String boards = clientController.getListOfBoards();
@@ -98,17 +73,17 @@ public class GameClient {
         return new ArrayList<>(Arrays.asList(boardNames));
     }
 
-    public Board getBoardState(String boardName, int gameId, int numOfPlayers) {
+    public Board getBoardState(String boardName) {
         String json = clientController.getBoardState(boardName);
-        return LoadBoard.newBoardState(json, gameId, numOfPlayers);
+        return LoadBoard.loadGameState(json);
     }
 
     public String leaveGame(int id, String playerName) {
         return clientController.leaveGame(id, playerName);
     }
-    public Board joinGame(int id, String playerName) {
+    public String joinGame(int id, String playerName) {
         this.playerName = playerName;
-        String json = clientController.joinGame(id, playerName);
-        return LoadBoard.loadGameState(json);
+        String result = clientController.joinGame(id, playerName);
+        return result;
     }
 }

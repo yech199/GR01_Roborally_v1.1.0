@@ -65,9 +65,10 @@ public class ServerController {
         return ResponseEntity.ok().body(gameService.getBoardState(name));
     }
 
+    // Updates the player state
     @PutMapping("game/{id}/{playername}")
-    public ResponseEntity<String> getPlayerCards(@PathVariable int id, @PathVariable String playername, @RequestBody String playerData) {
-        String result = gameService.getPlayerCards(id, playername, playerData);
+    public ResponseEntity<String> setPlayerCards(@PathVariable int id, @PathVariable String playername, @RequestBody String playerData) {
+        String result = gameService.setPlayerState(id, playername, playerData);
         if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
         return ResponseEntity.ok().body(result);
     }

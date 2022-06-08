@@ -59,26 +59,31 @@ public class SaveBoard {
         return spaceTemplates;
     }
 
-    private static ArrayList<PlayerTemplate> savePlayers(List<Player> players) {
+    private static ArrayList<PlayerTemplate> savePlayers(List<Player> players, Phase phase, Player newPlayer) {
         ArrayList<PlayerTemplate> playerTemplates = new ArrayList<>();
         // Save state of player
         for (Player player : players) {
-            PlayerTemplate playerTemplate = new PlayerTemplate();
-            Space space = player.getSpace();
-            playerTemplate.spaceX = space.x;
-            playerTemplate.spaceY = space.y;
-            playerTemplate.heading = String.valueOf(player.getHeading());
-            playerTemplate.color = player.getColor();
-            playerTemplate.name = player.getName();
-            playerTemplate.playerId = player.playerId;
-
-            playerTemplate.registers = saveCommandCardFields(player.getRegisters());
-            playerTemplate.cards = saveCommandCardFields(player.getCards());
-            playerTemplate.active = player.activePlayer;
-
-            playerTemplates.add(playerTemplate);
+            playerTemplates.add(savePlayer(player, phase, newPlayer));
         }
         return playerTemplates;
+    }
+
+    public static PlayerTemplate savePlayer(Player player, Phase phase, Player newPlayer) {
+        PlayerTemplate playerTemplate = new PlayerTemplate();
+        Space space = player.getSpace();
+        playerTemplate.spaceX = space.x;
+        playerTemplate.spaceY = space.y;
+        playerTemplate.heading = String.valueOf(player.getHeading());
+        playerTemplate.color = player.getColor();
+        playerTemplate.name = player.getName();
+
+        if (!phase.equals(Phase.INITIALISATION) && newPlayer.equals(player)) {
+            playerTemplate.cards = saveCommandCardFields(player.getCards());
+            playerTemplate.registers = saveCommandCardFields(player.getRegisters());
+        }
+
+        playerTemplate.active = player.activePlayer;
+        return playerTemplate;
     }
 
     private static ArrayList<CommandCardFieldTemplate> saveCommandCardFields(CommandCardField[] commandCardFields) {
@@ -113,7 +118,7 @@ public class SaveBoard {
         template.height = board.height;
 
         template.spaces = saveSpaces(board);
-        template.players = savePlayers(board.getPlayers());
+        template.players = savePlayers(board.getPlayers(), board.getPhase(), null);
 
         if (board.getCurrentPlayer() == null) template.currentPlayer = 0;
         else template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
@@ -127,6 +132,44 @@ public class SaveBoard {
         AtomicInteger i = new AtomicInteger();
         board.getPlayers().forEach((player) -> {
             if (player.activePlayer) i.getAndIncrement();
+        });
+        template.activePlayers = i.get();
+        //board.amountOfActivePlayers;
+
+        if (board.getGameId() != null) template.gameId = board.getGameId();
+
+        // Saving the board template using GSON
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>()).
+                setPrettyPrinting();
+        Gson gson = simpleBuilder.create();
+
+        return gson.toJson(template, template.getClass());
+    }
+
+    public static String serializeActivation(Board board, Player newPlayer) {
+        // Set up the board template by copying values one by one
+        BoardTemplate template = new BoardTemplate();
+        template.width = board.width;
+        template.height = board.height;
+
+        template.spaces = saveSpaces(board);
+
+        template.players = savePlayers(board.getPlayers(), board.getPhase(), newPlayer);
+        //PlayerTemplate player = savePlayer(newPlayer, board.getPhase());
+
+        if (board.getCurrentPlayer() == null) template.currentPlayer = 0;
+        else template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
+
+        template.step = board.getStep();
+        template.phase = String.valueOf(board.getPhase());
+        template.boardName = board.getBoardName();
+        template.checkPointAmount = board.totalNoOfCheckpoints;
+        template.maxNumberOfPlayers = board.maxAmountOfPlayers;
+        // Count active players in game
+        AtomicInteger i = new AtomicInteger();
+        board.getPlayers().forEach((p) -> {
+            if (p.activePlayer) i.getAndIncrement();
         });
         template.activePlayers = i.get();
         //board.amountOfActivePlayers;
@@ -158,7 +201,7 @@ public class SaveBoard {
     }
 
     public static String serializePlayer(Player player) {
-        PlayerTemplate playerTemplate = new PlayerTemplate();
+        /*PlayerTemplate playerTemplate = new PlayerTemplate();
         Space space = player.getSpace();
         playerTemplate.spaceX = space.x;
         playerTemplate.spaceY = space.y;
@@ -167,9 +210,7 @@ public class SaveBoard {
         playerTemplate.name = player.getName();
         playerTemplate.active = player.activePlayer;
 
-        playerTemplate.playerId = player.playerId;
-
-        playerTemplate.registers = saveCommandCardFields(player.getRegisters());
+        playerTemplate.registers = saveCommandCardFields(player.getProgram());
         playerTemplate.cards = saveCommandCardFields(player.getCards());
 
         // Saving the board template using GSON
@@ -178,6 +219,7 @@ public class SaveBoard {
                 setPrettyPrinting();
         Gson gson = simpleBuilder.create();
 
-        return gson.toJson(playerTemplate, playerTemplate.getClass());
+        return gson.toJson(playerTemplate, playerTemplate.getClass());*/
+        return null;
     }
 }

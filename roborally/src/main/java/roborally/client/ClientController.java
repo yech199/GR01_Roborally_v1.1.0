@@ -17,10 +17,10 @@ public class ClientController implements IGameService {
             .build();
 
     @Override
-    public String getGameById(int id) {
+    public String getGameById(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/game/" + id))
+                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -191,7 +191,7 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String playCards(int id, String playername, String playerData) {
+    public String setPlayerState(int id, String playername, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(playerData))
                 .uri(URI.create("http://localhost:8080/game/" + id + "/" + playername))
@@ -209,23 +209,5 @@ public class ClientController implements IGameService {
             result = null;
         }
         return result;
-    }
-
-    // This method does NOT exist in the interface
-    public void updateLobby(int id, String gameData) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .PUT(HttpRequest.BodyPublishers.ofString(gameData))
-                .uri(URI.create("http://localhost:8080/game/" + id))
-                .setHeader("User-Agent", "Game Client")
-                .setHeader("Content-Type", "application/json")
-                .build();
-        CompletableFuture<HttpResponse<String>> response =
-                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-        try {
-            String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
-            // Ignore response
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

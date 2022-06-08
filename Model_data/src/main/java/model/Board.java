@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 import static model.Phase.INITIALISATION;
 
@@ -286,19 +288,19 @@ public class Board extends Subject {
     /**
      * Return the index of a free robot
       */
-    public int getRobot() {
+    public Optional<Integer> getRobot() {
         for (Player player : players) {
             if (!player.activePlayer) {
-                return players.indexOf(player);
+                return Optional.of(players.indexOf(player));
             }
         }
-        return 0;
+        return Optional.empty();
     }
 
     public void setRobot(Player player) {
         amountOfActivePlayers++;
-        int freeIndex = getRobot();
-        players.set(freeIndex, player);
+        Optional<Integer> freeIndex = getRobot();
+        freeIndex.ifPresent(integer -> players.set(integer, player));
     }
 
     public void removeRobot(Player player, int i) {

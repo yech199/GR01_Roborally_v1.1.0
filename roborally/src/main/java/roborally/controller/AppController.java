@@ -165,17 +165,28 @@ public class AppController implements Observer {
             Optional<String> selectedBoard = dialogL.showAndWait();
 
             Board board;
+            String result;
+            AlertType alertType;
             if (selectedBoard.isPresent()) {
                 board = client.createGame(selectedBoard.get(), numOfPlayers);
-                board = client.joinGame(board.getGameId(), playerName);
+                result = client.joinGame(board.getGameId(), playerName);
+                alertType = AlertType.CONFIRMATION;
             }
-            else {
+            else { // Should not happen
                 board = LoadBoard.newBoard(null, numOfPlayers);
+                result = "OK";
+                alertType = AlertType.WARNING;
             }
 
-            Alert alert = new Alert(AlertType.CONFIRMATION, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
-            alert.showAndWait();
-            setupGameController(board);
+            if (result.equals("OK")) {
+                Alert alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(alertType, result + board.getGameId(), ButtonType.OK);
+                alert.showAndWait();
+            }
+
+            //setupGameController(board);
             appState = AppState.SERVER_GAME;
             return true;
         }
@@ -189,7 +200,7 @@ public class AppController implements Observer {
         try {
             int id = gameController.board.getGameId();
             String json = SaveBoard.serializeBoard(gameController.board);
-            String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
+            //String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
             client.setGameState(id, json);
             msg = "Succesfully saved game to server";
         } catch (Exception e) {
@@ -281,8 +292,10 @@ public class AppController implements Observer {
         if (selectedGame.isPresent()) {
             // Join the selected game
             int gameId = Integer.parseInt(result);
-            board = client.joinGame(gameId, playerName);
-            int check = board.getPlayer(playerName).playerId;
+            // TODO Error check
+            String resultResponse = client.joinGame(gameId, playerName);
+            board = client.getGameState(gameId);
+            //int check = board.getPlayer(playerName).playerId;
         }
         else {
             board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);

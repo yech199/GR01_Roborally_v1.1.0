@@ -174,7 +174,7 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public String getPlayerCards(int id, String playerName, String playerData) {
+    public String setPlayerState(int id, String playerName, String playerData) {
         GameController game = findGame(id);
         if(game == null) return "Game not found";
         if(!game.board.getPlayers().contains(game.board.getPlayer(playerName))) return "Player not found";

@@ -257,6 +257,7 @@ public class AppController implements Observer {
             // Join the selected game
             int gameId = Integer.parseInt(result);
             board = client.joinGame(gameId, playerName);
+            int check = board.getPlayer(playerName).playerId;
         } else {
             board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
         }

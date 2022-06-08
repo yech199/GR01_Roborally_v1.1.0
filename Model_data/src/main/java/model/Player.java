@@ -46,6 +46,7 @@ public class Player extends Subject {
     private CommandCardField[] cards;
 
     public boolean activePlayer = false;
+    public int playerId = 0;
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -77,7 +78,6 @@ public class Player extends Subject {
             }
         }
     }
-
     public String getColor() {
         return color;
     }

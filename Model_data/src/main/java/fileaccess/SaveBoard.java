@@ -70,6 +70,7 @@ public class SaveBoard {
             playerTemplate.heading = String.valueOf(player.getHeading());
             playerTemplate.color = player.getColor();
             playerTemplate.name = player.getName();
+            playerTemplate.playerId = player.playerId;
 
             playerTemplate.registers = saveCommandCardFields(player.getProgram());
             playerTemplate.cards = saveCommandCardFields(player.getCards());
@@ -165,6 +166,8 @@ public class SaveBoard {
         playerTemplate.color = player.getColor();
         playerTemplate.name = player.getName();
         playerTemplate.active = player.activePlayer;
+
+        playerTemplate.playerId = player.playerId;
 
         playerTemplate.registers = saveCommandCardFields(player.getProgram());
         playerTemplate.cards = saveCommandCardFields(player.getCards());

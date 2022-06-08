@@ -37,6 +37,8 @@ public class LoadBoard {
             newPlayer.setProgram(loadCommandCardFields(player.registers, newPlayer));
 
             newPlayer.activePlayer = player.active;
+            newPlayer.playerId = player.playerId;
+
             board.addPlayer(newPlayer);
         }
     }

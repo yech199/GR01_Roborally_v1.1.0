@@ -183,7 +183,7 @@ public class AppController implements Observer {
 
     public void leaveGame() {
         // TODO add functionality so that a player can leave the game
-        Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to leave the game?", ButtonType.YES, ButtonType.NO);
+        Alert alert = new Alert(AlertType.INFORMATION, "Do you want to leave the game?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         TextInputDialog name = new TextInputDialog();
         name.setTitle("Select your name to leave");
@@ -197,7 +197,18 @@ public class AppController implements Observer {
             if(resultName.isPresent()) {
                 playerName = resultName.get();
                 int id = gameController.board.getGameId();
-                client.leaveGame(id, playerName);
+                String result = client.leaveGame(id, playerName);
+
+                Alert confirmation;
+                if (result.equals("ok")) {
+                    confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game", ButtonType.OK);
+                } else if (result.equals("Game removed")) {
+                    confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game and since no other players were left, the game has been deleted", ButtonType.OK);
+                } else {
+                    confirmation = new Alert(AlertType.ERROR, "Something went wrong", ButtonType.CLOSE);
+                }
+
+                confirmation.showAndWait();
                 gameController = null;
                 roboRally.createBoardView(null);
             }

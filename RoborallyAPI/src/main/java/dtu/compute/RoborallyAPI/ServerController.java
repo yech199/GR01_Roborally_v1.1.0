@@ -43,7 +43,7 @@ public class ServerController {
         String result = gameService.leaveGame(id, playerName);
         if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
         if(result.equals("Game removed")) return ResponseEntity.ok().body("Game removed");
-        return ResponseEntity.ok().body(SaveBoard.serializeBoard(gameService.getGameById(id)));
+        return ResponseEntity.ok().body("ok");
     }
 
     // Add player to game players

@@ -161,8 +161,9 @@ public class ClientController implements IGameService {
 
         return result;
     }
+
     @Override
-    public void leaveGame(int id, String playerName) {
+    public String leaveGame(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
                 .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
@@ -178,8 +179,9 @@ public class ClientController implements IGameService {
             result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
-            result = null;
+            return null;
         }
+        return result;
     }
     @Override
     public String joinGame(int id, String playername) {

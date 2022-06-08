@@ -99,8 +99,9 @@ public class GameClient {
         String json = clientController.getBoardState(boardName);
         return LoadBoard.newBoardState(json, gameId, numOfPlayers);
     }
-    public void leaveGame(int id, String playerName) {
-        clientController.leaveGame(id, playerName);
+
+    public String leaveGame(int id, String playerName) {
+        return clientController.leaveGame(id, playerName);
     }
     public Board joinGame(int id, String playerName) {
         String json = clientController.joinGame(id, playerName);

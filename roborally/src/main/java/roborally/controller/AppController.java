@@ -41,7 +41,10 @@ import roborally.RoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * ...
@@ -180,6 +183,7 @@ public class AppController implements Observer {
     }
 
     public void saveServerGame() {
+        appState = AppState.UNDECIDED;
         String playerName = "mads";
         String msg;
         try {
@@ -191,6 +195,9 @@ public class AppController implements Observer {
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Failed to save game to server";
+        }
+        finally {
+            stopGame();
         }
         Alert alert = new Alert(AlertType.CONFIRMATION, msg, ButtonType.OK);
         alert.showAndWait();
@@ -205,11 +212,11 @@ public class AppController implements Observer {
         name.setHeaderText("Select name");
         name.setContentText("Name: ");
 
-        if(alert.showAndWait().get().equals(ButtonType.YES)) {
+        if (alert.showAndWait().get().equals(ButtonType.YES)) {
             Optional<String> resultName = name.showAndWait();
             String playerName = "";
 
-            if(resultName.isPresent()) {
+            if (resultName.isPresent()) {
                 playerName = resultName.get();
                 int id = gameController.board.getGameId();
                 String result = client.leaveGame(id, playerName);
@@ -217,20 +224,23 @@ public class AppController implements Observer {
                 Alert confirmation;
                 if (result.equals("ok")) {
                     confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game", ButtonType.OK);
-                } else if (result.equals("Game removed")) {
+                }
+                else if (result.equals("Game removed")) {
                     confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game and since no other players were left, the game has been deleted", ButtonType.OK);
-                } else {
+                }
+                else {
                     confirmation = new Alert(AlertType.ERROR, "Something went wrong", ButtonType.CLOSE);
                 }
 
                 confirmation.showAndWait();
                 gameController = null;
-                roboRally.createBoardView(null);
+                appState = AppState.UNDECIDED;
+                stopGame();
             }
         }
     }
 
-    public void joinGame() {
+    public boolean joinGame() {
         appState = AppState.SERVER_GAME;
         TextInputDialog name = new TextInputDialog();
         name.setTitle("Player name");
@@ -254,9 +264,9 @@ public class AppController implements Observer {
 
         String numbers = selectedGame.get();
         ArrayList<String> extraction = new ArrayList<>();
-        for(int i = 0; i < numbers.length(); i++) {
-            if(numbers.charAt(i) == '|') {
-                for(int j = i; j < i + 12; j++) {
+        for (int i = 0; i < numbers.length(); i++) {
+            if (numbers.charAt(i) == '|') {
+                for (int j = i; j < i + 12; j++) {
                     extraction.add(String.valueOf(numbers.charAt(j)));
                 }
                 break;
@@ -265,16 +275,19 @@ public class AppController implements Observer {
         String[] extractionArray = extraction.toArray(new String[0]);
         String clean = Arrays.toString(extractionArray);
 
-        String result = clean.replaceAll("\\D+","");
+        String result = clean.replaceAll("\\D+", "");
         Board board;
         if (selectedGame.isPresent()) {
             // Join the selected game
             int gameId = Integer.parseInt(result);
             board = client.joinGame(gameId, playerName);
-        } else {
+        }
+        else {
             board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
         }
         setupGameController(board);
+        appState = AppState.SERVER_GAME;
+        return true;
     }
 
     public void saveGame() {
@@ -291,12 +304,11 @@ public class AppController implements Observer {
             stopGame();
         }
         else {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to exit RoboRally without saving?", ButtonType.YES, ButtonType.NO);
             alert.setTitle("Exit RoboRally without saving?");
-            alert.setContentText("Are you sure you want to exit RoboRally without saving?");
             Optional<ButtonType> result = alert.showAndWait();
 
-            if (result.isEmpty() || result.get() == ButtonType.OK) {
+            if (result.isPresent() && result.get() == ButtonType.YES) {
                 appState = AppState.UNDECIDED;
                 stopGame();
             }
@@ -358,8 +370,11 @@ public class AppController implements Observer {
         if (gameController != null) {
 
             // here we save the game (without asking the user).
-            if (appState != AppState.UNDECIDED)
+            if (appState != AppState.UNDECIDED) {
                 saveGame();
+                if (appState != AppState.UNDECIDED)
+                    return false;
+            }
 
             gameController = null;
             roboRally.createBoardView(null);

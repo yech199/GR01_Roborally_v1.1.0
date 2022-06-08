@@ -54,10 +54,7 @@ public class RoboRallyMenuBar extends MenuBar {
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
 
-        /**
-         * LOCAL ACTIONS MENU
-         */
-
+        // ---------------------------------LOCAL ACTIONS MENU-------------------------------
         localMenu = new Menu("Local");
         this.getMenus().add(localMenu);
 
@@ -91,19 +88,14 @@ public class RoboRallyMenuBar extends MenuBar {
         localMenu.getItems().add(loadGame);
 
         exitApp = new MenuItem("Exit");
-        exitApp.setOnAction(e -> {
-            this.appController.exit();
-            update();
-        });
+        exitApp.setOnAction(e -> this.appController.exit());
         localMenu.getItems().add(exitApp);
 
         localMenu.setOnShowing(e -> update());
         localMenu.setOnShown(e -> this.updateBounds());
 
 
-        /**
-         * SERVER ACTIONS MENU
-         */
+        // ---------------------------------SERVER ACTIONS MENU-------------------------------
         serverMenu = new Menu("Server");
         this.getMenus().add(serverMenu);
 
@@ -115,15 +107,24 @@ public class RoboRallyMenuBar extends MenuBar {
         serverMenu.getItems().add(serverGame);
 
         joinGame = new MenuItem("Join Game");
-        joinGame.setOnAction(e -> this.appController.joinGame());
+        joinGame.setOnAction(e -> {
+            boolean isSuccessful = this.appController.joinGame();
+            if (isSuccessful) update();
+        });
         serverMenu.getItems().add(joinGame);
 
         saveServerGame = new MenuItem("Save Server game");
-        saveServerGame.setOnAction(e -> this.appController.saveServerGame());
+        saveServerGame.setOnAction(e -> {
+            this.appController.saveServerGame();
+            update();
+        });
         serverMenu.getItems().add(saveServerGame);
 
         leaveGame = new MenuItem("Leave game");
-        leaveGame.setOnAction(e -> this.appController.leaveServerGame());
+        leaveGame.setOnAction(e -> {
+            this.appController.leaveServerGame();
+            update();
+        });
         serverMenu.getItems().add(leaveGame);
 
         exitApp = new MenuItem("Exit");
@@ -162,6 +163,12 @@ public class RoboRallyMenuBar extends MenuBar {
                 stopGame.setVisible(false);
                 saveGame.setVisible(false);
                 loadGame.setVisible(true);
+
+                serverGame.setVisible(true);
+                joinGame.setVisible(true);
+                saveServerGame.setVisible(false);
+                leaveGame.setVisible(false);
+                update.setVisible(false);
             }
             case LOCAL_GAME -> {
                 serverMenu.setVisible(false);
@@ -170,40 +177,16 @@ public class RoboRallyMenuBar extends MenuBar {
                 stopGame.setVisible(true);
                 saveGame.setVisible(true);
                 loadGame.setVisible(false);
-                //leaveGame.setVisible(true);
-                saveServerGame.setVisible(true);
             }
             case SERVER_GAME -> {
                 localMenu.setVisible(false);
 
-                newGame.setVisible(false);
-                stopGame.setVisible(false);
-                saveGame.setVisible(false);
-                loadGame.setVisible(false);
-
-                //leaveGame.setVisible(true);
+                serverGame.setVisible(false);
+                joinGame.setVisible(false);
                 saveServerGame.setVisible(true);
-
-                updateMenu.setVisible(true);
+                leaveGame.setVisible(true);
+                update.setVisible(true);
             }
         }
-
-        if (appController.isGameRunning()) {
-            newGame.setVisible(false);
-            stopGame.setVisible(true);
-            saveGame.setVisible(true);
-            loadGame.setVisible(false);
-            //leaveGame.setVisible(true);
-            saveServerGame.setVisible(true);
-        }
-        else {
-            newGame.setVisible(true);
-            stopGame.setVisible(false);
-            saveGame.setVisible(false);
-            loadGame.setVisible(true);
-            //leaveGame.setVisible(false);
-            //saveServerGame.setVisible(false);
-        }
     }
-
 }

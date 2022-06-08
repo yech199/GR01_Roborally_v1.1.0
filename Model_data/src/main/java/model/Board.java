@@ -264,6 +264,7 @@ public class Board extends Subject {
     public int getAmountOfActivePlayers() {
         return amountOfActivePlayers;
     }
+
     public void setAmountOfActivePlayers(int numberOfPlayers) {
         this.amountOfActivePlayers = numberOfPlayers;
     }
@@ -279,7 +280,9 @@ public class Board extends Subject {
         }
     }
 
-    // Return the index of a free robot
+    /**
+     * Return the index of a free robot
+      */
     public int getRobot() {
         for (Player player : players) {
             if (!player.activePlayer) {
@@ -295,11 +298,12 @@ public class Board extends Subject {
         players.set(freeIndex, player);
     }
 
-    public void updateView() {
-        notifyChange();
-    }
     public void removeRobot(Player player, int i) {
         amountOfActivePlayers--;
         players.set(i, player);
+    }
+
+    public void updateView() {
+        notifyChange();
     }
 }

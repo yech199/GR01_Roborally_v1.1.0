@@ -32,6 +32,7 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class is responsible for reading(load) and writing(save) game state to and from json files.
@@ -59,11 +60,9 @@ public class SaveBoard {
     }
 
     private static ArrayList<PlayerTemplate> savePlayers(List<Player> players) {
-        int playerCounter = 0;
         ArrayList<PlayerTemplate> playerTemplates = new ArrayList<>();
         // Save state of player
         for (Player player : players) {
-            if (playerCounter > players.size()) break;
             PlayerTemplate playerTemplate = new PlayerTemplate();
             Space space = player.getSpace();
             playerTemplate.spaceX = space.x;
@@ -77,7 +76,6 @@ public class SaveBoard {
             playerTemplate.active = player.activePlayer;
 
             playerTemplates.add(playerTemplate);
-            playerCounter++;
         }
         return playerTemplates;
     }
@@ -108,7 +106,7 @@ public class SaveBoard {
      * @return json string of game state
      */
     private static String serialize(Board board) {
-        // Set up the board template
+        // Set up the board template by copying values one by one
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
@@ -124,7 +122,13 @@ public class SaveBoard {
         template.boardName = board.getBoardName();
         template.checkPointAmount = board.totalNoOfCheckpoints;
         template.maxNumberOfPlayers = board.maxAmountOfPlayers;
-        template.activePlayers = board.amountOfActivePlayers;
+        // Count active players in game
+        AtomicInteger i = new AtomicInteger();
+        board.getPlayers().forEach((player) -> {
+            if (player.activePlayer) i.getAndIncrement();
+        });
+        template.activePlayers = i.get();
+        //board.amountOfActivePlayers;
 
         if (board.getGameId() != null) template.gameId = board.getGameId();
 

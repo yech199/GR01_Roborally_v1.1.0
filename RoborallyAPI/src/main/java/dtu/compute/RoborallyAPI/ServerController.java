@@ -37,10 +37,12 @@ public class ServerController {
         gameService.updateGame(id, gameData);
         return ResponseEntity.ok().body("OK");
     }
-    @DeleteMapping("/game/join/{id}/{playerName}")
+
+    @DeleteMapping("/game/{id}/{playerName}")
     public ResponseEntity<String> leaveGame(@PathVariable int id, @PathVariable String playerName) {
         String result = gameService.leaveGame(id, playerName);
         if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
+        if(result.equals("Game removed")) return ResponseEntity.ok().body("Game removed");
         return ResponseEntity.ok().body(SaveBoard.serializeBoard(gameService.getGameById(id)));
     }
 

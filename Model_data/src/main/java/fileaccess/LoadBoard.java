@@ -10,6 +10,7 @@ import model.*;
 import model.boardElements.SpaceElement;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoadBoard {
 
@@ -106,7 +107,14 @@ public class LoadBoard {
             playerNo++;
         }
         board.setMaxAmountOfPlayers(numberOfPlayers);
-        board.setAmountOfActivePlayers(board.getAmountOfActivePlayers());
+
+        // Count active players in game
+        AtomicInteger i = new AtomicInteger();
+        board.getPlayers().forEach((player) -> {
+            if (player.activePlayer) i.getAndIncrement();
+        });
+        board.amountOfActivePlayers = i.get();
+
         return board;
     }
 

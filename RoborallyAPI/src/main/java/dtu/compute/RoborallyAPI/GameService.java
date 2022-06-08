@@ -105,12 +105,16 @@ public class GameService implements IGameService {
     public String leaveGame(int id, String playerName) {
         Board game = findGame(id);
         if(game == null) return "Game not found";
+        if(game.amountOfActivePlayers == 1) {
+            games.remove(game);
+            return "Game removed";
+        }
         Player player = game.getPlayer(playerName);
 
-        int i  = game.getPlayers().indexOf(player) + 1;
+        int i  = game.getPlayers().indexOf(player);
 
         // Add new player and replace dummy player
-        Player dummy = new Player(game, player.getColor(), "Player " + i);
+        Player dummy = new Player(game, player.getColor(), "Player " + (i+1));
         dummy.setSpace(player.getSpace());
         dummy.setHeading(player.getHeading());
         dummy.activePlayer = false;

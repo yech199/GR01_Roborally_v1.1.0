@@ -54,6 +54,7 @@ public class ClientController implements IGameService {
             e.printStackTrace();
         }
     }
+
     @Override
     public void updateLobby(int id, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()

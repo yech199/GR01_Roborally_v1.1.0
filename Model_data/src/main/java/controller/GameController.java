@@ -262,7 +262,4 @@ public class GameController extends AGameController {
         rebootToken.doAction(this, rebootTokenSpace);
         rebootTokenSpace.setPlayer(player);
     }
-
-
-
 }

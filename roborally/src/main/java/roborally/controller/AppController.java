@@ -41,7 +41,10 @@ import roborally.RoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * ...
@@ -49,17 +52,27 @@ import java.util.*;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class AppController implements Observer {
-    final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
-
-    final private RoboRally roboRally;
-    private GameController gameController;
+    private final List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
+    private final RoboRally roboRally;
     private final GameClient client = new GameClient();
+
+    private GameController gameController;
+    private AppState appState = AppState.UNDECIDED;
+
+    public enum AppState {
+        LOCAL_GAME,
+        SERVER_GAME,
+        UNDECIDED
+    }
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
-    public void newGame() {
+    /**
+     * @return whether it was possible to create a new game or not
+     */
+    public boolean newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
@@ -72,7 +85,8 @@ public class AppController implements Observer {
                 // The UI should not allow this, but in case this happens anyway.
                 // TODO give the user the option to save the game or abort this operation!
                 if (!stopGame()) {
-                    return;
+
+                    return false;
                 }
 
             }
@@ -84,7 +98,7 @@ public class AppController implements Observer {
             } catch (NullPointerException e) {
                 // If this happens, then the player then can't start a game to make a savegame.
                 System.out.println("Could not find Resource folder or there is not any board templates available");
-                return;
+                return false;
             }
 
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
@@ -105,6 +119,8 @@ public class AppController implements Observer {
 
             setupGameController(board);
         }
+        appState = AppState.LOCAL_GAME;
+        return true;
     }
 
     private void choosePlayerNames(int numberOfPlayers, Board board) {
@@ -121,7 +137,7 @@ public class AppController implements Observer {
         }
     }
 
-    public void createServerGame() {
+    public boolean createServerGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
@@ -160,10 +176,14 @@ public class AppController implements Observer {
             Alert alert = new Alert(AlertType.CONFIRMATION, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
             alert.showAndWait();
             setupGameController(board);
+            appState = AppState.SERVER_GAME;
+            return true;
         }
+        return false;
     }
 
     public void saveServerGame() {
+        appState = AppState.UNDECIDED;
         String playerName = "mads";
         String msg;
         try {
@@ -176,6 +196,9 @@ public class AppController implements Observer {
             e.printStackTrace();
             msg = "Failed to save game to server";
         }
+        finally {
+            stopGame();
+        }
         Alert alert = new Alert(AlertType.CONFIRMATION, msg, ButtonType.OK);
         alert.showAndWait();
     }
@@ -184,16 +207,13 @@ public class AppController implements Observer {
         // TODO add functionality so that a player can leave the game
         Alert alert = new Alert(AlertType.INFORMATION, "Do you want to leave the game?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
-        /*
-        TextInputDialog name = new TextInputDialog();
-        name.setTitle("Select your name to leave");
-        name.setHeaderText("Select name");
-        name.setContentText("Name: ");
+        // TextInputDialog name = new TextInputDialog();
+        // name.setTitle("Select your name to leave");
+        // name.setHeaderText("Select name");
+        // name.setContentText("Name: ");
 
-         */
-
-        if(alert.showAndWait().get().equals(ButtonType.YES)) {
-            //Optional<String> resultName = name.showAndWait();
+        if (alert.showAndWait().get().equals(ButtonType.YES)) {
+            // Optional<String> resultName = name.showAndWait();
             String playerName = client.getPlayerName();
 
             if(playerName != null) {
@@ -204,20 +224,24 @@ public class AppController implements Observer {
                 Alert confirmation;
                 if (result.equals("ok")) {
                     confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game", ButtonType.OK);
-                } else if (result.equals("Game removed")) {
+                }
+                else if (result.equals("Game removed")) {
                     confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game and since no other players were left, the game has been deleted", ButtonType.OK);
-                } else {
+                }
+                else {
                     confirmation = new Alert(AlertType.ERROR, "Something went wrong", ButtonType.CLOSE);
                 }
 
                 confirmation.showAndWait();
                 gameController = null;
-                roboRally.createBoardView(null);
+                appState = AppState.UNDECIDED;
+                stopGame();
             }
         }
     }
 
-    public void joinGame() {
+    public boolean joinGame() {
+        appState = AppState.SERVER_GAME;
         TextInputDialog name = new TextInputDialog();
         name.setTitle("Player name");
         name.setHeaderText("Write the name of your player");
@@ -240,9 +264,9 @@ public class AppController implements Observer {
 
         String numbers = selectedGame.get();
         ArrayList<String> extraction = new ArrayList<>();
-        for(int i = 0; i < numbers.length(); i++) {
-            if(numbers.charAt(i) == '|') {
-                for(int j = i; j < i + 12; j++) {
+        for (int i = 0; i < numbers.length(); i++) {
+            if (numbers.charAt(i) == '|') {
+                for (int j = i; j < i + 12; j++) {
                     extraction.add(String.valueOf(numbers.charAt(j)));
                 }
                 break;
@@ -251,17 +275,20 @@ public class AppController implements Observer {
         String[] extractionArray = extraction.toArray(new String[0]);
         String clean = Arrays.toString(extractionArray);
 
-        String result = clean.replaceAll("\\D+","");
+        String result = clean.replaceAll("\\D+", "");
         Board board;
         if (selectedGame.isPresent()) {
             // Join the selected game
             int gameId = Integer.parseInt(result);
             board = client.joinGame(gameId, playerName);
             int check = board.getPlayer(playerName).playerId;
-        } else {
+        }
+        else {
             board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
         }
         setupGameController(board);
+        appState = AppState.SERVER_GAME;
+        return true;
     }
 
     public void saveGame() {
@@ -274,10 +301,22 @@ public class AppController implements Observer {
         if (resultS.isPresent()) {
             String saveName = resultS.get();
             SaveBoard.saveGame(gameController.board, saveName);
+            appState = AppState.UNDECIDED;
+            stopGame();
+        }
+        else {
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to exit RoboRally without saving?", ButtonType.YES, ButtonType.NO);
+            alert.setTitle("Exit RoboRally without saving?");
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                appState = AppState.UNDECIDED;
+                stopGame();
+            }
         }
     }
 
-    public void loadGame() {
+    public boolean loadGame() {
         if (gameController == null) {
 
             final List<String> BOARD_NAMES;
@@ -285,12 +324,12 @@ public class AppController implements Observer {
                 BOARD_NAMES = IOUtil.getSaveGameFiles();
             } catch (NullPointerException e) {
                 System.out.println("Could not find Resource folder or there is not any save games available");
-                return;
+                return false;
             }
 
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
             dialogL.setTitle("Load game");
-            dialogL.setHeaderText("Select a savegame to load");
+            dialogL.setHeaderText("Select a saved game to load");
             Optional<String> result = dialogL.showAndWait();
 
             if (result.isPresent()) {
@@ -301,8 +340,11 @@ public class AppController implements Observer {
             else {
                 // TODO: The UI should not allow this, but in case this happens anyway.
                 //  give the user the option to save the game or abort this operation!
+                return false;
             }
         }
+        appState = AppState.LOCAL_GAME;
+        return true;
     }
 
     private void setupGameController(Board board) {
@@ -329,10 +371,15 @@ public class AppController implements Observer {
         if (gameController != null) {
 
             // here we save the game (without asking the user).
-            saveGame();
+            if (appState != AppState.UNDECIDED) {
+                saveGame();
+                if (appState != AppState.UNDECIDED)
+                    return false;
+            }
 
             gameController = null;
             roboRally.createBoardView(null);
+            appState = AppState.UNDECIDED;
             return true;
         }
         return false;
@@ -391,4 +438,7 @@ public class AppController implements Observer {
         gameController.board.updateView();
     }
 
+    public AppState getAppState() {
+        return appState;
+    }
 }

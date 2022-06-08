@@ -12,7 +12,6 @@ import model.Globals;
 import model.Player;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,7 +142,7 @@ public class GameService implements IGameService {
         dummy.setHeading(player.getHeading());
         dummy.activePlayer = false;
         dummy.setCards(player.getCards());
-        dummy.setProgram(player.getProgram());
+        dummy.setRegisters(player.getRegisters());
 
         game.removeRobot(dummy, i);
 

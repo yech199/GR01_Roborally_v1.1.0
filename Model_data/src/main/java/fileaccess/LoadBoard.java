@@ -34,7 +34,7 @@ public class LoadBoard {
             newPlayer.setHeading(Heading.valueOf(player.heading));
 
             newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
-            newPlayer.setProgram(loadCommandCardFields(player.registers, newPlayer));
+            newPlayer.setRegisters(loadCommandCardFields(player.registers, newPlayer));
 
             newPlayer.activePlayer = player.active;
             newPlayer.playerId = player.playerId;

@@ -37,36 +37,36 @@ import static model.Phase.INITIALISATION;
  */
 public class Board extends Subject {
 
+    private Integer gameId;
+
+    public final String boardName;
+
+    // maxAmount on THIS board
+    public Integer maxAmountOfPlayers;
+
     public final int width;
 
     public final int height;
 
-    public final String boardName;
-
-    private Integer gameId;
-
-    private final Space[][] spaces;
-
-    private final List<Player> players = new ArrayList<>();
-
-    private Player current;
-
-    private Player winner = null;
+    // How many checkpoint are there in total
+    public final int totalNoOfCheckpoints;
 
     private Phase phase = INITIALISATION;
 
     // zero indexed
     private int step = 0;
 
-    // How many checkpoint are there in total
-    public final int totalNoOfCheckpoints;
+    private Player current;
 
     public Integer amountOfActivePlayers = 0;
 
-    // maxAmount on THIS board
-    public Integer maxAmountOfPlayers;
-
     private boolean stepMode;
+
+    private Player winner = null;
+
+    private final Space[][] spaces;
+
+    private final List<Player> players = new ArrayList<>();
 
     public Board(int width, int height, int totalNoOfCheckpoints, @NotNull String boardName) {
         this.boardName = boardName;

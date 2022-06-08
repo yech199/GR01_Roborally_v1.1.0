@@ -34,14 +34,11 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import model.Board;
 import model.Phase;
-import model.Player;
 import org.jetbrains.annotations.NotNull;
 import roborally.RoboRally;
-import roborally.StartRoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
-import javax.swing.text.html.Option;
 import java.util.*;
 
 /**
@@ -181,7 +178,7 @@ public class AppController implements Observer {
         alert.showAndWait();
     }
 
-    public void leaveGame() {
+    public void leaveServerGame() {
         // TODO add functionality so that a player can leave the game
         Alert alert = new Alert(AlertType.INFORMATION, "Do you want to leave the game?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
@@ -253,7 +250,7 @@ public class AppController implements Observer {
         Board board;
         if (selectedGame.isPresent()) {
             // Join the selected game
-            int gameId = Integer.valueOf(result);
+            int gameId = Integer.parseInt(result);
             board = client.joinGame(gameId, playerName);
         } else {
             board = LoadBoard.newBoard(null, 6);

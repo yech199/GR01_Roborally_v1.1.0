@@ -104,7 +104,7 @@ public class RoboRallyMenuBar extends MenuBar {
         serverMenu.getItems().add(saveServerGame);
 
         leaveGame = new MenuItem("Leave game");
-        leaveGame.setOnAction(e -> this.appController.leaveGame());
+        leaveGame.setOnAction(e -> this.appController.leaveServerGame());
         serverMenu.getItems().add(leaveGame);
 
         exitApp = new MenuItem("Exit");

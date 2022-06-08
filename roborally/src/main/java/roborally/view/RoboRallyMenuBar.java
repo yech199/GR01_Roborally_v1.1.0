@@ -137,19 +137,10 @@ public class RoboRallyMenuBar extends MenuBar {
         serverMenu.setOnShowing(e -> update());
         serverMenu.setOnShown(e -> this.updateBounds());
 
-        // updateMenu = new Menu("Update");
-        // this.getMenus().add(updateMenu);
-        // updateMenu.setVisible(false);
-
-        // update = new MenuItem("Update");
-        // update.setOnAction(e -> this.appController.nothing());
-        // updateMenu.getItems().add(update);
-
         update();
     }
 
     public void update() {
-        // TODO Hide server menu when local game is running and vice versa
         switch (appController.getAppState()) {
             case UNDECIDED -> {
                 serverMenu.setVisible(true);

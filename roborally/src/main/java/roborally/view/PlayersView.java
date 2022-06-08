@@ -22,10 +22,13 @@
 package roborally.view;
 
 import designpatterns.observer.Subject;
-import roborally.controller.GameController;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import model.Board;
 import model.Player;
 import javafx.scene.control.TabPane;
+import roborally.controller.GameController;
 
 /**
  * ...

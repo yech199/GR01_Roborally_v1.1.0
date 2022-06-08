@@ -3,24 +3,33 @@ package dtu.compute.RoborallyAPI;
 import client_server.IGameService;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import controller.GameController;
 import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
+import fileaccess.model.PlayerTemplate;
 import model.Board;
 import model.Player;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static fileaccess.SaveBoard.serializeActivation;
+import static fileaccess.SaveBoard.serializeBoard;
 
 @Service
 public class GameService implements IGameService {
 
     // A game is a board with a set gameId and saved player cards/registers
-    ArrayList<Board> games = new ArrayList<>();
+    ArrayList<GameController> games = new ArrayList<>();
     ArrayList<Board> boards = new ArrayList<>();
+    //GameController gameController = new GameController(null);
+
+    ArrayList<PlayerTemplate> playerData = new ArrayList<>();
+
     int id = 1;
 
     public GameService() {
@@ -33,15 +42,19 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public String getGameById(int id) {
-        return SaveBoard.serializeBoard(findGame(id));
+    public String getGameById(int id, String playerName) {
+        Board boardGame = findGameBoard(id);
+        if (boardGame == null) return "Game not found";
+        Player player = boardGame.getPlayer(playerName);
+        if (player == null) return "Player not found";
+        return serializeActivation(boardGame, player);
     }
 
     @Override
     public void updateGame(int id, String gameState) {
-        Board game = findGame(id);
+        GameController game = findGame(id);
         int i = games.indexOf(game);
-        game = LoadBoard.loadGameState(gameState);
+        game.board = LoadBoard.loadGameState(gameState);
         games.set(i, game);
     }
 
@@ -50,10 +63,13 @@ public class GameService implements IGameService {
         Board board = findBoard(boardName);
         if (board == null) return "Board not found";
         // TODO we serialize to deserialize again. Find better way
-        Board game = LoadBoard.newBoardState(SaveBoard.serializeBoard(board), id, numOfPlayers);
+        board.maxAmountOfPlayers = numOfPlayers;
+        Board game = LoadBoard.newBoardState(serializeBoard(board), numOfPlayers);
+        GameController gameController = new GameController(game);
+        game.setGameId(id);
         id++;
-        games.add(game);
-        return SaveBoard.serializeBoard(game);
+        games.add(gameController);
+        return serializeBoard(game);
     }
 
     @Override
@@ -64,10 +80,10 @@ public class GameService implements IGameService {
         List<Integer> listOfTotalPlayers = new ArrayList<>();
 
         // Get a list of game IDs
-        games.forEach(game -> listOfGames.add(game.getGameId()));
-        games.forEach(game -> listOfBoardNames.add(game.getBoardName()));
-        games.forEach(game -> listOfActivePlayers.add(game.amountOfActivePlayers));
-        games.forEach(game -> listOfTotalPlayers.add(game.maxAmountOfPlayers));
+        games.forEach(game -> listOfGames.add(game.board.getGameId()));
+        games.forEach(game -> listOfBoardNames.add(game.board.getBoardName()));
+        games.forEach(game -> listOfActivePlayers.add(game.board.amountOfActivePlayers));
+        games.forEach(game -> listOfTotalPlayers.add(game.board.maxAmountOfPlayers));
 
         // https://www.tutorialspoint.com/how-to-convert-java-array-or-arraylist-to-jsonarray-using-gson-in-java
         JsonObject jsonObj = new JsonObject();
@@ -97,7 +113,7 @@ public class GameService implements IGameService {
     public String getBoardState(String boardName) {
         for (Board board : boards) {
             if (board.getBoardName().equals(boardName)) {
-                return SaveBoard.serializeBoard(board);
+                return serializeBoard(board);
             }
         }
         return null;
@@ -105,57 +121,100 @@ public class GameService implements IGameService {
 
     @Override
     public String joinGame(int id, String playerName) {
-        Board game = findGame(id);
-        if(game == null) return "Game not found";
-        if(game.getAmountOfActivePlayers() >= game.maxAmountOfPlayers) return "Game Full";
-        Player template = game.getPlayer(game.getRobot());
-        String color = template.getColor();
+        GameController game = findGame(id);
+        Board gameBoard = game.board;
 
-        // Add new player and replace dummy player
-        Player player = new Player(game, color, playerName);
-        player.setSpace(template.getSpace());
-        player.setHeading(template.getHeading());
-        player.activePlayer = true;
-        game.setRobot(player);
+        if(gameBoard.getPlayers().contains(gameBoard.getPlayer(playerName))) return "Player with same name already joined";
+        if(gameBoard.getAmountOfActivePlayers() >= gameBoard.maxAmountOfPlayers) return "Game Full";
 
-        return SaveBoard.serializeBoard(game);
+        gameBoard.getRobot().ifPresent(freePlayerIndex -> {
+            Player template = gameBoard.getPlayer(freePlayerIndex);
+            gameBoard.getPlayers().set(freePlayerIndex, template);
+            String color = template.getColor();
+
+            // Add new player and replace dummy player
+            Player player = new Player(game.board, color, playerName);
+            player.setSpace(template.getSpace());
+            player.setHeading(template.getHeading());
+            player.activePlayer = true;
+            gameBoard.setRobot(player);
+
+            if(gameBoard.amountOfActivePlayers.equals(gameBoard.maxAmountOfPlayers)) {
+                game.startProgrammingPhase();
+            }
+        });
+        return "OK";
     }
 
     @Override
     public String leaveGame(int id, String playerName) {
-        Board game = findGame(id);
-        if(game == null) return "Game not found";
-        if(game.amountOfActivePlayers == 1) {
+        GameController game = findGame(id);
+        Board board = game.board;
+
+        if(board == null) return "Game not found";
+        if(board.amountOfActivePlayers == 1) {
             games.remove(game);
             return "Game removed";
         }
-        Player player = game.getPlayer(playerName);
+        Player player = board.getPlayer(playerName);
 
-        int i  = game.getPlayers().indexOf(player);
+        int i  = board.getPlayers().indexOf(player);
 
         // Add new player and replace dummy player
-        Player dummy = new Player(game, player.getColor(), "Player " + (i+1));
+        Player dummy = new Player(board, player.getColor(), "Player " + (i+1));
         dummy.setSpace(player.getSpace());
         dummy.setHeading(player.getHeading());
         dummy.activePlayer = false;
         dummy.setCards(player.getCards());
         dummy.setProgram(player.getProgram());
 
-        game.removeRobot(dummy, i);
+        board.removeRobot(dummy, i);
 
         return "ok";
     }
 
     @Override
-    public String playCards(int id, String playername, String playerData) {
-        // TODO Execute game logic
+    public String getPlayerCards(int id, String playerName, String playerData) {
+        GameController game = findGame(id);
+        if(game == null) return "Game not found";
+        if(!game.board.getPlayers().contains(game.board.getPlayer(playerName))) return "Player not found";
+        for(PlayerTemplate player : this.playerData) {
+            if (player.name.equals(playerName)) return "Player already submitted";
+        }
+        Board gameBoard = game.board;
+        // Save the JSON player data for execution
+        PlayerTemplate player = new Gson().fromJson(playerData, PlayerTemplate.class);
+        this.playerData.add(player);
+        // If all player data have been recieved, load the state into gameBoard and finish Programming Phase
+        if (this.playerData.size() >= gameBoard.maxAmountOfPlayers) {
+            LoadBoard.loadPlayers(this.playerData, gameBoard);
+            int i = 0;
+            while(this.playerData.size() != 0) {
+                this.playerData.remove(this.playerData.get(i));
+            }
+            game.finishProgrammingPhase();
+            game.executePrograms();
+        }
+        return "ok";
+    }
+
+    public void finishProgrammingPhase() {
+
+    }
+
+    public GameController findGame(int id) {
+        for (GameController game : games) {
+            if (game.board.getGameId() == id) {
+                return game;
+            }
+        }
         return null;
     }
 
-    public Board findGame(int id) {
-        for (Board game : games) {
-            if (game.getGameId() == id) {
-                return game;
+    public Board findGameBoard(int id) {
+        for (GameController game : games) {
+            if (game.board.getGameId() == id) {
+                return game.board;
             }
         }
         return null;
@@ -169,4 +228,5 @@ public class GameService implements IGameService {
         }
         return null;
     }
+
 }

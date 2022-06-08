@@ -1,8 +1,6 @@
 package dtu.compute.RoborallyAPI;
 
 import client_server.IGameService;
-import fileaccess.SaveBoard;
-import model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +24,9 @@ public class ServerController {
     }
 
     // Returns the game state of a game
-    @GetMapping("/game/{id}")
-    public ResponseEntity<String> getGameState(@PathVariable int id) {
-        return ResponseEntity.ok().body(gameService.getGameById(id));
+    @GetMapping("/game/{id}/{playername}")
+    public ResponseEntity<String> getGameState(@PathVariable int id, @PathVariable String playername) {
+        return ResponseEntity.ok().body(gameService.getGameById(id, playername));
     }
 
     // Updates the game state of a game
@@ -68,7 +66,9 @@ public class ServerController {
     }
 
     @PutMapping("game/{id}/{playername}")
-    public ResponseEntity<String> playPlayerCards(@PathVariable int id, @PathVariable String playername, @RequestBody String playerData) {
-        return ResponseEntity.ok().body(gameService.playCards(id, playername, playerData));
+    public ResponseEntity<String> getPlayerCards(@PathVariable int id, @PathVariable String playername, @RequestBody String playerData) {
+        String result = gameService.getPlayerCards(id, playername, playerData);
+        if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
+        return ResponseEntity.ok().body(result);
     }
 }

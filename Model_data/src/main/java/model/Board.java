@@ -280,7 +280,7 @@ public class Board extends Subject {
         }
         else {
             if (!this.maxAmountOfPlayers.equals(maxAmountOfPlayers)) {
-                throw new IllegalStateException("A game with a set id may not be assigned a new id!");
+                throw new IllegalStateException("A game with a set maxAmoundOfPlayers may not be assigned a new id!");
             }
         }
     }

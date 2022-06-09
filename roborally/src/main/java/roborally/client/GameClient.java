@@ -90,8 +90,9 @@ public class GameClient {
     }
 
     public String joinGame(int id, String playerName) {
-        this.playerName = playerName;
-        String result = clientController.joinGame(id, playerName);
+        //playerName.replaceAll(" ","");
+        this.playerName = playerName.replaceAll(" ","");
+        String result = clientController.joinGame(id, playerName.replaceAll(" ",""));
         if (!Objects.equals(result, "Game Full")) {
             gameId = Integer.parseInt(result);
         }

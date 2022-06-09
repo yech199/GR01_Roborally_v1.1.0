@@ -202,31 +202,17 @@ public class AppController implements Observer {
     public void saveServerGame() {
         appState = AppState.UNDECIDED;
         String msg;
-        try {
-            int id = client.gameId;
-            //String json = SaveBoard.serializePlayer(gameController.board.getPlayer(client.playerName));
-            //String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
-            client.setPlayerState(id, gameController.board.getPlayer(client.playerName));
-            leaveServerGame();
-            msg = "Succesfully saved game to server";
-        } catch (Exception e) {
-            e.printStackTrace();
-            msg = "Failed to save game to server";
-        } finally {
-            stopGame();
-        }
-        Alert alert = new Alert(AlertType.CONFIRMATION, msg, ButtonType.OK);
-        alert.showAndWait();
+        int id = client.gameId;
+        //String json = SaveBoard.serializePlayer(gameController.board.getPlayer(client.playerName));
+        //String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
+        client.setPlayerState(id, gameController.board.getPlayer(client.playerName));
+        leaveServerGame();
     }
 
     public void leaveServerGame() {
         // TODO add functionality so that a player can leave the game
         Alert alert = new Alert(AlertType.INFORMATION, "Do you want to leave the game?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> resultS = alert.showAndWait();
-        // TextInputDialog name = new TextInputDialog();
-        // name.setTitle("Select your name to leave");
-        // name.setHeaderText("Select name");
-        // name.setContentText("Name: ");
 
         if (resultS.get().equals(ButtonType.YES)) {
             // Optional<String> resultName = name.showAndWait();
@@ -240,17 +226,22 @@ public class AppController implements Observer {
                 Alert confirmation;
                 if (result.equals("ok")) {
                     confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game", ButtonType.OK);
+                    stopGame();
+                    appState = AppState.UNDECIDED;
+
+                    gameController = null;
                 } else if (result.equals("Game removed")) {
                     confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game and since no other players were left, the game has been deleted", ButtonType.OK);
+                    confirmation.showAndWait();
+                    stopGame();
+                    appState = AppState.UNDECIDED;
+                    gameController = null;
                 } else {
                     confirmation = new Alert(AlertType.ERROR, "Something went wrong", ButtonType.CLOSE);
+                    stopGame();
+                    appState = AppState.UNDECIDED;
+                    gameController = null;
                 }
-
-                stopGame();
-                appState = AppState.UNDECIDED;
-
-                confirmation.showAndWait();
-                gameController = null;
 
             }
         }
@@ -311,8 +302,7 @@ public class AppController implements Observer {
             alert.showAndWait();
             appState = AppState.UNDECIDED;
             return false;
-        }
-        catch (NullPointerException | NumberFormatException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             Alert alert = new Alert(AlertType.INFORMATION, "UNABLE TO JOIN. GAME IS FULL.", ButtonType.OK);
             alert.showAndWait();
             appState = AppState.UNDECIDED;

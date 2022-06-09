@@ -24,24 +24,21 @@ public class PushPanel implements SpaceElement {
                 if (firstFound) {
                     if (pushPanelLabel[i] == 0) {
                         n2++;
-                    }
-                    else {
+                    } else {
                         if (n1 == n2) {
                             n2++;
                         }
                         // Break when both have been found
                         break;
                     }
-                }
-                else if (pushPanelLabel[i] == 0) {
+                } else if (pushPanelLabel[i] == 0) {
                     n1++;
                     n2++;
-                }
-                else {
+                } else {
                     firstFound = true;
                 }
             }
-            
+
             if ((gameController.board.getStep() == n1 || gameController.board.getStep() == n2) && space.getPlayer() != null) {
                 gameController.cardController.moveForward(space.getPlayer(), this.heading);
             }

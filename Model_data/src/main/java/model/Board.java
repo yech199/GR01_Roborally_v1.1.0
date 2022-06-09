@@ -34,7 +34,6 @@ import static model.Phase.INITIALISATION;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Board extends Subject {
 
@@ -96,8 +95,7 @@ public class Board extends Subject {
     public void setGameId(int gameId) {
         if (this.gameId == null) {
             this.gameId = gameId;
-        }
-        else {
+        } else {
             if (!this.gameId.equals(gameId)) {
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
@@ -108,8 +106,7 @@ public class Board extends Subject {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {
             return spaces[x][y];
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -132,8 +129,7 @@ public class Board extends Subject {
     public Player getPlayer(int i) {
         if (i >= 0 && i < players.size()) {
             return players.get(i);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -202,8 +198,7 @@ public class Board extends Subject {
     public int getPlayerNumber(@NotNull Player player) {
         if (player.board == this) {
             return players.indexOf(player);
-        }
-        else {
+        } else {
             return -1;
         }
     }
@@ -233,8 +228,7 @@ public class Board extends Subject {
         // Check for out of bounds
         if (y > height || y < 0 && x > width || x < 0) {
             return null;
-        }
-        else {
+        } else {
             // Moved within board
             return getSpace(x, y);
         }
@@ -276,8 +270,7 @@ public class Board extends Subject {
     public void setMaxAmountOfPlayers(int maxAmountOfPlayers) {
         if (this.maxAmountOfPlayers == null) {
             this.maxAmountOfPlayers = maxAmountOfPlayers;
-        }
-        else {
+        } else {
             if (!this.maxAmountOfPlayers.equals(maxAmountOfPlayers)) {
                 throw new IllegalStateException("A game with a set maxAmoundOfPlayers may not be assigned a new id!");
             }
@@ -286,7 +279,7 @@ public class Board extends Subject {
 
     /**
      * Return the index of a free robot
-      */
+     */
     public Optional<Integer> getRobot() {
         for (Player player : players) {
             if (!player.active) {

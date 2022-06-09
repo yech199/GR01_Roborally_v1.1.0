@@ -7,6 +7,8 @@ import fileaccess.SaveBoard;
 import model.Board;
 import model.Player;
 
+import javax.print.attribute.HashDocAttributeSet;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +56,7 @@ public class GameClient {
 
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
-            if(activePlayers[i] != totalPlayers[i]) {
+            if (activePlayers[i] != totalPlayers[i]) {
                 result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: " + String.valueOf(activePlayers[i]))));
             } else {
                 result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: ").concat("FULL!")));
@@ -82,9 +84,8 @@ public class GameClient {
     public String joinGame(int id, String playerName) {
         this.playerName = playerName;
         String result = clientController.joinGame(id, playerName);
-        if (!Objects.equals(result, "Game Full")) {
-            gameId = Integer.parseInt(result);
-        }
+        gameId = Integer.parseInt(result);
+
         return result;
     }
 }

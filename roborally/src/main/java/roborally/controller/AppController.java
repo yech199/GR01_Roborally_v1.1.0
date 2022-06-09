@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * ...
@@ -112,8 +113,7 @@ public class AppController implements Observer {
                 board = LoadBoard.newBoard(resultS.get(), numberOfPlayers);
                 // Sets number of players here!
                 choosePlayerNames(numberOfPlayers, board);
-            }
-            else {
+            } else {
                 board = LoadBoard.newBoard(null, numberOfPlayers);
             }
 
@@ -171,25 +171,24 @@ public class AppController implements Observer {
             Optional<String> selectedBoard = dialogL.showAndWait();
 
             Board board;
-            String result1;
-            String result2;
+            String result;
             AlertType alertType;
             if (selectedBoard.isPresent()) {
                 String gameId = client.createGame(selectedBoard.get(), numOfPlayers);
-                result2 = client.joinGame(Integer.parseInt(gameId), client.playerName);
+                result = client.joinGame(Integer.parseInt(gameId), client.playerName);
                 board = client.getGameState(Integer.parseInt(gameId), client.playerName);
                 alertType = AlertType.CONFIRMATION;
             } else { // Should not happen
                 board = LoadBoard.newBoard(null, numOfPlayers);
-                result2 = "OK";
+                result = "OK";
                 alertType = AlertType.WARNING;
             }
 
             Alert alert;
-            if (result2.equals("OK")) {
+            if (result.equals("OK")) {
                 alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
             } else {
-                alert = new Alert(alertType, result2 + board.getGameId(), ButtonType.OK);
+                alert = new Alert(alertType, result, ButtonType.OK);
             }
             alert.showAndWait();
 
@@ -213,8 +212,7 @@ public class AppController implements Observer {
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Failed to save game to server";
-        }
-        finally {
+        } finally {
             stopGame();
         }
         Alert alert = new Alert(AlertType.CONFIRMATION, msg, ButtonType.OK);
@@ -234,7 +232,7 @@ public class AppController implements Observer {
             // Optional<String> resultName = name.showAndWait();
             String playerName = client.playerName;
 
-            if(playerName != null) {
+            if (playerName != null) {
                 //playerName = resultName.get();
                 int id = gameController.board.getGameId();
                 String result = client.leaveGame(id, playerName);
@@ -242,11 +240,9 @@ public class AppController implements Observer {
                 Alert confirmation;
                 if (result.equals("ok")) {
                     confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game", ButtonType.OK);
-                }
-                else if (result.equals("Game removed")) {
+                } else if (result.equals("Game removed")) {
                     confirmation = new Alert(AlertType.CONFIRMATION, "You have left the game and since no other players were left, the game has been deleted", ButtonType.OK);
-                }
-                else {
+                } else {
                     confirmation = new Alert(AlertType.ERROR, "Something went wrong", ButtonType.CLOSE);
                 }
 
@@ -315,7 +311,8 @@ public class AppController implements Observer {
             alert.showAndWait();
             appState = AppState.UNDECIDED;
             return false;
-        } catch (NumberFormatException e) {
+        }
+        catch (NullPointerException | NumberFormatException e) {
             Alert alert = new Alert(AlertType.INFORMATION, "UNABLE TO JOIN. GAME IS FULL.", ButtonType.OK);
             alert.showAndWait();
             appState = AppState.UNDECIDED;
@@ -340,8 +337,7 @@ public class AppController implements Observer {
             SaveBoard.saveGame(gameController.board, saveName);
             appState = AppState.UNDECIDED;
             stopGame();
-        }
-        else {
+        } else {
             Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to exit RoboRally without saving?", ButtonType.YES, ButtonType.NO);
             alert.setTitle("Exit RoboRally without saving?");
             Optional<ButtonType> result = alert.showAndWait();
@@ -373,8 +369,7 @@ public class AppController implements Observer {
                 String boardName = result.get();
                 Board board = LoadBoard.loadGame(boardName, true);
                 setupGameController(board);
-            }
-            else {
+            } else {
                 // TODO: The UI should not allow this, but in case this happens anyway.
                 //  give the user the option to save the game or abort this operation!
                 return false;
@@ -438,8 +433,7 @@ public class AppController implements Observer {
 
                 gameController = null;
                 roboRally.createBoardView(null);
-            }
-            else {
+            } else {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Exit RoboRally?");
                 alert.setContentText("Are you sure you want to exit RoboRally?");
@@ -448,14 +442,13 @@ public class AppController implements Observer {
                 // Cancel
                 if (result.isEmpty() || result.get() != ButtonType.OK) {
                     return; // return without exiting the application
-                }
-                else{
+                } else {
                     // Sure
                     try {
                         if (appState == AppState.SERVER_GAME) {
                             client.leaveGame(gameController.board.getGameId(), client.playerName);
                         }
-                    } catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         System.out.println("Could Not Exit");
                     }
 

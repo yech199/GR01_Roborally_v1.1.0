@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static fileaccess.SaveBoard.serializeBoard;
 
@@ -52,7 +53,7 @@ public class GameService implements IGameService {
     @Override
     public String updateGame(int id, String playername, String playerState) {
         GameController game = findGame(id);
-        if(game == null) return "Game not found";
+        if (game == null) return "Game not found";
         LoadServer.deserializePlayer(new Gson().fromJson(playerState, PlayerTemplate.class), game.board);
         return "OK";
     }
@@ -123,9 +124,10 @@ public class GameService implements IGameService {
         GameController game = findGame(id);
         Board gameBoard = game.board;
 
-        if(game == null) return "Game not found";
-        if(gameBoard.getPlayers().contains(gameBoard.getPlayer(playerName))) return "Player with same name already joined";
-        if(gameBoard.getAmountOfActivePlayers() >= gameBoard.maxAmountOfPlayers) return "Game Full";
+        if (game == null) return "Game not found";
+        if (gameBoard.getPlayers().contains(gameBoard.getPlayer(playerName)))
+            return "Player with same name already joined";
+        if (gameBoard.getAmountOfActivePlayers() >= gameBoard.maxAmountOfPlayers) return "Game Full";
 
         gameBoard.getRobot().ifPresent(freePlayerIndex -> {
             Player template = gameBoard.getPlayer(freePlayerIndex);
@@ -139,7 +141,7 @@ public class GameService implements IGameService {
             player.active = true;
             gameBoard.setRobot(player);
 
-            if(gameBoard.amountOfActivePlayers.equals(gameBoard.maxAmountOfPlayers)) {
+            if (gameBoard.amountOfActivePlayers.equals(gameBoard.maxAmountOfPlayers)) {
                 game.startProgrammingPhase();
             }
         });
@@ -151,17 +153,17 @@ public class GameService implements IGameService {
         GameController game = findGame(id);
         Board board = game.board;
 
-        if(board == null) return "Game not found";
-        if(board.amountOfActivePlayers == 1) {
+        if (board == null) return "Game not found";
+        if (board.amountOfActivePlayers == 1) {
             activeGames.remove(game);
             return "Game removed";
         }
         Player player = board.getPlayer(playerName);
 
-        int i  = board.getPlayers().indexOf(player);
+        int i = board.getPlayers().indexOf(player);
 
         // Add new player and replace dummy player
-        Player dummy = new Player(board, player.getColor(), "Player " + (i+1));
+        Player dummy = new Player(board, player.getColor(), "Player " + (i + 1));
         dummy.setSpace(player.getSpace());
         dummy.setHeading(player.getHeading());
         dummy.active = false;
@@ -176,9 +178,9 @@ public class GameService implements IGameService {
     @Override
     public String setPlayerState(int id, String playerName, String playerData) {
         GameController game = findGame(id);
-        if(game == null) return "Game not found";
-        if(!game.board.getPlayers().contains(game.board.getPlayer(playerName))) return "Player not found";
-        for(PlayerTemplate player : this.playerData) {
+        if (game == null) return "Game not found";
+        if (!game.board.getPlayers().contains(game.board.getPlayer(playerName))) return "Player not found";
+        for (PlayerTemplate player : this.playerData) {
             if (player.name.equals(playerName)) return "Player already submitted";
         }
         Board gameBoard = game.board;
@@ -189,7 +191,7 @@ public class GameService implements IGameService {
         if (this.playerData.size() >= gameBoard.maxAmountOfPlayers) {
             LoadBoard.loadPlayers(this.playerData, gameBoard);
             int i = 0;
-            while(this.playerData.size() != 0) {
+            while (this.playerData.size() != 0) {
                 this.playerData.remove(this.playerData.get(i));
             }
             game.finishProgrammingPhase();

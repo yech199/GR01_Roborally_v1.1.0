@@ -116,7 +116,7 @@ public class LoadBoard {
 
         if (board.getPhase() == Phase.INITIALISATION) {
             int playerNo = 1;
-            for(int i = 0; i < numOfPlayers; i++) {
+            for (int i = 0; i < numOfPlayers; i++) {
                 Player player = new Player(board, template.players.get(i).color, "Player " + playerNo);
                 player.setSpace(board.getSpace(template.players.get(i).spaceX, template.players.get(i).spaceY));
                 player.setHeading(Heading.valueOf(template.players.get(i).heading));

@@ -22,9 +22,10 @@ public class ProgrammingCardController {
             // Heading moveDirection = player.getHeading();
             Space target = gameController.board.getNeighbour(player.getSpace(), moveDirection);
 
-            // If the player is standing ON a push panel, and is trying to walk into the wall throw exception
             if (player.getSpace().getActions().size() > 0) {
                 for (SpaceElement space : player.getSpace().getActions()) {
+
+                    // If the player is standing ON a push panel, and is trying to walk into the wall throw exception
                     if (space instanceof PushPanel pushPanel && moveDirection == pushPanel.getHeading().next().next()
                             && target == gameController.board.getNeighbour(player.getSpace(), moveDirection)) {
                         throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
@@ -58,6 +59,15 @@ public class ProgrammingCardController {
             }
             // Free? Then move player
             target.setPlayer(player);
+
+            if (target.getActions().size() > 0) {
+                for (SpaceElement space : target.getActions()) {
+                    if (space instanceof Pit pit) {
+                        pit.doAction(gameController, target);
+                    }
+                }
+            }
+
         } catch (ImpossibleMoveException e) {
             if (gameController.rebootTokenSpace.getPlayer() != null) {
                 moveForward(player, moveDirection.next());
@@ -79,9 +89,9 @@ public class ProgrammingCardController {
         Player targetPlayer = target.getPlayer();
         Space tmpTarget = gameController.board.getNeighbour(targetPlayer.getSpace(), pushDirection);
 
-        // If the player being pushed is standing ON a push panel, and is being pushed into a "wall" throw exception
         if (targetPlayer.getSpace().getActions().size() > 0) {
             for (SpaceElement space : targetPlayer.getSpace().getActions()) {
+                // If the player being pushed is standing ON a push panel, and is being pushed into a "wall" throw exception
                 if (space instanceof PushPanel pushPanel) {
                     if (player.getHeading() == pushPanel.getHeading().next().next()
                             && tmpTarget == gameController.board.getNeighbour(target, player.getHeading()))
@@ -131,7 +141,6 @@ public class ProgrammingCardController {
                 }
             }
         }
-
         return true;
     }
 

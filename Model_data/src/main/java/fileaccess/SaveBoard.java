@@ -87,12 +87,14 @@ public class SaveBoard {
         for (CommandCardField commandCardField : commandCardFields) {
             CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
 
-            if (commandCardField.getCard() == null) {
-                cardFieldTemplate.command = "";
-                cardFieldTemplate.visible = true;
-            } else {
-                cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
-                cardFieldTemplate.visible = commandCardField.isVisible();
+            if (commandCardField !=null) {
+                if (commandCardField.getCard() == null) {
+                    cardFieldTemplate.command = "";
+                    cardFieldTemplate.visible = true;
+                } else {
+                    cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
+                    cardFieldTemplate.visible = commandCardField.isVisible();
+                }
             }
 
             // Add to card template

@@ -175,7 +175,6 @@ public class ProgrammingCardController {
         }
     }
 
-
     class ImpossibleMoveException extends Exception {
 
         private Player player;

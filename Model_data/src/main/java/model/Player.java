@@ -46,8 +46,6 @@ public class Player extends Subject {
 
     public boolean active;
 
-    public int playerId = 0;
-
     final public Board board;
 
     public Player(@NotNull Board board, String color, @NotNull String name) {

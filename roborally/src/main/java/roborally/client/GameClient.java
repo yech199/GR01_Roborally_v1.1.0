@@ -77,9 +77,11 @@ public class GameClient {
     public String leaveGame(int id, String playerName) {
         return clientController.leaveGame(id, playerName);
     }
+
     public String joinGame(int id, String playerName) {
         this.playerName = playerName;
         String result = clientController.joinGame(id, playerName);
+        gameId = Integer.parseInt(result);
         return result;
     }
 }

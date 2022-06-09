@@ -33,6 +33,7 @@ public class LoadBoard {
      */
     public static void loadPlayers(List<PlayerTemplate> players, Board board) {
         // Loading players
+        int i = 0;
         for (PlayerTemplate playerTemplate : players) {
             Player newPlayer = new Player(board, playerTemplate.color, playerTemplate.name);
             newPlayer.setSpace(board.getSpace(playerTemplate.spaceX, playerTemplate.spaceY));
@@ -40,7 +41,13 @@ public class LoadBoard {
 
             newPlayer.setCards(loadCommandCardFields(playerTemplate.cards, newPlayer, 9));
             newPlayer.setRegisters(loadCommandCardFields(playerTemplate.registers, newPlayer, 5));
-            board.addPlayer(newPlayer);
+
+            if (board.getPhase() == Phase.INITIALISATION) {
+                board.addPlayer(newPlayer);
+            } else {
+                board.getPlayers().set(i, newPlayer);
+            }
+            i++;
         }
     }
 

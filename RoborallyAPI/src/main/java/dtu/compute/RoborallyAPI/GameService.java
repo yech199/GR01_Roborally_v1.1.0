@@ -143,7 +143,7 @@ public class GameService implements IGameService {
                 game.startProgrammingPhase();
             }
         });
-        return "OK";
+        return String.valueOf(gameBoard.getGameId());
     }
 
     @Override

@@ -30,7 +30,8 @@ import model.Space;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public abstract class SpaceElement {
+@FunctionalInterface
+public interface SpaceElement {
 
     /**
      * Executes the field action for a given space. In order to be able to do
@@ -39,5 +40,5 @@ public abstract class SpaceElement {
      * @param gameController the gameController of the respective game
      * @param space the space this action should be executed for
      */
-    public abstract void doAction(AGameController gameController, Space space);
+    void doAction(AGameController gameController, Space space);
 }

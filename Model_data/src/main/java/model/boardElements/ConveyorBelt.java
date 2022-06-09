@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class ConveyorBelt extends SpaceElement {
+public class ConveyorBelt implements SpaceElement {
     public enum ConveyorBeltColor {
         GREEN,
         BLUE

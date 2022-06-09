@@ -459,8 +459,8 @@ public class AppController implements Observer {
     }
 
     public void updateServerView() {
-        int id = client.gameId;
-        Board board = client.getGameState(id, client.playerName);
+        int gameId = client.gameId;
+        Board board = client.getGameState(gameId, client.playerName);
         setupGameController(board);
     }
 

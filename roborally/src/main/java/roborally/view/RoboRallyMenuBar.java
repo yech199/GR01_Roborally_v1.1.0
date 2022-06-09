@@ -162,6 +162,7 @@ public class RoboRallyMenuBar extends MenuBar {
                 saveServerGame.setVisible(false);
                 leaveGame.setVisible(false);
                 update.setVisible(false);
+                finishProgramming.setVisible(false);
             }
             case LOCAL_GAME -> {
                 serverMenu.setVisible(false);
@@ -179,6 +180,7 @@ public class RoboRallyMenuBar extends MenuBar {
                 saveServerGame.setVisible(true);
                 leaveGame.setVisible(true);
                 update.setVisible(true);
+                finishProgramming.setVisible(true);
             }
         }
     }

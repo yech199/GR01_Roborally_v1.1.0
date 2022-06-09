@@ -49,7 +49,7 @@ public class ServerController {
     public ResponseEntity<String> joinGame(@PathVariable int id, @RequestBody String playerName) {
         String result = gameService.joinGame(id, playerName);
         if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
-        else if(result.equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
+        if(result.equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
         return ResponseEntity.ok().body(result);
     }
 

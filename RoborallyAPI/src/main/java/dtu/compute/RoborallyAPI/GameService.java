@@ -107,10 +107,10 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public String getBoardState(String boardName) {
-        for (Board board : boards) {
-            if (board.getBoardName().equals(boardName)) {
-                return serializeBoard(board);
+    public String getBoardState(int gameId) {
+        for (GameController game : activeGames) {
+            if (game.board.getGameId().equals(gameId)) {
+                return serializeBoard(game.board);
             }
         }
         return null;

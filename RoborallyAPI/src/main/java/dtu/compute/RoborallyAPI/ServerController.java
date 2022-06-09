@@ -60,9 +60,9 @@ public class ServerController {
     }
 
     // Returns a boards configuration/state
-    @GetMapping("/board/{name}")
-    public ResponseEntity<String> getBoardState(@PathVariable String name) {
-        return ResponseEntity.ok().body(gameService.getBoardState(name));
+    @GetMapping("/board/{gameId}")
+    public ResponseEntity<String> getBoardState(@PathVariable int gameId) {
+        return ResponseEntity.ok().body(gameService.getBoardState(gameId));
     }
 
     // Updates the player state

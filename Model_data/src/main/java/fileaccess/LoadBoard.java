@@ -125,7 +125,7 @@ public class LoadBoard {
             }
             AtomicInteger i = new AtomicInteger();
             board.getPlayers().forEach((player) -> {
-                if (player.activePlayer) i.getAndIncrement();
+                if (player.active) i.getAndIncrement();
             });
             board.amountOfActivePlayers = i.get();
         }

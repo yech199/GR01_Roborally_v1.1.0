@@ -127,10 +127,10 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String getBoardState(String boardName) {
+    public String getBoardState(int gameId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/board/" + boardName))
+                .uri(URI.create("http://localhost:8080/board/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();

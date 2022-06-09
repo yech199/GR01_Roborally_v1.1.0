@@ -69,8 +69,8 @@ public class GameClient {
         return new ArrayList<>(Arrays.asList(boardNames));
     }
 
-    public Board getBoardState(String boardName) {
-        String json = clientController.getBoardState(boardName);
+    public Board getBoardState(int gameId) {
+        String json = clientController.getBoardState(gameId);
         return LoadBoard.loadGameState(json);
     }
 

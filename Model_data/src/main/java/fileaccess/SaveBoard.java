@@ -192,4 +192,19 @@ public class SaveBoard {
     public static String serializeBoard(Board board) {
         return serialize(board);
     }
+
+    public static String serializePlayer(Player player) {
+        PlayerTemplate playerTemplate = new PlayerTemplate();
+        Space space = player.getSpace();
+        playerTemplate.spaceX = space.x;
+        playerTemplate.spaceY = space.y;
+        playerTemplate.heading = String.valueOf(player.getHeading());
+        playerTemplate.color = player.getColor();
+        playerTemplate.name = player.getName();
+
+        playerTemplate.cards = saveCommandCardFields(player.getCards());
+        playerTemplate.registers = saveCommandCardFields(player.getRegisters());
+
+        return new Gson().toJson(playerTemplate, PlayerTemplate.class);
+    }
 }

@@ -33,20 +33,23 @@ public class LoadBoard {
      */
     public static void loadPlayers(List<PlayerTemplate> players, Board board) {
         // Loading players
-        for (PlayerTemplate player : players) {
-            Player newPlayer = new Player(board, player.color, player.name);
-            newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
-            newPlayer.setHeading(Heading.valueOf(player.heading));
+        for (PlayerTemplate playerTemplate : players) {
+            Player newPlayer = new Player(board, playerTemplate.color, playerTemplate.name);
+            newPlayer.setSpace(board.getSpace(playerTemplate.spaceX, playerTemplate.spaceY));
+            newPlayer.setHeading(Heading.valueOf(playerTemplate.heading));
 
-            newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
-            newPlayer.setRegisters(loadCommandCardFields(player.registers, newPlayer));
+
+            newPlayer.setCards(loadCommandCardFields(playerTemplate.cards, newPlayer, 9));
+            //if(newPlayer.getCards().length == 0) newPlayer.setCards(new CommandCardField[9]);
+            newPlayer.setRegisters(loadCommandCardFields(playerTemplate.registers, newPlayer, 5));
+            //if(newPlayer.getRegisters().length == 0) newPlayer.setRegisters(new CommandCardField[5]);
             board.addPlayer(newPlayer);
         }
     }
 
-    private static CommandCardField[] loadCommandCardFields(ArrayList<CommandCardFieldTemplate> commandCardFields, Player newPlayer) {
+    private static CommandCardField[] loadCommandCardFields(ArrayList<CommandCardFieldTemplate> commandCardFields, Player newPlayer, int size) {
         int i = 0;
-        CommandCardField[] newCards = new CommandCardField[commandCardFields.size()];
+        CommandCardField[] newCards = new CommandCardField[size];
         for (CommandCardFieldTemplate commandCardFieldTemplate : commandCardFields) {
             CommandCardField commandCardField = new CommandCardField(newPlayer);
             String command = commandCardFieldTemplate.command;
@@ -58,6 +61,12 @@ public class LoadBoard {
             }
             newCards[i] = commandCardField;
             i++;
+        }
+        if (commandCardFields.size() == 0) {
+            for (int j = 0; j < size; j++) {
+                CommandCardField commandField = new CommandCardField(newPlayer);
+                newCards[i] = commandField;
+            }
         }
         return newCards;
     }
@@ -82,6 +91,9 @@ public class LoadBoard {
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));
         board.setStep(template.step);
+        board.setGameId(template.gameId);
+        board.setMaxAmountOfPlayers(template.maxNumberOfPlayers);
+        board.amountOfActivePlayers = template.activePlayers;
 
         return board;
     }

@@ -154,9 +154,9 @@ public class AppController implements Observer {
             name.setContentText("Name: ");
             Optional<String> resultName = name.showAndWait();
 
-            String playerName = "Player";
+            client.playerName = "Player";
             if (resultName.isPresent()) {
-                playerName = resultName.get();
+                client.playerName = resultName.get();
             }
 
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
@@ -170,8 +170,8 @@ public class AppController implements Observer {
             AlertType alertType;
             if (selectedBoard.isPresent()) {
                 String gameId = client.createGame(selectedBoard.get(), numOfPlayers);
-                result2 = client.joinGame(Integer.parseInt(gameId), playerName);
-                board = client.getGameState(Integer.parseInt(gameId));
+                result2 = client.joinGame(Integer.parseInt(gameId), client.playerName);
+                board = client.getGameState(Integer.parseInt(gameId), client.playerName);
                 alertType = AlertType.CONFIRMATION;
             }
             else { // Should not happen
@@ -188,8 +188,8 @@ public class AppController implements Observer {
             }
             alert.showAndWait();
 
-            setupGameController(board);
             appState = AppState.SERVER_GAME;
+            setupGameController(board);
             return true;
         }
         return false;
@@ -197,13 +197,13 @@ public class AppController implements Observer {
 
     public void saveServerGame() {
         appState = AppState.UNDECIDED;
-        String playerName = "mads";
         String msg;
         try {
-            int id = gameController.board.getGameId();
-            String json = SaveBoard.serializeBoard(gameController.board);
+            int id = client.gameId;
+            //String json = SaveBoard.serializePlayer(gameController.board.getPlayer(client.playerName));
             //String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
-            client.setGameState(id, json);
+            client.setPlayerState(id, gameController.board.getPlayer(client.playerName));
+            leaveServerGame();
             msg = "Succesfully saved game to server";
         } catch (Exception e) {
             e.printStackTrace();
@@ -227,7 +227,7 @@ public class AppController implements Observer {
 
         if (resultS.get().equals(ButtonType.YES)) {
             // Optional<String> resultName = name.showAndWait();
-            String playerName = client.getPlayerName();
+            String playerName = client.playerName;
 
             if(playerName != null) {
                 //playerName = resultName.get();
@@ -244,8 +244,9 @@ public class AppController implements Observer {
                 else {
                     confirmation = new Alert(AlertType.ERROR, "Something went wrong", ButtonType.CLOSE);
                 }
-                appState = AppState.UNDECIDED;
+
                 stopGame();
+                appState = AppState.UNDECIDED;
 
                 confirmation.showAndWait();
                 gameController = null;
@@ -296,7 +297,7 @@ public class AppController implements Observer {
             int gameId = Integer.parseInt(result);
             // TODO Error check
             String resultResponse = client.joinGame(gameId, playerName);
-            board = client.getGameState(gameId);
+            board = client.getGameState(gameId, client.playerName);
             //int check = board.getPlayer(playerName).playerId;
         }
         else {
@@ -305,6 +306,11 @@ public class AppController implements Observer {
         setupGameController(board);
         appState = AppState.SERVER_GAME;
         return true;
+    }
+
+    public void submitPlayerCards() {
+        int id = client.gameId;
+        client.setPlayerState(id, gameController.board.getPlayer(client.playerName));
     }
 
     public void saveGame() {
@@ -368,7 +374,7 @@ public class AppController implements Observer {
         gameController = new GameController(board);
 
         // If game is new (eg. not loaded), then we set up the programming phase. Else we skip it.
-        if (board.getPhase() == Phase.INITIALISATION) {
+        if (board.getPhase() == Phase.INITIALISATION && appState != AppState.SERVER_GAME) {
             gameController.startProgrammingPhase();
         }
         roboRally.createBoardView(gameController);
@@ -388,7 +394,11 @@ public class AppController implements Observer {
 
             // here we save the game (without asking the user).
             if (appState != AppState.UNDECIDED) {
-                saveGame();
+                if (appState == AppState.LOCAL_GAME) {
+                    saveGame();
+                } else {
+                    saveServerGame();
+                }
                 if (appState != AppState.UNDECIDED)
                     return false;
             }
@@ -425,7 +435,7 @@ public class AppController implements Observer {
                 }
                 else{
                     if (appState == AppState.SERVER_GAME)
-                        client.leaveGame(gameController.board.getGameId(), client.getPlayerName());
+                        client.leaveGame(gameController.board.getGameId(), client.playerName);
                 }
             }
         }
@@ -449,8 +459,8 @@ public class AppController implements Observer {
     }
 
     public void updateServerView() {
-        int id = gameController.board.getGameId();
-        Board board = client.getGameState(id);
+        int id = client.gameId;
+        Board board = client.getGameState(id, client.playerName);
         setupGameController(board);
     }
 

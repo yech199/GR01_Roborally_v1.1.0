@@ -132,4 +132,26 @@ public class LoadServer {
         String json = IOUtil.readGame(boardName, false);
         return createBoard(json, numOfPlayers);
     }
+
+    public static void deserializePlayer(PlayerTemplate player, Board board) {
+        Player newPlayer = new Player(board, player.color, player.name);
+        newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
+        newPlayer.setHeading(Heading.valueOf(player.heading));
+
+        newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
+        newPlayer.setRegisters(loadCommandCardFields(player.registers, newPlayer));
+
+        // If phase is INITIALISATION, check for a template player that new player can replace.
+        // Else, check replace the same player with the new data
+        if (board.getPhase() == Phase.INITIALISATION) {
+            newPlayer.activePlayer = player.active;
+            board.getRobot().ifPresent(integer -> board.getPlayers().set(integer, newPlayer));
+        } else {
+            for (int i = 0; i < board.getPlayers().size(); i++) {
+                if(board.getPlayers().get(i).getName().equals(newPlayer.getName())) {
+                    board.getPlayers().set(i, newPlayer);
+                }
+            }
+        }
+    }
 }

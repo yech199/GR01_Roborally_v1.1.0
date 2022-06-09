@@ -3,7 +3,7 @@ package client_server;
 public interface IGameService {
 
     String getGameById(int id, String playerName);
-    void updateGame(int id, String gameData);
+    void updateGame(int id, String playername, String gameData);
     String createGame(String boardName, int numOfPlayers);
     String getListOfGames();
     String getListOfBoards();

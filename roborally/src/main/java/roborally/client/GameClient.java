@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
 import model.Board;
+import model.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,36 +14,31 @@ import java.util.List;
 public class GameClient {
 
     ClientController clientController;
-    String playerName = "guest";
+    public String playerName;
+    public int gameId;
 
     public GameClient() {
         clientController = new ClientController();
     }
 
     public String createGame(String boardName, int numOfPlayers) {
-        return clientController.createGame(boardName, numOfPlayers);
+        String gameId = clientController.createGame(boardName, numOfPlayers);
+        this.gameId = Integer.parseInt(gameId);
+        return gameId;
     }
 
-    public Board getGameState(int id) {
+    public Board getGameState(int id, String playerName) {
         String json = clientController.getGameById(id, playerName);
         return LoadBoard.loadGameState(json);
     }
 
-    public String getPlayerName()
-    {
-        return playerName;
-    };
-
-    public void setPlayerState(int id, String playerName, String playerData) {
-        clientController.setPlayerState(id, playerData, playerName);
+    public void setPlayerState(int gameId, Player player) {
+        String playerData = SaveBoard.serializePlayer(player);
+        clientController.setPlayerState(gameId, playerName, playerData);
     }
 
     public void setGameState(int id, String jsonGameState) {
-        clientController.updateGame(id, jsonGameState);
-    }
-
-    public void setGameState(Board board) {
-        clientController.updateGame(board.getGameId(), SaveBoard.serializeBoard(board));
+        clientController.updateGame(id, playerName, jsonGameState);
     }
 
     public ArrayList<String> getListOfGames() {

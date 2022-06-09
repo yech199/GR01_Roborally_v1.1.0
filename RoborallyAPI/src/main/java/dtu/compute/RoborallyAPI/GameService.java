@@ -50,11 +50,9 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public void updateGame(int id, String gameState) {
+    public void updateGame(int id, String playername, String playerState) {
         GameController game = findGame(id);
-        int i = games.indexOf(game);
-        game.board = LoadBoard.loadGameState(gameState);
-        games.set(i, game);
+        LoadServer.deserializePlayer(new Gson().fromJson(playerState, PlayerTemplate.class), game.board);
     }
 
     @Override
@@ -62,7 +60,7 @@ public class GameService implements IGameService {
         Board board = findBoard(boardName);
         if (board == null) return "Board not found";
         String boardJson = SaveServer.serializePlayerState(board, board.getPlayer(0));
-        Board game = LoadServer.createBoard(boardJson, numOfPlayers);//LoadBoard.deserializeBoard(boardJson, numOfPlayers);
+        Board game = LoadServer.createBoard(boardJson, numOfPlayers);
         GameController gameController = new GameController(game);
         int gameId = id;
         game.setGameId(gameId);
@@ -123,6 +121,7 @@ public class GameService implements IGameService {
         GameController game = findGame(id);
         Board gameBoard = game.board;
 
+        if(game == null) return "Game not found";
         if(gameBoard.getPlayers().contains(gameBoard.getPlayer(playerName))) return "Player with same name already joined";
         if(gameBoard.getAmountOfActivePlayers() >= gameBoard.maxAmountOfPlayers) return "Game Full";
 

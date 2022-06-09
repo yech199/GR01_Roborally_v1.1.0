@@ -38,6 +38,7 @@ public class RoboRallyMenuBar extends MenuBar {
     private Menu localMenu;
     private Menu serverMenu;
 
+
     private MenuItem update;
 
     private MenuItem newGame;
@@ -49,6 +50,7 @@ public class RoboRallyMenuBar extends MenuBar {
     private MenuItem stopGame;
     private MenuItem leaveGame;
     private MenuItem exitApp;
+    private MenuItem finishProgramming;
 
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
@@ -133,6 +135,10 @@ public class RoboRallyMenuBar extends MenuBar {
         update = new MenuItem("Refresh View");
         update.setOnAction(e -> this.appController.updateServerView());
         serverMenu.getItems().add(update);
+
+        finishProgramming = new MenuItem("Finish Programming");
+        finishProgramming.setOnAction(e -> this.appController.submitPlayerCards());
+        serverMenu.getItems().add(finishProgramming);
 
         serverMenu.setOnShowing(e -> update());
         serverMenu.setOnShown(e -> this.updateBounds());

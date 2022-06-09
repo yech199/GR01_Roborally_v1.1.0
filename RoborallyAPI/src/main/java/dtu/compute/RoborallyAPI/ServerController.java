@@ -30,9 +30,9 @@ public class ServerController {
     }
 
     // Updates the game state of a game
-    @PutMapping("/game/{id}")
-    public ResponseEntity<String> updateGameState(@PathVariable int id, @RequestBody String gameData) {
-        gameService.updateGame(id, gameData);
+    @PutMapping("/game/{id}/{playername}/save")
+    public ResponseEntity<String> updateGameState(@PathVariable int id, @PathVariable String playername, @RequestBody String playerData) {
+        gameService.updateGame(id, playername, playerData);
         return ResponseEntity.ok().body("OK");
     }
 

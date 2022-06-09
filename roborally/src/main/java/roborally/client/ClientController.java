@@ -64,7 +64,7 @@ public class ClientController implements IGameService {
     public String createGame(String boardName, int numOfPlayers) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(numOfPlayers)))
-                .uri(URI.create("http://localhost:8080/game/" + boardName))
+                .uri(URI.create("http://localhost:8080/game/" + boardName + "/" + numOfPlayers))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();

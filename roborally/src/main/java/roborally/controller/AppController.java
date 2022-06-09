@@ -178,13 +178,13 @@ public class AppController implements Observer {
                 alertType = AlertType.WARNING;
             }
 
+            Alert alert;
             if (result.equals("OK")) {
-                Alert alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
-                alert.showAndWait();
+                alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
             } else {
-                Alert alert = new Alert(alertType, result + board.getGameId(), ButtonType.OK);
-                alert.showAndWait();
+                alert = new Alert(alertType, result + board.getGameId(), ButtonType.OK);
             }
+            alert.showAndWait();
 
             //setupGameController(board);
             appState = AppState.SERVER_GAME;

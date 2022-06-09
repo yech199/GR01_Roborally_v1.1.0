@@ -147,10 +147,10 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String joinGame(int id, String playername) {
+    public String joinGame(int gameId, String playername) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playername)))
-                .uri(URI.create("http://localhost:8080/game/join/" + id))
+                .uri(URI.create("http://localhost:8080/game/join/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();

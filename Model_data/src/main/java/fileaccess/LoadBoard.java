@@ -152,6 +152,7 @@ public class LoadBoard {
      * Load a board object given a json string
      */
     public static Board loadGameState(String jsonGameState) {
+        //System.out.println("File: "+jsonGameState);
         try {
             return deserializeGame(jsonGameState);
         } catch (Exception e) {

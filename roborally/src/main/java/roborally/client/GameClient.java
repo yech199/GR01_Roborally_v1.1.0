@@ -7,8 +7,6 @@ import fileaccess.SaveBoard;
 import model.Board;
 import model.Player;
 
-import javax.print.attribute.HashDocAttributeSet;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,18 +46,21 @@ public class GameClient {
         Gson gson = new Gson();
         String games = clientController.getListOfGames();
         JsonObject data = gson.fromJson(games, JsonObject.class);
-
-        int[] gameID = gson.fromJson(data.get("gameId"), int[].class);
-        String[] boardNames = gson.fromJson(data.get("boardNames"), String[].class);
-        int[] activePlayers = gson.fromJson(data.get("activePlayers"), int[].class);
-        int[] totalPlayers = gson.fromJson(data.get("maxNumberOfPlayers"), int[].class);
-
         ArrayList<String> result = new ArrayList<>();
-        for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
-            if (activePlayers[i] != totalPlayers[i]) {
-                result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: " + String.valueOf(activePlayers[i]))));
-            } else {
-                result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: ").concat("FULL!")));
+
+        if (data != null) {
+            int[] gameID = gson.fromJson(data.get("gameId"), int[].class);
+            String[] boardNames = gson.fromJson(data.get("boardNames"), String[].class);
+            int[] activePlayers = gson.fromJson(data.get("activePlayers"), int[].class);
+            int[] totalPlayers = gson.fromJson(data.get("maxNumberOfPlayers"), int[].class);
+
+
+            for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
+                if (activePlayers[i] != totalPlayers[i]) {
+                    result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: " + String.valueOf(activePlayers[i]))));
+                } else {
+                    result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: ").concat("FULL!")));
+                }
             }
         }
         return result;
@@ -69,7 +70,14 @@ public class GameClient {
         Gson gson = new Gson();
         String boards = clientController.getListOfBoards();
         String[] boardNames = gson.fromJson(boards, String[].class);
-        return new ArrayList<>(Arrays.asList(boardNames));
+        if (boardNames[0] != null)
+        {
+            return new ArrayList<>(Arrays.asList(boardNames));
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public Board getBoardState(int gameId) {
@@ -84,8 +92,9 @@ public class GameClient {
     public String joinGame(int id, String playerName) {
         this.playerName = playerName;
         String result = clientController.joinGame(id, playerName);
-        gameId = Integer.parseInt(result);
-
+        if (!Objects.equals(result, "Game Full")) {
+            gameId = Integer.parseInt(result);
+        }
         return result;
     }
 }

@@ -422,7 +422,8 @@ public class AppController implements Observer {
                     return; // return without exiting the application
                 }
                 else{
-                    client.leaveGame(gameController.board.getGameId(), client.getPlayerName());
+                    if (appState == AppState.SERVER_GAME)
+                        client.leaveGame(gameController.board.getGameId(), client.getPlayerName());
                 }
             }
         }

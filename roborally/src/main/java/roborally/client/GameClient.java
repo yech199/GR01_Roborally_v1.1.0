@@ -10,6 +10,7 @@ import model.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class GameClient {
 
@@ -81,7 +82,9 @@ public class GameClient {
     public String joinGame(int id, String playerName) {
         this.playerName = playerName;
         String result = clientController.joinGame(id, playerName);
-        gameId = Integer.parseInt(result);
+        if (!Objects.equals(result, "Game Full")) {
+            gameId = Integer.parseInt(result);
+        }
         return result;
     }
 }

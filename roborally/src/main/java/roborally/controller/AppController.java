@@ -206,7 +206,7 @@ public class AppController implements Observer {
         //String json = SaveBoard.serializePlayer(gameController.board.getPlayer(client.playerName));
         //String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
         client.setPlayerState(id, gameController.board.getPlayer(client.playerName));
-        leaveServerGame();
+
     }
 
     public void leaveServerGame() {

@@ -165,24 +165,26 @@ public class AppController implements Observer {
             Optional<String> selectedBoard = dialogL.showAndWait();
 
             Board board;
-            String result;
+            String result1;
+            String result2;
             AlertType alertType;
             if (selectedBoard.isPresent()) {
-                board = client.createGame(selectedBoard.get(), numOfPlayers);
-                result = client.joinGame(board.getGameId(), playerName);
+                String gameId = client.createGame(selectedBoard.get(), numOfPlayers);
+                result2 = client.joinGame(Integer.parseInt(gameId), playerName);
+                board = client.getGameState(Integer.parseInt(gameId));
                 alertType = AlertType.CONFIRMATION;
             }
             else { // Should not happen
                 board = LoadBoard.newBoard(null, numOfPlayers);
-                result = "OK";
+                result2 = "OK";
                 alertType = AlertType.WARNING;
             }
 
             Alert alert;
-            if (result.equals("OK")) {
+            if (result2.equals("OK")) {
                 alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
             } else {
-                alert = new Alert(alertType, result + board.getGameId(), ButtonType.OK);
+                alert = new Alert(alertType, result2 + board.getGameId(), ButtonType.OK);
             }
             alert.showAndWait();
 

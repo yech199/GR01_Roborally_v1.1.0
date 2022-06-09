@@ -19,8 +19,8 @@ public class GameClient {
         clientController = new ClientController();
     }
 
-    public Board createGame(String boardName, int numOfPlayers) {
-        return LoadBoard.loadGameState(clientController.createGame(boardName, numOfPlayers));
+    public String createGame(String boardName, int numOfPlayers) {
+        return clientController.createGame(boardName, numOfPlayers);
     }
 
     public Board getGameState(int id) {

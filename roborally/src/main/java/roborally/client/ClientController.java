@@ -201,12 +201,12 @@ public class ClientController implements IGameService {
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
 
         String result;
         try {
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            result = response.body();
+            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
             result = null;

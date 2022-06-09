@@ -7,7 +7,7 @@ public interface IGameService {
     String createGame(String boardName, int numOfPlayers);
     String getListOfGames();
     String getListOfBoards();
-    String getBoardState(String boardName);
+    String getBoardState(int gameId);
     String joinGame(int id, String playername);
     String leaveGame(int id, String playername);
     String setPlayerState(int id, String playername, String playerData);

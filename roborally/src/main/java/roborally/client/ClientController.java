@@ -40,7 +40,7 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public void updateGame(int id, String playerName, String gameData) {
+    public String updateGame(int id, String playerName, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
                 .uri(URI.create("http://localhost:8080/game/join/" + id + "/" + playerName))
@@ -49,12 +49,15 @@ public class ClientController implements IGameService {
                 .build();
         CompletableFuture<HttpResponse<String>> response =
                 httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        String result;
         try {
-            String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
             // Ignore response
         } catch (Exception e) {
             e.printStackTrace();
+            result = "null";
         }
+        return result;
     }
 
     @Override

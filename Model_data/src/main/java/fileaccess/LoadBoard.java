@@ -38,11 +38,8 @@ public class LoadBoard {
             newPlayer.setSpace(board.getSpace(playerTemplate.spaceX, playerTemplate.spaceY));
             newPlayer.setHeading(Heading.valueOf(playerTemplate.heading));
 
-
             newPlayer.setCards(loadCommandCardFields(playerTemplate.cards, newPlayer, 9));
-            //if(newPlayer.getCards().length == 0) newPlayer.setCards(new CommandCardField[9]);
             newPlayer.setRegisters(loadCommandCardFields(playerTemplate.registers, newPlayer, 5));
-            //if(newPlayer.getRegisters().length == 0) newPlayer.setRegisters(new CommandCardField[5]);
             board.addPlayer(newPlayer);
         }
     }

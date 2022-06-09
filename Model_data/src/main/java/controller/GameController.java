@@ -140,7 +140,6 @@ public class GameController extends AGameController {
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode() && board.getWinner() == null);
     }
 
-    // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
 

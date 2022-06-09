@@ -569,7 +569,7 @@
     },
     {
       "walls": [
-        "WEST"
+        "EAST"
       ],
       "actions": [
         {

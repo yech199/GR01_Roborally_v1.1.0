@@ -125,7 +125,6 @@ public class LoadServer {
             board.addPlayer(player);
             playerNo++;
         }
-        board.maxAmountOfPlayers = 0;
         return board;
     }
 

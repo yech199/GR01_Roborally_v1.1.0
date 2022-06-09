@@ -64,10 +64,11 @@ public class GameService implements IGameService {
         String boardJson = SaveServer.serializePlayerState(board, board.getPlayer(0));
         Board game = LoadServer.createBoard(boardJson, numOfPlayers);//LoadBoard.deserializeBoard(boardJson, numOfPlayers);
         GameController gameController = new GameController(game);
-        game.setGameId(id);
+        int gameId = id;
+        game.setGameId(gameId);
         id++;
         games.add(gameController);
-        return "OK";
+        return String.valueOf(gameId);
     }
 
     @Override

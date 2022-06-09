@@ -186,7 +186,7 @@ public class AppController implements Observer {
             }
             alert.showAndWait();
 
-            //setupGameController(board);
+            setupGameController(board);
             appState = AppState.SERVER_GAME;
             return true;
         }

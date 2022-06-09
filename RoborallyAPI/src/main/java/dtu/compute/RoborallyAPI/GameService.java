@@ -3,12 +3,12 @@ package dtu.compute.RoborallyAPI;
 import client_server.IGameService;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import controller.GameController;
 import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
-import fileaccess.SaveBoard;
+import fileaccess.LoadServer;
+import fileaccess.SaveServer;
 import fileaccess.model.PlayerTemplate;
 import model.Board;
 import model.Globals;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fileaccess.SaveBoard.serializeActivation;
 import static fileaccess.SaveBoard.serializeBoard;
 
 @Service
@@ -35,10 +34,10 @@ public class GameService implements IGameService {
     public GameService() {
         // Initialize board templates on server
         List<String> boardNames = IOUtil.getBoardFileNames();
-            for (String boardName : boardNames) {
-                Board board = LoadBoard.newBoard(boardName, Globals.MAX_NO_PLAYERS);
-                boards.add(board);
-            }
+        for (String boardName : boardNames) {
+            Board board = LoadServer.loadBoard(boardName, Globals.MAX_NO_PLAYERS);
+            boards.add(board);
+        }
     }
 
     @Override
@@ -47,7 +46,7 @@ public class GameService implements IGameService {
         if (boardGame == null) return "Game not found";
         Player player = boardGame.getPlayer(playerName);
         if (player == null) return "Player not found";
-        return serializeActivation(boardGame, player);
+        return SaveServer.serializePlayerState(boardGame, player);
     }
 
     @Override
@@ -62,14 +61,13 @@ public class GameService implements IGameService {
     public String createGame(String boardName, int numOfPlayers) {
         Board board = findBoard(boardName);
         if (board == null) return "Board not found";
-        // TODO we serialize to deserialize again. Find better way
-        board.maxAmountOfPlayers = numOfPlayers;
-        Board game = LoadBoard.newBoardState(serializeBoard(board), numOfPlayers);
+        String boardJson = SaveServer.serializePlayerState(board, board.getPlayer(0));
+        Board game = LoadServer.createBoard(boardJson, numOfPlayers);//LoadBoard.deserializeBoard(boardJson, numOfPlayers);
         GameController gameController = new GameController(game);
         game.setGameId(id);
         id++;
         games.add(gameController);
-        return serializeBoard(game);
+        return "OK";
     }
 
     @Override
@@ -196,10 +194,6 @@ public class GameService implements IGameService {
             game.executePrograms();
         }
         return "ok";
-    }
-
-    public void finishProgrammingPhase() {
-
     }
 
     public GameController findGame(int id) {

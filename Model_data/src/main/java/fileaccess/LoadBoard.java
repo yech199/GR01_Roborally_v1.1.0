@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This class loads/deserialize different configurations of the board and game
+ */
 public class LoadBoard {
+
     private static void loadSpaces(BoardTemplate template, Board board) {
         for (SpaceTemplate spaceTemplate : template.spaces) {
             Space space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -25,33 +29,18 @@ public class LoadBoard {
     }
 
     /**
-     * Only used when loading a saved game. Not a new game
+     * Load each player by copying Only used when loading a saved game. Not a new game
      */
     public static void loadPlayers(List<PlayerTemplate> players, Board board) {
         // Loading players
         for (PlayerTemplate player : players) {
-            loadPlayer(player, board);
-        }
-    }
+            Player newPlayer = new Player(board, player.color, player.name);
+            newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
+            newPlayer.setHeading(Heading.valueOf(player.heading));
 
-    public static void loadPlayer(PlayerTemplate player, Board board) {
-        //board.setPlayers(new ArrayList<>());
-        Player newPlayer = new Player(board, player.color, player.name);
-        newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
-        newPlayer.setHeading(Heading.valueOf(player.heading));
-
-        newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
-        newPlayer.setRegisters(loadCommandCardFields(player.registers, newPlayer));
-
-        if(board.getPhase() == Phase.INITIALISATION) {
-            newPlayer.activePlayer = player.active;
-            board.getRobot().ifPresent(integer -> board.getPlayers().set(integer, newPlayer));
-        } else {
-            for(int i = 0; i < board.getPlayers().size(); i++) {
-                if(board.getPlayers().get(i).getName().equals(newPlayer.getName())) {
-                    board.getPlayers().set(i, newPlayer);
-                }
-            }
+            newPlayer.setCards(loadCommandCardFields(player.cards, newPlayer));
+            newPlayer.setRegisters(loadCommandCardFields(player.registers, newPlayer));
+            board.addPlayer(newPlayer);
         }
     }
 
@@ -93,20 +82,11 @@ public class LoadBoard {
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));
         board.setStep(template.step);
-        board.setGameId(template.gameId);
-        board.setMaxAmountOfPlayers(template.maxNumberOfPlayers);
-
-        // Count active players in game
-        AtomicInteger i = new AtomicInteger();
-        board.getPlayers().forEach((player) -> {
-            if (player.activePlayer) i.getAndIncrement();
-        });
-        board.amountOfActivePlayers = i.get();
 
         return board;
     }
 
-    private static Board deserializeBoard(String jsonGameState, int numOfPlayers) {
+    public static Board deserializeBoard(String jsonGameState, int numOfPlayers) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
@@ -134,23 +114,6 @@ public class LoadBoard {
             board.amountOfActivePlayers = i.get();
         }
         board.setMaxAmountOfPlayers(numOfPlayers);
-
-        return board;
-    }
-
-    private static Board deserializeActivation(String jsonGameState) {
-        // In simple cases, we can create a Gson object with new Gson():
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>());
-        Gson gson = simpleBuilder.create();
-
-        BoardTemplate template = gson.fromJson(jsonGameState, BoardTemplate.class);
-
-        Board board = new Board(template.width, template.height, template.checkPointAmount, template.boardName);
-
-        loadSpaces(template, board);
-
-        board.setMaxAmountOfPlayers(template.maxNumberOfPlayers);
 
         return board;
     }
@@ -189,13 +152,7 @@ public class LoadBoard {
      */
     public static Board newBoard(String boardName, int numOfPlayers) {
         String gameState = IOUtil.readGame(boardName, false);
-        Board board = deserializeBoard(gameState, numOfPlayers);
-        //board.maxAmountOfPlayers = numOfPlayers;
-        return board;
+        return deserializeBoard(gameState, numOfPlayers);
     }
 
-    public static Board newBoardState(String jsonBoardState, int numOfPlayers) {
-        return deserializeBoard(jsonBoardState, numOfPlayers);
-        //return deserializeBoard(jsonBoardState);
-    }
 }

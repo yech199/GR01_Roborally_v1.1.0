@@ -4,7 +4,7 @@ import controller.AGameController;
 import model.Globals;
 import model.Space;
 
-public class Checkpoint extends SpaceElement {
+public class Checkpoint implements SpaceElement {
     private int checkpointNumber;
 
     @Override

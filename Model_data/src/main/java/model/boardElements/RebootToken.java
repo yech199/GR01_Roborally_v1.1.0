@@ -4,7 +4,7 @@ import controller.AGameController;
 import model.Heading;
 import model.Space;
 
-public class RebootToken extends SpaceElement {
+public class RebootToken implements SpaceElement {
     private Heading heading;
 
     @Override

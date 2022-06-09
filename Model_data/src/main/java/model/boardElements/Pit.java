@@ -3,7 +3,7 @@ package model.boardElements;
 import controller.AGameController;
 import model.Space;
 
-public class Pit extends SpaceElement {
+public class Pit implements SpaceElement {
     @Override
     public void doAction(AGameController gameController, Space space) {
         if (space.getActions().size() > 0) {

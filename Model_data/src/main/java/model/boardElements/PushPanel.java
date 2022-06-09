@@ -4,7 +4,7 @@ import controller.AGameController;
 import model.Heading;
 import model.Space;
 
-public class PushPanel extends SpaceElement {
+public class PushPanel implements SpaceElement {
     private Heading heading;
     private int[] pushPanelLabel;
 

@@ -9,7 +9,7 @@ import util.Tuple;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Antenna extends SpaceElement {
+public class Antenna implements SpaceElement {
     private Heading heading;
 
     /**

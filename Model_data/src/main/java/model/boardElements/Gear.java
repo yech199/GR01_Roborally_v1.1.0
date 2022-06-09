@@ -3,7 +3,7 @@ package model.boardElements;
 import controller.AGameController;
 import model.Space;
 
-public class Gear extends SpaceElement {
+public class Gear implements SpaceElement {
     public enum Direction {
         LEFT,
         RIGHT

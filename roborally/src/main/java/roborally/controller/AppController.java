@@ -143,6 +143,7 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> selectedNumOfPlayers = dialog.showAndWait();
         int numOfPlayers;
+
         if (selectedNumOfPlayers.isPresent()) {
             numOfPlayers = selectedNumOfPlayers.get();
 
@@ -155,9 +156,14 @@ public class AppController implements Observer {
             Optional<String> resultName = name.showAndWait();
 
             client.playerName = "Player";
-            if (resultName.isPresent()) {
+            if (!resultName.isEmpty()) {
                 client.playerName = resultName.get();
+            } else {
+                Alert alert = new Alert(AlertType.INFORMATION, "Returning to main menu...", ButtonType.OK);
+                alert.showAndWait();
+                return false;
             }
+
 
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
             dialogL.setTitle("Select board");
@@ -173,8 +179,7 @@ public class AppController implements Observer {
                 result2 = client.joinGame(Integer.parseInt(gameId), client.playerName);
                 board = client.getGameState(Integer.parseInt(gameId), client.playerName);
                 alertType = AlertType.CONFIRMATION;
-            }
-            else { // Should not happen
+            } else { // Should not happen
                 board = LoadBoard.newBoard(null, numOfPlayers);
                 result2 = "OK";
                 alertType = AlertType.WARNING;
@@ -270,41 +275,52 @@ public class AppController implements Observer {
         }
 
         // List all available games
-        ArrayList<String> listOfGames = client.getListOfGames();
+        try {
+            ArrayList<String> listOfGames = client.getListOfGames();
 
-        ChoiceDialog<String> dialogL = new ChoiceDialog<>(listOfGames.get(0), listOfGames);
-        dialogL.setTitle("Join Game");
-        dialogL.setHeaderText("Select a game to join");
-        Optional<String> selectedGame = dialogL.showAndWait();
+            ChoiceDialog<String> dialogL = new ChoiceDialog<>(listOfGames.get(0), listOfGames);
+            dialogL.setTitle("Join Game");
+            dialogL.setHeaderText("Select a game to join");
+            Optional<String> selectedGame = dialogL.showAndWait();
 
-        String numbers = selectedGame.get();
-        ArrayList<String> extraction = new ArrayList<>();
-        for (int i = 0; i < numbers.length(); i++) {
-            if (numbers.charAt(i) == '|') {
-                for (int j = i; j < i + 12; j++) {
-                    extraction.add(String.valueOf(numbers.charAt(j)));
+            String numbers = selectedGame.get();
+            ArrayList<String> extraction = new ArrayList<>();
+            for (int i = 0; i < numbers.length(); i++) {
+                if (numbers.charAt(i) == '|') {
+                    for (int j = i; j < i + 12; j++) {
+                        extraction.add(String.valueOf(numbers.charAt(j)));
+                    }
+                    break;
                 }
-                break;
             }
-        }
-        String[] extractionArray = extraction.toArray(new String[0]);
-        String clean = Arrays.toString(extractionArray);
+            String[] extractionArray = extraction.toArray(new String[0]);
+            String clean = Arrays.toString(extractionArray);
 
-        String result = clean.replaceAll("\\D+", "");
-        Board board;
-        if (selectedGame.isPresent()) {
-            // Join the selected game
-            int gameId = Integer.parseInt(result);
-            // TODO Error check
-            String resultResponse = client.joinGame(gameId, playerName);
-            board = client.getGameState(gameId, client.playerName);
+            String result = clean.replaceAll("\\D+", "");
+            Board board;
+            if (selectedGame.isPresent()) {
+                // Join the selected game
+                int gameId = Integer.parseInt(result);
+                // TODO Error check
+                String resultResponse = client.joinGame(gameId, playerName);
+                board = client.getGameState(gameId, client.playerName);
+            } else {
+                board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
+            }
+            setupGameController(board);
+            appState = AppState.SERVER_GAME;
+            return true;
+        } catch (IndexOutOfBoundsException e) {
+            Alert alert = new Alert(AlertType.INFORMATION, "No active games.", ButtonType.OK);
+            alert.showAndWait();
+            appState = AppState.UNDECIDED;
+            return false;
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(AlertType.INFORMATION, "UNABLE TO JOIN. GAME IS FULL.", ButtonType.OK);
+            alert.showAndWait();
+            appState = AppState.UNDECIDED;
+            return false;
         }
-        else {
-            board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
-        }
-        setupGameController(board);
-        appState = AppState.SERVER_GAME;
-        return true;
     }
 
     public void submitPlayerCards() {

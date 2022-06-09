@@ -103,14 +103,22 @@ public class RoboRallyMenuBar extends MenuBar {
         serverGame = new MenuItem("Create Server Game");
         serverGame.setOnAction(e -> {
             boolean isSuccessful = this.appController.createServerGame();
-            if (isSuccessful) update();
+            if (isSuccessful) {
+                update();
+            } else {
+                update();
+            }
         });
         serverMenu.getItems().add(serverGame);
 
         joinGame = new MenuItem("Join Game");
         joinGame.setOnAction(e -> {
             boolean isSuccessful = this.appController.joinGame();
-            if (isSuccessful) update();
+            if (isSuccessful) {
+                update();
+            } else {
+                update();
+            }
         });
         serverMenu.getItems().add(joinGame);
 

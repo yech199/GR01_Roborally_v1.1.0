@@ -117,33 +117,4 @@ public class SaveServer {
         return serialize(template);
     }
 
-    /*public static String serializeGameState(Board board, Player newPlayer, int numOfPlayers) {
-        // Set up the board template by copying values one by one
-        BoardTemplate template = new BoardTemplate();
-        template.width = board.width;
-        template.height = board.height;
-
-        template.spaces = saveSpaces(board);
-        template.players = savePlayers(board.getPlayers(), board.getPhase(), newPlayer);
-
-        if (board.getCurrentPlayer() == null) template.currentPlayer = 0;
-        else template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
-
-        template.step = board.getStep();
-        template.phase = String.valueOf(board.getPhase());
-        template.boardName = board.getBoardName();
-        template.checkPointAmount = board.totalNoOfCheckpoints;
-        template.maxNumberOfPlayers = numOfPlayers;
-
-        // Count active players in game
-        AtomicInteger i = new AtomicInteger();
-        board.getPlayers().forEach((p) -> {
-            if (p.activePlayer) i.getAndIncrement();
-        });
-        template.activePlayers = i.get();
-
-        if (board.getGameId() != null) template.gameId = board.getGameId();
-
-        return serialize(template);
-    }*/
 }

@@ -298,7 +298,6 @@ public class AppController implements Observer {
             // TODO Error check
             String resultResponse = client.joinGame(gameId, playerName);
             board = client.getGameState(gameId, client.playerName);
-            //int check = board.getPlayer(playerName).playerId;
         }
         else {
             board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);

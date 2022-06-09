@@ -46,18 +46,21 @@ public class GameClient {
         Gson gson = new Gson();
         String games = clientController.getListOfGames();
         JsonObject data = gson.fromJson(games, JsonObject.class);
-
-        int[] gameID = gson.fromJson(data.get("gameId"), int[].class);
-        String[] boardNames = gson.fromJson(data.get("boardNames"), String[].class);
-        int[] activePlayers = gson.fromJson(data.get("activePlayers"), int[].class);
-        int[] totalPlayers = gson.fromJson(data.get("maxNumberOfPlayers"), int[].class);
-
         ArrayList<String> result = new ArrayList<>();
-        for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
-            if(activePlayers[i] != totalPlayers[i]) {
-                result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: " + String.valueOf(activePlayers[i]))));
-            } else {
-                result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: ").concat("FULL!")));
+
+        if (data != null) {
+            int[] gameID = gson.fromJson(data.get("gameId"), int[].class);
+            String[] boardNames = gson.fromJson(data.get("boardNames"), String[].class);
+            int[] activePlayers = gson.fromJson(data.get("activePlayers"), int[].class);
+            int[] totalPlayers = gson.fromJson(data.get("maxNumberOfPlayers"), int[].class);
+
+
+            for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
+                if (activePlayers[i] != totalPlayers[i]) {
+                    result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: " + String.valueOf(activePlayers[i]))));
+                } else {
+                    result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: ").concat("FULL!")));
+                }
             }
         }
         return result;
@@ -67,7 +70,14 @@ public class GameClient {
         Gson gson = new Gson();
         String boards = clientController.getListOfBoards();
         String[] boardNames = gson.fromJson(boards, String[].class);
-        return new ArrayList<>(Arrays.asList(boardNames));
+        if (boardNames[0] != null)
+        {
+            return new ArrayList<>(Arrays.asList(boardNames));
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public Board getBoardState(int gameId) {

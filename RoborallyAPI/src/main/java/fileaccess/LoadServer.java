@@ -38,7 +38,7 @@ public class LoadServer {
             // If phase is INITIALISATION, check for a template player that new player can replace.
             // Else, check replace the same player with the new data
             if (board.getPhase() == Phase.INITIALISATION) {
-                newPlayer.activePlayer = player.active;
+                newPlayer.active = player.active;
                 board.getRobot().ifPresent(integer -> board.getPlayers().set(integer, newPlayer));
             } else {
                 for (int i = 0; i < board.getPlayers().size(); i++) {
@@ -95,7 +95,7 @@ public class LoadServer {
         // Count active players in game
         AtomicInteger i = new AtomicInteger();
         board.getPlayers().forEach((player) -> {
-            if (player.activePlayer) i.getAndIncrement();
+            if (player.active) i.getAndIncrement();
         });
         board.amountOfActivePlayers = i.get();
 
@@ -144,7 +144,7 @@ public class LoadServer {
         // If phase is INITIALISATION, check for a template player that new player can replace.
         // Else, check replace the same player with the new data
         if (board.getPhase() == Phase.INITIALISATION) {
-            newPlayer.activePlayer = player.active;
+            newPlayer.active = player.active;
             board.getRobot().ifPresent(integer -> board.getPlayers().set(integer, newPlayer));
         } else {
             for (int i = 0; i < board.getPlayers().size(); i++) {

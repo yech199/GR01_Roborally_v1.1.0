@@ -71,6 +71,7 @@ public class SaveBoard {
             playerTemplate.heading = String.valueOf(player.getHeading());
             playerTemplate.color = player.getColor();
             playerTemplate.name = player.getName();
+            playerTemplate.active = player.active;
 
             playerTemplate.cards = saveCommandCardFields(players.get(i).getCards());
             playerTemplate.registers = saveCommandCardFields(players.get(i).getRegisters());
@@ -86,12 +87,14 @@ public class SaveBoard {
         for (CommandCardField commandCardField : commandCardFields) {
             CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
 
-            if (commandCardField.getCard() == null) {
-                cardFieldTemplate.command = "";
-                cardFieldTemplate.visible = true;
-            } else {
-                cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
-                cardFieldTemplate.visible = commandCardField.isVisible();
+            if (commandCardField !=null) {
+                if (commandCardField.getCard() == null) {
+                    cardFieldTemplate.command = "";
+                    cardFieldTemplate.visible = true;
+                } else {
+                    cardFieldTemplate.command = String.valueOf(commandCardField.getCard().command);
+                    cardFieldTemplate.visible = commandCardField.isVisible();
+                }
             }
 
             // Add to card template
@@ -126,7 +129,7 @@ public class SaveBoard {
         // Count active players in game
         AtomicInteger i = new AtomicInteger();
         board.getPlayers().forEach((player) -> {
-            if (player.activePlayer) i.getAndIncrement();
+            if (player.active) i.getAndIncrement();
         });
         template.activePlayers = i.get();
 

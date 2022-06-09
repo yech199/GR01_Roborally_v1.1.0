@@ -52,7 +52,7 @@ public class SaveServer {
                 playerTemplate.cards = saveCommandCardFields(player.getCards());
                 playerTemplate.registers = saveCommandCardFields(player.getRegisters());
             }
-            playerTemplate.active = player.activePlayer;
+            playerTemplate.active = player.active;
             playerTemplates.add(playerTemplate);
         }
         return playerTemplates;
@@ -108,7 +108,7 @@ public class SaveServer {
         // Count active players in game
         AtomicInteger i = new AtomicInteger();
         board.getPlayers().forEach((p) -> {
-            if (p.activePlayer) i.getAndIncrement();
+            if (p.active) i.getAndIncrement();
         });
         template.activePlayers = i.get();
 

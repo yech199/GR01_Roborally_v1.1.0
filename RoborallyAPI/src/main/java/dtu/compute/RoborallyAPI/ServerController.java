@@ -18,8 +18,8 @@ public class ServerController {
     }
 
     // Creates a new game on the server, and returns the state of that game to the client
-    @PostMapping("/game/{boardname}")
-    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardname, @RequestBody int numOfPlayers) {
+    @PostMapping("/game/{boardname}/{numOfPlayers}")
+    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardname, @PathVariable int numOfPlayers) {
         return ResponseEntity.ok().body(gameService.createGame(boardname, numOfPlayers));
     }
 
@@ -60,9 +60,9 @@ public class ServerController {
     }
 
     // Returns a boards configuration/state
-    @GetMapping("/board/{name}")
-    public ResponseEntity<String> getBoardState(@PathVariable String name) {
-        return ResponseEntity.ok().body(gameService.getBoardState(name));
+    @GetMapping("/board/{gameId}")
+    public ResponseEntity<String> getBoardState(@PathVariable int gameId) {
+        return ResponseEntity.ok().body(gameService.getBoardState(gameId));
     }
 
     // Updates the player state

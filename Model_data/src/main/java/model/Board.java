@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 import static model.Phase.INITIALISATION;
 
@@ -290,7 +289,7 @@ public class Board extends Subject {
       */
     public Optional<Integer> getRobot() {
         for (Player player : players) {
-            if (!player.activePlayer) {
+            if (!player.active) {
                 return Optional.of(players.indexOf(player));
             }
         }

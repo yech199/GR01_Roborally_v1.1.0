@@ -24,8 +24,8 @@ import static fileaccess.SaveBoard.serializeBoard;
 public class GameService implements IGameService {
 
     // A game is a board with a set gameId and saved player cards/registers
-    ArrayList<GameController> games = new ArrayList<>();
-    ArrayList<Board> boards = new ArrayList<>();
+    ArrayList<GameController> activeGames = new ArrayList<>();
+    ArrayList<Board> modelBoards = new ArrayList<>();
 
     ArrayList<PlayerTemplate> playerData = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class GameService implements IGameService {
         List<String> boardNames = IOUtil.getBoardFileNames();
         for (String boardName : boardNames) {
             Board board = LoadServer.loadBoard(boardName, Globals.MAX_NO_PLAYERS);
-            boards.add(board);
+            modelBoards.add(board);
         }
     }
 
@@ -67,7 +67,7 @@ public class GameService implements IGameService {
         int gameId = id;
         game.setGameId(gameId);
         id++;
-        games.add(gameController);
+        activeGames.add(gameController);
         return String.valueOf(gameId);
     }
 
@@ -79,10 +79,10 @@ public class GameService implements IGameService {
         List<Integer> listOfTotalPlayers = new ArrayList<>();
 
         // Get a list of game IDs
-        games.forEach(game -> listOfGames.add(game.board.getGameId()));
-        games.forEach(game -> listOfBoardNames.add(game.board.getBoardName()));
-        games.forEach(game -> listOfActivePlayers.add(game.board.amountOfActivePlayers));
-        games.forEach(game -> listOfTotalPlayers.add(game.board.maxAmountOfPlayers));
+        activeGames.forEach(game -> listOfGames.add(game.board.getGameId()));
+        activeGames.forEach(game -> listOfBoardNames.add(game.board.getBoardName()));
+        activeGames.forEach(game -> listOfActivePlayers.add(game.board.amountOfActivePlayers));
+        activeGames.forEach(game -> listOfTotalPlayers.add(game.board.maxAmountOfPlayers));
 
         // https://www.tutorialspoint.com/how-to-convert-java-array-or-arraylist-to-jsonarray-using-gson-in-java
         JsonObject jsonObj = new JsonObject();
@@ -104,15 +104,15 @@ public class GameService implements IGameService {
     public String getListOfBoards() {
         List<String> listOfBoards = new ArrayList<>();
         // Get a list of board names
-        boards.forEach(board -> listOfBoards.add(board.getBoardName()));
+        modelBoards.forEach(board -> listOfBoards.add(board.getBoardName()));
         return new Gson().toJson(listOfBoards);
     }
 
     @Override
-    public String getBoardState(String boardName) {
-        for (Board board : boards) {
-            if (board.getBoardName().equals(boardName)) {
-                return serializeBoard(board);
+    public String getBoardState(int gameId) {
+        for (GameController game : activeGames) {
+            if (game.board.getGameId().equals(gameId)) {
+                return serializeBoard(game.board);
             }
         }
         return null;
@@ -136,14 +136,14 @@ public class GameService implements IGameService {
             Player player = new Player(game.board, color, playerName);
             player.setSpace(template.getSpace());
             player.setHeading(template.getHeading());
-            player.activePlayer = true;
+            player.active = true;
             gameBoard.setRobot(player);
 
             if(gameBoard.amountOfActivePlayers.equals(gameBoard.maxAmountOfPlayers)) {
                 game.startProgrammingPhase();
             }
         });
-        return "OK";
+        return String.valueOf(gameBoard.getGameId());
     }
 
     @Override
@@ -153,7 +153,7 @@ public class GameService implements IGameService {
 
         if(board == null) return "Game not found";
         if(board.amountOfActivePlayers == 1) {
-            games.remove(game);
+            activeGames.remove(game);
             return "Game removed";
         }
         Player player = board.getPlayer(playerName);
@@ -164,7 +164,7 @@ public class GameService implements IGameService {
         Player dummy = new Player(board, player.getColor(), "Player " + (i+1));
         dummy.setSpace(player.getSpace());
         dummy.setHeading(player.getHeading());
-        dummy.activePlayer = false;
+        dummy.active = false;
         dummy.setCards(player.getCards());
         dummy.setRegisters(player.getRegisters());
 
@@ -199,7 +199,7 @@ public class GameService implements IGameService {
     }
 
     public GameController findGame(int id) {
-        for (GameController game : games) {
+        for (GameController game : activeGames) {
             if (game.board.getGameId() == id) {
                 return game;
             }
@@ -208,7 +208,7 @@ public class GameService implements IGameService {
     }
 
     public Board findGameBoard(int id) {
-        for (GameController game : games) {
+        for (GameController game : activeGames) {
             if (game.board.getGameId() == id) {
                 return game.board;
             }
@@ -217,7 +217,7 @@ public class GameService implements IGameService {
     }
 
     private Board findBoard(String boardName) {
-        for (Board board : boards) {
+        for (Board board : modelBoards) {
             if (board.getBoardName().equals(boardName)) {
                 return board;
             }

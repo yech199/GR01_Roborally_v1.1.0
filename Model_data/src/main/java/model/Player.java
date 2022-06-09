@@ -44,9 +44,7 @@ public class Player extends Subject {
 
     public boolean isRebooted = false;
 
-    public boolean activePlayer = false;
-
-    public int playerId = 0;
+    public boolean active;
 
     final public Board board;
 

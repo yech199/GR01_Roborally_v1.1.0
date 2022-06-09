@@ -445,12 +445,20 @@ public class AppController implements Observer {
                 alert.setContentText("Are you sure you want to exit RoboRally?");
                 Optional<ButtonType> result = alert.showAndWait();
 
+                // Cancel
                 if (result.isEmpty() || result.get() != ButtonType.OK) {
                     return; // return without exiting the application
                 }
                 else{
-                    if (appState == AppState.SERVER_GAME)
-                        client.leaveGame(gameController.board.getGameId(), client.playerName);
+                    // Sure
+                    try {
+                        if (appState == AppState.SERVER_GAME) {
+                            client.leaveGame(gameController.board.getGameId(), client.playerName);
+                        }
+                    } catch (NullPointerException e){
+                        System.out.println("Could Not Exit");
+                    }
+
                 }
             }
         }
@@ -473,10 +481,14 @@ public class AppController implements Observer {
         }
     }
 
-    public void updateServerView() {
+    public boolean updateServerView() {
         int gameId = client.gameId;
         Board board = client.getGameState(gameId, client.playerName);
-        setupGameController(board);
+        if (board != gameController.board) {
+            setupGameController(board);
+            return true;
+        }
+        return false;
     }
 
     public AppState getAppState() {

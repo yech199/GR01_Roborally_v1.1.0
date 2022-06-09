@@ -64,7 +64,7 @@ public class ClientController implements IGameService {
     public String createGame(String boardName, int numOfPlayers) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(numOfPlayers)))
-                .uri(URI.create("http://localhost:8080/game/" + boardName))
+                .uri(URI.create("http://localhost:8080/game/" + boardName + "/" + numOfPlayers))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -127,10 +127,10 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String getBoardState(String boardName) {
+    public String getBoardState(int gameId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/board/" + boardName))
+                .uri(URI.create("http://localhost:8080/board/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -197,16 +197,16 @@ public class ClientController implements IGameService {
     public String setPlayerState(int id, String playername, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(playerData))
-                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playername + "/save"))
+                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playername))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
 
         String result;
         try {
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            result = response.body();
+            result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
             result = null;

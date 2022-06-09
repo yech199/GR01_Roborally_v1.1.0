@@ -69,17 +69,19 @@ public class GameClient {
         return new ArrayList<>(Arrays.asList(boardNames));
     }
 
-    public Board getBoardState(String boardName) {
-        String json = clientController.getBoardState(boardName);
+    public Board getBoardState(int gameId) {
+        String json = clientController.getBoardState(gameId);
         return LoadBoard.loadGameState(json);
     }
 
     public String leaveGame(int id, String playerName) {
         return clientController.leaveGame(id, playerName);
     }
+
     public String joinGame(int id, String playerName) {
         this.playerName = playerName;
         String result = clientController.joinGame(id, playerName);
+        gameId = Integer.parseInt(result);
         return result;
     }
 }

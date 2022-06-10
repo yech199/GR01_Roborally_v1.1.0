@@ -7,7 +7,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ClientController implements IGameService {
 
@@ -164,7 +166,7 @@ public class ClientController implements IGameService {
         String result;
         try {
             result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
-        } catch (Exception e) {
+        } catch ( InterruptedException | ExecutionException | TimeoutException e ) {
             e.printStackTrace();
             result = null;
         }

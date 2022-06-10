@@ -11,6 +11,15 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientController implements IGameService {
 
+    String myIP;
+    String targetIP;
+
+
+    ClientController(String myIP){
+        this.myIP = myIP;
+        targetIP = "";
+    }
+
     private static final java.net.http.HttpClient httpClient = java.net.http.HttpClient.newBuilder()
             .version(java.net.http.HttpClient.Version.HTTP_2)
             .connectTimeout(Duration.ofSeconds(10))

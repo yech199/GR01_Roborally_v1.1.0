@@ -42,7 +42,7 @@ import roborally.client.GameClient;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.Timer;
 
 /**
  * ...
@@ -56,6 +56,7 @@ public class AppController implements Observer {
 
     private GameController gameController;
     private AppState appState = AppState.UNDECIDED;
+    Timer timer = new Timer();
 
     public enum AppState {
         LOCAL_GAME,
@@ -65,6 +66,7 @@ public class AppController implements Observer {
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
+        Updater.appController = this;
     }
 
     /**
@@ -529,5 +531,9 @@ public class AppController implements Observer {
 
     public AppState getAppState() {
         return appState;
+    }
+
+    public GameController getGameController() {
+        return gameController;
     }
 }

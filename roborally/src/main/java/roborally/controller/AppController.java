@@ -368,6 +368,8 @@ public class AppController implements Observer {
     public void submitPlayerCards() {
         int id = client.gameId;
         client.setPlayerState(id, gameController.board.getPlayer(client.playerName));
+        // TODO Execute automatic updating of game state. Dont work properly with the new at this moment
+        //timer.schedule(new Updater(), 0, 5000);
     }
 
     public void saveGame() {
@@ -519,14 +521,10 @@ public class AppController implements Observer {
         }
     }
 
-    public boolean updateServerView() {
+    public void updateServerView() {
         int gameId = client.gameId;
         Board board = client.getGameState(gameId, client.playerName);
-        if (board != gameController.board) {
-            setupGameController(board);
-            return true;
-        }
-        return false;
+        setupGameController(board);
     }
 
     public AppState getAppState() {

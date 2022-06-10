@@ -21,7 +21,7 @@
  */
 package model;
 
-import designpatterns.observer.Subject;
+import designpatterns.Subject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

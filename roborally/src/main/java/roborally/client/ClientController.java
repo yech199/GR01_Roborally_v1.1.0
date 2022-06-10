@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -13,14 +14,21 @@ public class ClientController implements IGameService {
 
     String myIP;
     String targetIP;
+    Scanner input = new Scanner(System.in);
 
-
-    ClientController(String myIP) {
+    ClientController(String myIP){
+        // Update Own IP
         this.myIP = myIP;
-        //this.myIP = "localhost"; // Works
-        //this.myIP = "127.0.0.1"; // Works
-        //this.myIP = "10.209.245.8"; // Works
-        targetIP = "";
+        targetIP = myIP;
+
+        System.out.println("If you wish to host server enter: no");
+        System.out.println("To Join another Server enter taget IP-Address for the LAN-Server: (ex. 123.45.678.9)");
+        targetIP = input.nextLine();
+
+        // Reset target ip
+        if (targetIP.equals("no")){
+            targetIP = myIP;
+        }
     }
 
     private static final java.net.http.HttpClient httpClient = java.net.http.HttpClient.newBuilder()
@@ -32,7 +40,7 @@ public class ClientController implements IGameService {
     public String getGameById(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+myIP+":8080/game/" + id + "/" + playerName))
+                .uri(URI.create("http://"+targetIP+":8080/game/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -55,7 +63,7 @@ public class ClientController implements IGameService {
     public String updateGame(int id, String playerName, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
-                .uri(URI.create("http://" + myIP + ":8080/game/join/" + id + "/" + playerName))
+                .uri(URI.create("http://"+targetIP+":8080/game/join/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
@@ -76,7 +84,7 @@ public class ClientController implements IGameService {
     public String createGame(String boardName, int numOfPlayers) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(numOfPlayers)))
-                .uri(URI.create("http://"+myIP+":8080/game/" + boardName + "/" + numOfPlayers))
+                .uri(URI.create("http://"+targetIP+":8080/game/" + boardName + "/" + numOfPlayers))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -98,7 +106,7 @@ public class ClientController implements IGameService {
     public String getListOfGames() {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+myIP+":8080/game"))
+                .uri(URI.create("http://"+targetIP+":8080/game"))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -120,7 +128,7 @@ public class ClientController implements IGameService {
     public String getListOfBoards() {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+myIP+":8080/board"))
+                .uri(URI.create("http://"+targetIP+":8080/board"))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -142,7 +150,7 @@ public class ClientController implements IGameService {
     public String getBoardState(int gameId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+myIP+":8080/board/" + gameId))
+                .uri(URI.create("http://"+targetIP+":8080/board/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -165,7 +173,7 @@ public class ClientController implements IGameService {
     public String joinGame(int gameId, String playername) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playername)))
-                .uri(URI.create("http://"+myIP+":8080/game/join/" + gameId))
+                .uri(URI.create("http://"+targetIP+":8080/game/join/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -187,7 +195,7 @@ public class ClientController implements IGameService {
     public String leaveGame(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
-                .uri(URI.create("http://"+myIP+":8080/game/" + id + "/" + playerName))
+                .uri(URI.create("http://"+targetIP+":8080/game/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -209,7 +217,7 @@ public class ClientController implements IGameService {
     public String setPlayerState(int id, String playername, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(playerData))
-                .uri(URI.create("http://"+myIP+":8080/game/" + id + "/" + playername))
+                .uri(URI.create("http://"+targetIP+":8080/game/" + id + "/" + playername))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();

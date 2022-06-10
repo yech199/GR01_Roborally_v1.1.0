@@ -24,15 +24,15 @@ import static fileaccess.SaveBoard.serializeBoard;
 @Service
 public class GameService implements IGameService {
 
-    // A game is a board with a set gameId and saved player cards/registers
+    // A game is a board with a set gameId and saved player cards/registers.
     ArrayList<GameController> activeGames = new ArrayList<>();
     ArrayList<Board> modelBoards = new ArrayList<>();
+    // Player data is used for saving clients state before all are executed.
     ArrayList<PlayerTemplate> playerData = new ArrayList<>();
     int id = 1;
 
     /**
-     * Constructor:
-     * creates a list of names according to the saved boardstates in the server-side resourcefolder
+     * Initialize board templates
      */
     public GameService() {
         // Initialize board templates on server
@@ -47,6 +47,7 @@ public class GameService implements IGameService {
      * @param id: used to identify a single instance of an active game
      * @param playerName: Unique playername which is used to identify a specific player
      * @return The state of the game serialized as an JSON-string
+     * @author Mads Sørensen (S215805)
      */
     @Override
     public String getGameById(int id, String playerName) {
@@ -66,6 +67,7 @@ public class GameService implements IGameService {
      *
      * @return "Game not found", if the id does not match any games on the server
      * @return "OK", if the id matches and deserialization is succesful.
+     * @author Mads Sørensen (S215805)
      */
     @Override
     public String updateGame(int id, String playername, String playerState) {
@@ -81,6 +83,7 @@ public class GameService implements IGameService {
      * @param boardName: The name of the boardState, hopefully matching on of the servers board resources
      * @param numOfPlayers: The amount of players the game should support, chosen client-side
      * @return: gameId, as a string.
+     * @author Mads Sørensen
      */
     @Override
     public String createGame(String boardName, int numOfPlayers) {
@@ -106,6 +109,8 @@ public class GameService implements IGameService {
      *  - listOfTotalPlayers: list of the max amount of players said game allows
      *
      * @return JSON-String of object containing these lists of game information.
+     * @author Mads Sørensen
+     * @author Mark Nielsen
      */
     @Override
     public String getListOfGames() {
@@ -138,6 +143,7 @@ public class GameService implements IGameService {
 
     /**
      * @return Json-String with the list of boards in the servers resource folder
+     * @author Mark Nielsen
      */
     @Override
     public String getListOfBoards() {
@@ -153,6 +159,7 @@ public class GameService implements IGameService {
      * @param gameId: unique id of which the game can be searched for
      * @return Json-String of board state
      * @return null, if no game matches the id
+     * @author Mads Sørensen
      */
     @Override
     public String getBoardState(int gameId) {
@@ -172,6 +179,7 @@ public class GameService implements IGameService {
      * @param playerName
      * @return Error Codes, String objects describing what went wrong
      * @return id of game as a string object
+     * @author Mads Sørensen
      */
     @Override
     public String joinGame(int id, String playerName) {
@@ -204,6 +212,12 @@ public class GameService implements IGameService {
         return String.valueOf(gameBoard.getGameId());
     }
 
+    /**
+     * Deletes a player from the game
+     * @param id of the Game
+     * @param playerName
+     * @author Mark Nielsen
+     */
     @Override
     public String leaveGame(int id, String playerName) {
         GameController game = findGame(id);
@@ -231,6 +245,14 @@ public class GameService implements IGameService {
         return "ok";
     }
 
+    /**
+     * Set the player state and execute cards if all client cards have been received.
+     * @param id
+     * @param playerName
+     * @param playerData
+     * @return response status code
+     * @Mads Sørensen
+     */
     @Override
     public String setPlayerState(int id, String playerName, String playerData) {
         GameController game = findGame(id);

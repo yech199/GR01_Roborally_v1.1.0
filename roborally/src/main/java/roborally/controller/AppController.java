@@ -41,6 +41,11 @@ import roborally.RoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.*;
 import java.util.Timer;
 
@@ -57,6 +62,11 @@ public class AppController implements Observer {
     private GameController gameController;
     private AppState appState = AppState.UNDECIDED;
     Timer timer = new Timer();
+
+    static String IPV4_PATTERN =
+            "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\\.(?!$)|$)){4}$";
+
+    static Pattern pattern = Pattern.compile(IPV4_PATTERN);
 
     public enum AppState {
         LOCAL_GAME,
@@ -305,7 +315,6 @@ public class AppController implements Observer {
             }
         }
 
-
         String playerName = "Player";
         if (resultName.isPresent()) {
             playerName = resultName.get();
@@ -428,6 +437,40 @@ public class AppController implements Observer {
         return true;
     }
 
+    public void updateTargetIP() throws UnknownHostException {
+        Optional<String> resultName = null;
+        TextInputDialog name = new TextInputDialog();
+
+        name.setTitle("Online Roborally");
+        name.setHeaderText("Connect to a server through IP address.");
+        name.setContentText("IP ADDRESS: ");
+
+        resultName = name.showAndWait();
+        try {
+            while (!isValid(resultName.get())) {
+                resultName = name.showAndWait();
+                // Update name to be the inputted name
+                if (isValid(resultName.get())) {
+                    client.setTargetIP(resultName.get());
+                    Alert alert = new Alert(AlertType.CONFIRMATION, "GREAT SUCCESS, YOUR IP ADDRESS IS: ".concat(resultName.get()),
+                            ButtonType.OK);
+                    alert.showAndWait();
+                    return;
+                }
+                name.setTitle("Online Roborally");
+                name.setHeaderText("Not a valid IP address, please enter a again.");
+                name.setContentText("IP ADDRESS: ");
+
+            }
+        } catch (NoSuchElementException e) {
+            client.setTargetIP(InetAddress.getLocalHost().getHostAddress());
+            appState = AppState.UNDECIDED;
+        }
+    }
+    public static boolean isValid(String IP) {
+        Matcher matcher = pattern.matcher(IP);
+        return matcher.matches();
+    }
     private void setupGameController(Board board) {
         board.attach(this);
         gameController = new GameController(board);

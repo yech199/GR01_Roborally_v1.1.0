@@ -7,6 +7,8 @@ import fileaccess.SaveBoard;
 import model.Board;
 import model.Player;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,11 +17,18 @@ import java.util.Objects;
 public class GameClient {
 
     ClientController clientController;
+    String MyIP;
     public String playerName;
     public int gameId;
 
     public GameClient() {
-        clientController = new ClientController();
+        try {
+            MyIP = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Your IP-Address is: " + MyIP);
+        clientController = new ClientController(MyIP);
     }
 
     public String createGame(String boardName, int numOfPlayers) {
@@ -93,5 +102,10 @@ public class GameClient {
             gameId = Integer.parseInt(result);
         }
         return result;
+    }
+
+    public void setTargetIP(String newIP){
+        clientController.setTargetIP(newIP);
+
     }
 }

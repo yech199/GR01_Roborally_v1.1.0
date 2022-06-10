@@ -46,4 +46,6 @@ Implemented using RESTful archictecture. A player can:
 - Get game state and update view accordingly
 - Not see other players cards
 - Seperate Thread HTTP Requests to Server
+- Play on the server with a person on another computer
+- Try to enter unaccaptable names and be prompted to try again
 

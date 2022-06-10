@@ -19,29 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package fileaccess.model;
+package fileaccess.templates;
+
+import model.boardElements.SpaceElement;
+import model.Heading;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Templates are used for serialization
- * @author Mads Sørensen(S215805) and Mark Nielsen
+ * ...
+ *
+ * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class BoardTemplate {
+public class SpaceTemplate {
+    public List<Heading> walls = new ArrayList<>();
+    public List<SpaceElement> actions = new ArrayList<>();
 
-    public int gameId;
-    public int maxNumberOfPlayers;
-    public String boardName;
-    public int width;
-    public int height;
-    public int checkPointAmount;
-    public String phase;
-    public int step;
-    public int activePlayers;
-
-    public List<PlayerTemplate> players = new ArrayList<>();
-    public int currentPlayer;
-
-    public List<SpaceTemplate> spaces = new ArrayList<>();
+    public int x;
+    public int y;
 }

@@ -9,7 +9,7 @@ import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import fileaccess.LoadServer;
 import fileaccess.SaveServer;
-import fileaccess.model.PlayerTemplate;
+import fileaccess.templates.PlayerTemplate;
 import model.Board;
 import model.Globals;
 import model.Player;

@@ -21,10 +21,9 @@
  */
 package roborally.view;
 
-import designpatterns.observer.Subject;
+import designpatterns.Subject;
 import controller.GameController;
 import model.Board;
-import model.Phase;
 import model.Space;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;

@@ -21,7 +21,7 @@
  */
 package model;
 
-import designpatterns.observer.Subject;
+import designpatterns.Subject;
 import model.boardElements.SpaceElement;
 
 import java.util.ArrayList;

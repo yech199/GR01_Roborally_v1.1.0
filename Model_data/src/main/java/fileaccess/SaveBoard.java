@@ -23,10 +23,10 @@ package fileaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fileaccess.model.BoardTemplate;
-import fileaccess.model.CommandCardFieldTemplate;
-import fileaccess.model.PlayerTemplate;
-import fileaccess.model.SpaceTemplate;
+import fileaccess.templates.BoardTemplate;
+import fileaccess.templates.CommandCardFieldTemplate;
+import fileaccess.templates.PlayerTemplate;
+import fileaccess.templates.SpaceTemplate;
 import model.boardElements.SpaceElement;
 import model.*;
 

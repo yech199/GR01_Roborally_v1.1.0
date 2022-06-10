@@ -1,4 +1,4 @@
-package fileaccess.model;
+package fileaccess.templates;
 
 /**
  * Templates are used for serialization

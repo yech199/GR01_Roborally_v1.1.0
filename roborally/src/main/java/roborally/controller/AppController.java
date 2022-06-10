@@ -149,11 +149,30 @@ public class AppController implements Observer {
 
                 List<String> games = client.getListOfBoards();
 
+            Optional<String> resultName = null;
+            boolean nameNotAccepted = true;
+
+            // Check for proper name
+            while (nameNotAccepted)
+            {
                 TextInputDialog name = new TextInputDialog();
                 name.setTitle("Player name");
                 name.setHeaderText("Write the name of your player");
                 name.setContentText("Name: ");
-                Optional<String> resultName = name.showAndWait();
+
+                // Update name to be the inputted name
+                resultName = name.showAndWait();
+
+                // Check if name is acceptable
+                if (resultName.isPresent()) {
+                    if (!resultName.get().equals("") && !resultName.isEmpty()) {
+                        // If not empty and not blank
+                        nameNotAccepted = false;
+                    }
+                } else{
+                    return false;
+                }
+            }
 
                 client.playerName = "Player";
                 if (!resultName.isEmpty()) {
@@ -250,12 +269,31 @@ public class AppController implements Observer {
 
     public boolean joinGame() {
         appState = AppState.SERVER_GAME;
-        TextInputDialog name = new TextInputDialog();
-        name.setTitle("Player name");
-        name.setHeaderText("Write the name of your player");
-        name.setContentText("Name: ");
+        Optional<String> resultName = null;
+        boolean nameNotAccepted = true;
 
-        Optional<String> resultName = name.showAndWait();
+        // Check for proper name
+        while (nameNotAccepted)
+        {
+            TextInputDialog name = new TextInputDialog();
+            name.setTitle("Player name");
+            name.setHeaderText("Write the name of your player");
+            name.setContentText("Name: ");
+
+            // Update name to be the inputted name
+            resultName = name.showAndWait();
+
+            // Check if name is acceptable
+            if (resultName.isPresent()) {
+                if (!resultName.get().equals("") && !resultName.isEmpty()) {
+                    // If not empty and not blank
+                    nameNotAccepted = false;
+                }
+            } else{
+                return false;
+            }
+        }
+
 
         String playerName = "Player";
         if (resultName.isPresent()) {

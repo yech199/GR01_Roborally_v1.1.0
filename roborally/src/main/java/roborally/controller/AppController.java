@@ -42,7 +42,6 @@ import roborally.client.GameClient;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 /**
  * ...
@@ -191,7 +190,7 @@ public class AppController implements Observer {
                 if (selectedBoard.isPresent()) {
                     String gameId = client.createGame(selectedBoard.get(), numOfPlayers);
                     result = client.joinGame(Integer.parseInt(gameId), client.playerName);
-                    board = client.getGameState(Integer.parseInt(gameId), client.playerName);
+                    board = client.getPlayerStateByGameId(Integer.parseInt(gameId), client.playerName);
                     alertType = AlertType.CONFIRMATION;
                 } else { // Should not happen
                     board = LoadBoard.newBoard(null, numOfPlayers);
@@ -339,7 +338,7 @@ public class AppController implements Observer {
                 int gameId = Integer.parseInt(result);
                 // TODO Error check
                 resultResponse = client.joinGame(gameId, playerName);
-                board = client.getGameState(gameId, client.playerName);
+                board = client.getPlayerStateByGameId(gameId, client.playerName);
             } else {
                 board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
             }
@@ -521,7 +520,7 @@ public class AppController implements Observer {
 
     public boolean updateServerView() {
         int gameId = client.gameId;
-        Board board = client.getGameState(gameId, client.playerName);
+        Board board = client.getPlayerStateByGameId(gameId, client.playerName);
         if (board != gameController.board) {
             setupGameController(board);
             return true;

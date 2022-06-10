@@ -22,24 +22,15 @@ public class GameClient {
         clientController = new ClientController();
     }
 
-    public String createGame(String boardName, int numOfPlayers) {
-        String gameId = clientController.createGame(boardName, numOfPlayers);
-        this.gameId = Integer.parseInt(gameId);
-        return gameId;
-    }
-
-    public Board getGameState(int id, String playerName) {
+    public Board getPlayerStateByGameId(int id, String playerName) {
         String json = clientController.getPlayerStateByGameId(id, playerName);
         return LoadBoard.loadGameState(json);
     }
 
-    public void setPlayerState(int gameId, Player player) {
-        String playerData = SaveBoard.serializePlayer(player);
-        clientController.setPlayerState(gameId, playerName, playerData);
-    }
-
-    public void setGameState(int id, String jsonGameState) {
-        clientController.updateGame(id, playerName, jsonGameState);
+    public String createGame(String boardName, int numOfPlayers) {
+        String gameId = clientController.createGame(boardName, numOfPlayers);
+        this.gameId = Integer.parseInt(gameId);
+        return gameId;
     }
 
     public ArrayList<String> getListOfGames() {
@@ -77,15 +68,6 @@ public class GameClient {
         }
     }
 
-    public Board getBoardState(int gameId) {
-        String json = clientController.getBoardState(gameId);
-        return LoadBoard.loadGameState(json);
-    }
-
-    public String leaveGame(int id, String playerName) {
-        return clientController.leaveGame(id, playerName);
-    }
-
     public String joinGame(int id, String playerName) {
         this.playerName = playerName.replaceAll(" ", "");
         String result = clientController.joinGame(id, playerName.replaceAll(" ", ""));
@@ -93,5 +75,14 @@ public class GameClient {
             gameId = Integer.parseInt(result);
         }
         return result;
+    }
+
+    public String leaveGame(int id, String playerName) {
+        return clientController.leaveGame(id, playerName);
+    }
+
+    public void setPlayerState(int gameId, Player player) {
+        String playerData = SaveBoard.serializePlayer(player);
+        clientController.setPlayerState(gameId, playerName, playerData);
     }
 }

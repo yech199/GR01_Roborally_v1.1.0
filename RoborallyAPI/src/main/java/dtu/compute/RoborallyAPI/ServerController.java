@@ -25,9 +25,9 @@ public class ServerController {
     }
 
     // Creates a new game on the server, and returns the state of that game to the client
-    @PostMapping("/game/{boardname}/{numOfPlayers}")
-    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardname, @PathVariable int numOfPlayers) {
-        return ResponseEntity.ok().body(gameService.createGame(boardname, numOfPlayers));
+    @PostMapping("/game/{boardName}/{numOfPlayers}")
+    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardName, @PathVariable int numOfPlayers) {
+        return ResponseEntity.ok().body(gameService.createGame(boardName, numOfPlayers));
     }
 
     // Return list of active games on the server

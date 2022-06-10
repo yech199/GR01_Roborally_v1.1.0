@@ -25,7 +25,7 @@ public class LoadServer {
         }
     }
 
-    public static void loadPlayers(List<PlayerTemplate> players, Board board) {
+    private static void loadPlayers(List<PlayerTemplate> players, Board board) {
         // Loading players
         for (PlayerTemplate player : players) {
             Player newPlayer = new Player(board, player.color, player.name);
@@ -75,31 +75,6 @@ public class LoadServer {
         Gson gson = simpleBuilder.create();
 
         return gson.fromJson(jsonGameState, BoardTemplate.class);
-    }
-
-    public static Board loadGame(String jsonState) {
-        BoardTemplate template = deserialize(jsonState);
-
-        // load board state values into board from templates
-        Board board = new Board(template.width, template.height, template.checkPointAmount, template.boardName);
-
-        loadSpaces(template, board);
-        loadPlayers(template.players, board);
-
-        board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
-        board.setPhase(Phase.valueOf(template.phase));
-        board.setStep(template.step);
-        board.setGameId(template.gameId);
-        board.setMaxAmountOfPlayers(template.maxNumberOfPlayers);
-
-        // Count active players in game
-        AtomicInteger i = new AtomicInteger();
-        board.getPlayers().forEach((player) -> {
-            if (player.active) i.getAndIncrement();
-        });
-        board.amountOfActivePlayers = i.get();
-
-        return board;
     }
 
     public static Board createBoard(String boardState, int numOfPlayers) {

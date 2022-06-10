@@ -11,6 +11,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Simple HTTP request that communicates with server
+ */
 public class ClientController implements IGameService {
 
     private static final java.net.http.HttpClient httpClient = java.net.http.HttpClient.newBuilder()
@@ -18,6 +21,13 @@ public class ClientController implements IGameService {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
+    /**
+     * Get the gameState as JSON, from the player requesting.
+     * @param id gameId
+     * @param playerName
+     * @return gameState as JSON String
+     * @author Mads Sørensen (S215805)
+     */
     @Override
     public String getGameById(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -41,6 +51,14 @@ public class ClientController implements IGameService {
         return result;
     }
 
+    /**
+     * Update the gameState of the player on the server
+     * @param id gameId
+     * @param playerName
+     * @param gameData
+     * @return Response status code
+     * @author Mads Sørensen (S215805)
+     */
     @Override
     public String updateGame(int id, String playerName, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -54,7 +72,6 @@ public class ClientController implements IGameService {
         String result;
         try {
             result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
-            // Ignore response
         } catch (Exception e) {
             e.printStackTrace();
             result = "null";
@@ -62,6 +79,13 @@ public class ClientController implements IGameService {
         return result;
     }
 
+    /**
+     * Create a new game on the server from a board template name.
+     * @param boardName Name of the board
+     * @param numOfPlayers Number of players in the game
+     * @return gameId of game for further communication
+     * @author Mads Sørensen (S215805)
+     */
     @Override
     public String createGame(String boardName, int numOfPlayers) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -84,6 +108,12 @@ public class ClientController implements IGameService {
         return result;
     }
 
+    /**
+     * Get a list of all active games on the server as a JSON string, which list the gameId, name of the board
+     * number of active player, and max number of players
+     * @return list of available games
+     * @author Mads Sørensen (S215805)
+     */
     @Override
     public String getListOfGames() {
         HttpRequest request = HttpRequest.newBuilder()
@@ -106,6 +136,11 @@ public class ClientController implements IGameService {
         return result;
     }
 
+    /**
+     * Get a list of board names on the server
+     * @return list of boards
+     * @author Mark Nielsen
+     */
     @Override
     public String getListOfBoards() {
         HttpRequest request = HttpRequest.newBuilder()
@@ -128,6 +163,12 @@ public class ClientController implements IGameService {
         return result;
     }
 
+    /**
+     * Get the boardState of a board template in JSON.
+     * @param gameId
+     * @return boardState
+     * @author Mark Nielsen
+     */
     @Override
     public String getBoardState(int gameId) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -151,6 +192,13 @@ public class ClientController implements IGameService {
         return result;
     }
 
+    /**
+     * Join a game and get the gameId for further communications
+     * @param gameId the id of the game
+     * @param playername the name of the player to join
+     * @return Response statuscode
+     * @author Mads Sørensen (S215805)
+     */
     @Override
     public String joinGame(int gameId, String playername) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -173,6 +221,13 @@ public class ClientController implements IGameService {
         return result;
     }
 
+    /**
+     * Tell the server to delete this player from the game
+     * @param id gameId to leave
+     * @param playerName name of player to leave
+     * @return Response statuscode
+     * @author Mark Nielsen
+     */
     @Override
     public String leaveGame(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -195,6 +250,14 @@ public class ClientController implements IGameService {
         return result;
     }
 
+    /**
+     * The player submits it's playerData to tell the server that it has finished programming phase.
+     * @param id gameId to join
+     * @param playername name of the player
+     * @param playerData JSON player object
+     * @return Response statuscode
+     * @author Mads Sørensen (S215805)
+     */
     @Override
     public String setPlayerState(int id, String playername, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()

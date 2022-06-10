@@ -49,3 +49,5 @@ Implemented using RESTful archictecture. A player can:
 - Play on the server with a person on another computer
 - Try to enter unaccaptable names and be prompted to try again
 
+### Youtube Video Demo
+https://youtu.be/epLNwWvihjE

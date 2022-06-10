@@ -25,9 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * Templates are used for serialization
+ * @author Mads Sørensen(S215805) and Mark Nielsen
  */
 public class BoardTemplate {
 

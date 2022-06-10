@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static fileaccess.SaveBoard.serializeBoard;
 
@@ -28,6 +27,8 @@ public class GameService implements IGameService {
     ArrayList<GameController> activeGames = new ArrayList<>();
     ArrayList<Board> modelBoards = new ArrayList<>();
 
+    // Used when players submit their programming cards
+    // Store all players until everything has been recieved by all clients
     ArrayList<PlayerTemplate> playerData = new ArrayList<>();
 
     int id = 1;

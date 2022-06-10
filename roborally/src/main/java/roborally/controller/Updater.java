@@ -17,7 +17,7 @@ public class Updater extends TimerTask {
     @Override
     public void run() {
         if (appController.getAppState() == AppController.AppState.SERVER_GAME) {
-            if(appController.getGameController().board.getPhase() == Phase.PROGRAMMING && appController.submittedCards) {
+            if(appController.getGameController().board.getPhase() == Phase.PROGRAMMING) {
                 System.out.println("Update");
                 try {
                     Platform.runLater(appController::updateServerView);

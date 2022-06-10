@@ -90,7 +90,7 @@ public class IOUtil {
         return classLoader.getResource(folderName).getPath() + "/" + fileName + "." + ext;
     }
 
-    private static File[] getResourceFolderFiles (String folder) throws NullPointerException {
+    private static File[] getResourceFolderFiles(String folder) throws NullPointerException {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         URL url = loader.getResource(folder);
         String path = url.getPath();
@@ -107,6 +107,7 @@ public class IOUtil {
         }
         return result;
     }
+
     public static List<String> getSaveGameFiles() throws NullPointerException {
         File[] savedGames = getResourceFolderFiles("savedgames");
 
@@ -120,13 +121,14 @@ public class IOUtil {
 
     /**
      * Write the game state from a json string to a json file.
-     * @param gameName Name of the file
+     *
+     * @param gameName      Name of the file
      * @param jsonGameState json string of the game state
      */
     public static void writeGame(String gameName, String jsonGameState) {
         String filename;
         try {
-             filename = getResourceFile(SAVEFOLDER, gameName, JSON_EXT);
+            filename = getResourceFile(SAVEFOLDER, gameName, JSON_EXT);
         } catch (NullPointerException e) {
             System.out.println("Could not find save games folder");
             // TODO Expore option to create a save game folder for the user?
@@ -160,7 +162,8 @@ public class IOUtil {
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
         }
 
@@ -169,6 +172,7 @@ public class IOUtil {
     /**
      * Read game state from a json file.
      * The method can handle if the we read from a save game or board file.
+     *
      * @param gameName name of game
      * @return json string of the game state
      */
@@ -179,8 +183,8 @@ public class IOUtil {
 
         // If we load a new game, we load from predefined boards in boards folder.
         String resourcePath;
-        if (savedGame)  {
-             resourcePath = SAVEFOLDER + "/" + gameName + "." + JSON_EXT;
+        if (savedGame) {
+            resourcePath = SAVEFOLDER + "/" + gameName + "." + JSON_EXT;
         } else { // else we load from an save in savesfolder
             resourcePath = BOARDSFOLDER + "/" + gameName + "." + JSON_EXT;
         }

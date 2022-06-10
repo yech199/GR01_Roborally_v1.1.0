@@ -87,7 +87,7 @@ public class SaveBoard {
         for (CommandCardField commandCardField : commandCardFields) {
             CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
 
-            if (commandCardField !=null) {
+            if (commandCardField != null) {
                 if (commandCardField.getCard() == null) {
                     cardFieldTemplate.command = "";
                     cardFieldTemplate.visible = true;
@@ -143,43 +143,6 @@ public class SaveBoard {
 
         return gson.toJson(template, template.getClass());
     }
-
-    /*public static String serializePlayerState(Board board, Player newPlayer) {
-        // Set up the board template by copying values one by one
-        BoardTemplate template = new BoardTemplate();
-        template.width = board.width;
-        template.height = board.height;
-
-        template.spaces = saveSpaces(board);
-
-        template.players = savePlayers(board.getPlayers(), board.getPhase(), newPlayer);
-
-        if (board.getCurrentPlayer() == null) template.currentPlayer = 0;
-        else template.currentPlayer = board.getPlayerNumber(board.getCurrentPlayer());
-
-        template.step = board.getStep();
-        template.phase = String.valueOf(board.getPhase());
-        template.boardName = board.getBoardName();
-        template.checkPointAmount = board.totalNoOfCheckpoints;
-        template.maxNumberOfPlayers = board.maxAmountOfPlayers;
-
-        // Count active players in game
-        AtomicInteger i = new AtomicInteger();
-        board.getPlayers().forEach((p) -> {
-            if (p.activePlayer) i.getAndIncrement();
-        });
-        template.activePlayers = i.get();
-
-        if (board.getGameId() != null) template.gameId = board.getGameId();
-
-        // Saving the board template using GSON
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(SpaceElement.class, new Adapter<SpaceElement>()).
-                setPrettyPrinting();
-        Gson gson = simpleBuilder.create();
-
-        return gson.toJson(template, template.getClass());
-    }*/
 
     /**
      * Save a game in json format to the resource/savedgames folder

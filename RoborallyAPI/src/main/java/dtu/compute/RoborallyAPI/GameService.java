@@ -124,20 +124,20 @@ public class GameService implements IGameService {
         GameController game = findGame(id);
         Board gameBoard = game.board;
 
-        if (game == null) return "Game not found";
+        if (game == null)
+            return "Game not found";
         if (gameBoard.getPlayers().contains(gameBoard.getPlayer(playerName)))
             return "Player with same name already joined";
-        if (gameBoard.getAmountOfActivePlayers() >= gameBoard.maxAmountOfPlayers) return "Game Full";
+        if (gameBoard.getAmountOfActivePlayers() >= gameBoard.maxAmountOfPlayers)
+            return "Game Full";
 
         gameBoard.getRobot().ifPresent(freePlayerIndex -> {
-            Player template = gameBoard.getPlayer(freePlayerIndex);
-            gameBoard.getPlayers().set(freePlayerIndex, template);
-            String color = template.getColor();
+            Player dummy = gameBoard.getPlayer(freePlayerIndex);
 
             // Add new player and replace dummy player
-            Player player = new Player(game.board, color, playerName);
-            player.setSpace(template.getSpace());
-            player.setHeading(template.getHeading());
+            Player player = new Player(game.board, dummy.getColor(), playerName);
+            player.setSpace(dummy.getSpace());
+            player.setHeading(dummy.getHeading());
             player.active = true;
             gameBoard.setRobot(player);
 

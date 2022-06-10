@@ -7,7 +7,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ClientController implements IGameService {
 
@@ -43,7 +45,7 @@ public class ClientController implements IGameService {
     public String updateGame(int id, String playerName, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
-                .uri(URI.create("http://localhost:8080/game/join/" + id + "/" + playerName))
+                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
@@ -153,7 +155,7 @@ public class ClientController implements IGameService {
     public String joinGame(int gameId, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playerName)))
-                .uri(URI.create("http://localhost:8080/game/join/" + gameId))
+                .uri(URI.create("http://localhost:8080/game/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -164,7 +166,7 @@ public class ClientController implements IGameService {
         String result;
         try {
             result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
-        } catch (Exception e) {
+        } catch ( InterruptedException | ExecutionException | TimeoutException e ) {
             e.printStackTrace();
             result = null;
         }

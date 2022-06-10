@@ -70,12 +70,9 @@ public class GameClient {
         Gson gson = new Gson();
         String boards = clientController.getListOfBoards();
         String[] boardNames = gson.fromJson(boards, String[].class);
-        if (boardNames[0] != null)
-        {
+        if (boardNames[0] != null) {
             return new ArrayList<>(Arrays.asList(boardNames));
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -90,9 +87,8 @@ public class GameClient {
     }
 
     public String joinGame(int id, String playerName) {
-        //playerName.replaceAll(" ","");
-        this.playerName = playerName.replaceAll(" ","");
-        String result = clientController.joinGame(id, playerName.replaceAll(" ",""));
+        this.playerName = playerName.replaceAll(" ", "");
+        String result = clientController.joinGame(id, playerName.replaceAll(" ", ""));
         if (!Objects.equals(result, "Game Full")) {
             gameId = Integer.parseInt(result);
         }

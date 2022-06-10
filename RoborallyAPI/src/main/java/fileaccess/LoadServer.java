@@ -42,7 +42,7 @@ public class LoadServer {
                 board.getRobot().ifPresent(integer -> board.getPlayers().set(integer, newPlayer));
             } else {
                 for (int i = 0; i < board.getPlayers().size(); i++) {
-                    if(board.getPlayers().get(i).getName().equals(newPlayer.getName())) {
+                    if (board.getPlayers().get(i).getName().equals(newPlayer.getName())) {
                         board.getPlayers().set(i, newPlayer);
                     }
                 }
@@ -118,7 +118,7 @@ public class LoadServer {
         board.setMaxAmountOfPlayers(numOfPlayers);
         // Overwrite
         int playerNo = 1;
-        for(int i = 0; i < numOfPlayers; i++) {
+        for (int i = 0; i < numOfPlayers; i++) {
             Player player = new Player(board, template.players.get(i).color, "Player " + playerNo);
             player.setSpace(board.getSpace(template.players.get(i).spaceX, template.players.get(i).spaceY));
             player.setHeading(Heading.valueOf(template.players.get(i).heading));
@@ -148,7 +148,7 @@ public class LoadServer {
             board.getRobot().ifPresent(integer -> board.getPlayers().set(integer, newPlayer));
         } else {
             for (int i = 0; i < board.getPlayers().size(); i++) {
-                if(board.getPlayers().get(i).getName().equals(newPlayer.getName())) {
+                if (board.getPlayers().get(i).getName().equals(newPlayer.getName())) {
                     board.getPlayers().set(i, newPlayer);
                 }
             }

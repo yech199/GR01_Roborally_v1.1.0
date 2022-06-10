@@ -12,22 +12,22 @@ public class ServerController {
     private IGameService gameService;
 
     // Returns the game state of a game
-    @GetMapping("/game/{id}/{playerName}")
-    public ResponseEntity<String> getGameState(@PathVariable int id, @PathVariable String playerName) {
-        return ResponseEntity.ok().body(gameService.getGameById(id, playerName));
+    @GetMapping("/game/{id}/{playername}")
+    public ResponseEntity<String> getPlayerState(@PathVariable int id, @PathVariable String playername) {
+        return ResponseEntity.ok().body(gameService.getGameById(id, playername));
     }
 
     // Updates the game state of a game
-    @PutMapping("/game/{id}/{playerName}/save")
-    public ResponseEntity<String> updateGameState(@PathVariable int id, @PathVariable String playerName, @RequestBody String playerState) {
-        gameService.updateGame(id, playerName, playerState);
+    @PutMapping("/game/{id}/{playername}/save")
+    public ResponseEntity<String> updateGameState(@PathVariable int id, @PathVariable String playername, @RequestBody String playerData) {
+        gameService.updateGame(id, playername, playerData);
         return ResponseEntity.ok().body("OK");
     }
 
     // Creates a new game on the server, and returns the state of that game to the client
-    @PostMapping("/game/{boardName}/{numOfPlayers}")
-    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardName, @PathVariable int numOfPlayers) {
-        return ResponseEntity.ok().body(gameService.createGame(boardName, numOfPlayers));
+    @PostMapping("/game/{boardname}/{numOfPlayers}")
+    public ResponseEntity<String> createGameFromBoard(@PathVariable String boardname, @PathVariable int numOfPlayers) {
+        return ResponseEntity.ok().body(gameService.createGame(boardname, numOfPlayers));
     }
 
     // Return list of active games on the server
@@ -49,19 +49,19 @@ public class ServerController {
     }
 
     // Add player to game players
-    @PostMapping("/game/join/{id}")
+    @PostMapping("/game/{id}")
     public ResponseEntity<String> joinGame(@PathVariable int id, @RequestBody String playerName) {
         String result = gameService.joinGame(id, playerName);
-        if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
-        else if(result.equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
+        if (result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
+        if (result.equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
         return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("/game/{id}/{playerName}")
     public ResponseEntity<String> leaveGame(@PathVariable int id, @PathVariable String playerName) {
         String result = gameService.leaveGame(id, playerName);
-        if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
-        if(result.equals("Game removed")) return ResponseEntity.ok().body("Game removed");
+        if (result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
+        if (result.equals("Game removed")) return ResponseEntity.ok().body("Game removed");
         return ResponseEntity.ok().body("ok");
     }
 

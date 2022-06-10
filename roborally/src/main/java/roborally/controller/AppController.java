@@ -143,55 +143,60 @@ public class AppController implements Observer {
         Optional<Integer> selectedNumOfPlayers = dialog.showAndWait();
         int numOfPlayers;
 
-        if (selectedNumOfPlayers.isPresent()) {
-            numOfPlayers = selectedNumOfPlayers.get();
+        try {
+            if (selectedNumOfPlayers.isPresent()) {
+                numOfPlayers = selectedNumOfPlayers.get();
 
-            List<String> games = client.getListOfBoards();
+                List<String> games = client.getListOfBoards();
 
-            TextInputDialog name = new TextInputDialog();
-            name.setTitle("Player name");
-            name.setHeaderText("Write the name of your player");
-            name.setContentText("Name: ");
-            Optional<String> resultName = name.showAndWait();
+                TextInputDialog name = new TextInputDialog();
+                name.setTitle("Player name");
+                name.setHeaderText("Write the name of your player");
+                name.setContentText("Name: ");
+                Optional<String> resultName = name.showAndWait();
 
-            client.playerName = "Player";
-            if (!resultName.isEmpty()) {
-                client.playerName = resultName.get();
-            } else {
-                Alert alert = new Alert(AlertType.INFORMATION, "Returning to main menu...", ButtonType.OK);
+                client.playerName = "Player";
+                if (!resultName.isEmpty()) {
+                    client.playerName = resultName.get();
+                } else {
+                    Alert alert = new Alert(AlertType.INFORMATION, "Returning to main menu...", ButtonType.OK);
+                    alert.showAndWait();
+                    return false;
+                }
+
+                ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
+                dialogL.setTitle("Select board");
+                dialogL.setHeaderText("Select a board to load");
+                Optional<String> selectedBoard = dialogL.showAndWait();
+
+                Board board;
+                String result;
+                AlertType alertType;
+                if (selectedBoard.isPresent()) {
+                    String gameId = client.createGame(selectedBoard.get(), numOfPlayers);
+                    result = client.joinGame(Integer.parseInt(gameId), client.playerName);
+                    board = client.getGameState(Integer.parseInt(gameId), client.playerName);
+                    alertType = AlertType.CONFIRMATION;
+                } else { // Should not happen
+                    board = LoadBoard.newBoard(null, numOfPlayers);
+                    result = "OK";
+                    alertType = AlertType.WARNING;
+                }
+
+                // Give Alert to player showing
+                Alert alert;
+                alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
                 alert.showAndWait();
-                return false;
+
+                appState = AppState.SERVER_GAME;
+                setupGameController(board);
+                return true;
             }
-
-            ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
-            dialogL.setTitle("Select board");
-            dialogL.setHeaderText("Select a board to load");
-            Optional<String> selectedBoard = dialogL.showAndWait();
-
-            Board board;
-            String result;
-            AlertType alertType;
-            if (selectedBoard.isPresent()) {
-                String gameId = client.createGame(selectedBoard.get(), numOfPlayers);
-                result = client.joinGame(Integer.parseInt(gameId), client.playerName);
-                board = client.getGameState(Integer.parseInt(gameId), client.playerName);
-                alertType = AlertType.CONFIRMATION;
-            } else { // Should not happen
-                return false;
-                //board = LoadBoard.newBoard(null, numOfPlayers); // boardName = Null, means loading of default board
-                //result = "OK";
-                //alertType = AlertType.WARNING;
-            }
-
-            // Give Alert to player showing
-            Alert alert;
-            alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(AlertType.ERROR, "You have to choose a name for your robot! Try again.", ButtonType.OK);
             alert.showAndWait();
-
-
-            appState = AppState.SERVER_GAME;
-            setupGameController(board);
-            return true;
+            appState = AppState.UNDECIDED;
+            return false;
         }
         return false;
     }
@@ -291,7 +296,7 @@ public class AppController implements Observer {
             } else {
                 board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
             }
-            if(resultResponse.equals("Game Full")) {
+            if (resultResponse.equals("Game Full")) {
                 Alert alert = new Alert(AlertType.INFORMATION, "GAME IS FULL.", ButtonType.OK);
                 alert.showAndWait();
                 appState = AppState.UNDECIDED;
@@ -301,6 +306,11 @@ public class AppController implements Observer {
             appState = AppState.SERVER_GAME;
         } catch (IndexOutOfBoundsException e) {
             Alert alert = new Alert(AlertType.INFORMATION, "No active games.", ButtonType.OK);
+            alert.showAndWait();
+            appState = AppState.UNDECIDED;
+            return false;
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(AlertType.INFORMATION, "Something went wrong, try again.", ButtonType.OK);
             alert.showAndWait();
             appState = AppState.UNDECIDED;
             return false;

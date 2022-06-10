@@ -14,21 +14,11 @@ public class ClientController implements IGameService {
 
     String myIP;
     String targetIP;
-    Scanner input = new Scanner(System.in);
 
     ClientController(String myIP){
         // Update Own IP
         this.myIP = myIP;
         targetIP = myIP;
-
-        System.out.println("If you wish to host server enter: no");
-        System.out.println("To Join another Server enter taget IP-Address for the LAN-Server: (ex. 123.45.678.9)");
-        targetIP = input.nextLine();
-
-        // Reset target ip
-        if (targetIP.equals("no")){
-            targetIP = myIP;
-        }
     }
 
     private static final java.net.http.HttpClient httpClient = java.net.http.HttpClient.newBuilder()

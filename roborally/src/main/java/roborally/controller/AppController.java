@@ -415,6 +415,22 @@ public class AppController implements Observer {
         return true;
     }
 
+    public void updateTargetIP() {
+        Optional<String> resultName = null;
+        TextInputDialog name = new TextInputDialog();
+
+        name.setTitle("Online Roborally");
+        name.setHeaderText("Connect to a server through IP address.");
+        name.setContentText("IP ADDRESS: ");
+
+        // Update name to be the inputted name
+        resultName = name.showAndWait();
+
+        client.setTargetIP(resultName.get());
+
+
+    }
+
     private void setupGameController(Board board) {
         board.attach(this);
         gameController = new GameController(board);

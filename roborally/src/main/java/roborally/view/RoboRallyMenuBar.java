@@ -130,7 +130,7 @@ public class RoboRallyMenuBar extends MenuBar {
         serverMenu.getItems().add(leaveGame);
 
         updateServer = new MenuItem("Update server");
-        updateServer.setOnAction(e -> this.appController.updateServerView());
+        updateServer.setOnAction(e -> this.appController.updateTargetIP());
         serverMenu.getItems().add(updateServer);
 
         exitApp = new MenuItem("Exit");

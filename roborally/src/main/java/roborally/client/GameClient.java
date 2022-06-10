@@ -106,5 +106,6 @@ public class GameClient {
 
     public void setTargetIP(String newIP){
         clientController.setTargetIP(newIP);
+
     }
 }

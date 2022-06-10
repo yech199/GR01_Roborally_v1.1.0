@@ -126,8 +126,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
                     if (i < Globals.NO_REGISTERS) {
                         return field.player.getProgramField(i);
                     }
-                }
-                else if ("C".equals(strings[0])) {
+                } else if ("C".equals(strings[0])) {
                     if (i < Globals.NO_CARDS) {
                         return field.player.getCardField(i);
                     }
@@ -143,8 +142,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
             CommandCard card = field.getCard();
             if (card != null && field.isVisible()) {
                 label.setText(card.getName());
-            }
-            else {
+            } else {
                 label.setText("");
             }
         }

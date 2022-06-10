@@ -39,8 +39,8 @@ public class ServerController {
     @DeleteMapping("/game/{id}/{playerName}")
     public ResponseEntity<String> leaveGame(@PathVariable int id, @PathVariable String playerName) {
         String result = gameService.leaveGame(id, playerName);
-        if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
-        if(result.equals("Game removed")) return ResponseEntity.ok().body("Game removed");
+        if (result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
+        if (result.equals("Game removed")) return ResponseEntity.ok().body("Game removed");
         return ResponseEntity.ok().body("ok");
     }
 
@@ -48,8 +48,8 @@ public class ServerController {
     @PostMapping("/game/join/{id}")
     public ResponseEntity<String> joinGame(@PathVariable int id, @RequestBody String playerName) {
         String result = gameService.joinGame(id, playerName);
-        if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
-        if(result.equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
+        if (result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
+        if (result.equals("Game Full")) return ResponseEntity.badRequest().body("Game Full");
         return ResponseEntity.ok().body(result);
     }
 
@@ -69,7 +69,7 @@ public class ServerController {
     @PutMapping("game/{id}/{playername}")
     public ResponseEntity<String> setPlayerCards(@PathVariable int id, @PathVariable String playername, @RequestBody String playerData) {
         String result = gameService.setPlayerState(id, playername, playerData);
-        if(result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
+        if (result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");
         return ResponseEntity.ok().body(result);
     }
 }

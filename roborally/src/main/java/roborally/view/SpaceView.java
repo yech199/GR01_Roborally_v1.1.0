@@ -88,8 +88,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 case RIGHT -> this.setStyle("-fx-background-image: url('graphics/GearRight.PNG'); -fx-background-size: " +
                         SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
             }
-        }
-        else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Antenna antenna) {
+        } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Antenna antenna) {
             this.tileAngle = switch (antenna.getHeading()) {
                 case NORTH -> 0;
                 case EAST -> 90;
@@ -98,8 +97,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             };
             this.setStyle("-fx-background-image: url('graphics/Antenna.png'); -fx-background-size: " +
                     SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
-        }
-        else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof PushPanel pushPanel) {
+        } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof PushPanel pushPanel) {
             this.tileAngle = switch (pushPanel.getHeading()) {
                 case SOUTH -> 0;
                 case WEST -> 90;
@@ -110,16 +108,13 @@ public class SpaceView extends StackPane implements ViewObserver {
             int[] registers = pushPanel.getPushPanelLabels();
             this.setStyle("-fx-background-image: url('graphics/PushPanel" + registers[0] + "-" + registers[1] + ".png');" +
                     " -fx-background-size: " + SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
-        }
-        else if(space.getActions().size() > 0 && space.getActions().get(0) instanceof Pit pit) {
+        } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Pit pit) {
             this.setStyle("-fx-background-image: url('graphics/Pit.png'); -fx-background-size: " +
                     SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
-        }
-        else if(space.getActions().size() > 0 && space.getActions().get(0) instanceof Checkpoint checkpoint) {
-            this.setStyle("-fx-background-image: url('graphics/Checkpoint"+ checkpoint.getCheckpointNumber() +".png'); -fx-background-size: " +
+        } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Checkpoint checkpoint) {
+            this.setStyle("-fx-background-image: url('graphics/Checkpoint" + checkpoint.getCheckpointNumber() + ".png'); -fx-background-size: " +
                     SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
-        }
-        else if(space.getActions().size() > 0 && space.getActions().get(0) instanceof RebootToken rebootToken) {
+        } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof RebootToken rebootToken) {
             this.tileAngle = switch (rebootToken.getHeading()) {
                 case SOUTH -> 0;
                 case WEST -> 90;

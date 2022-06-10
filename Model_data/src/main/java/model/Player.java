@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Player extends Subject {
     private String name;
@@ -78,6 +77,7 @@ public class Player extends Subject {
             }
         }
     }
+
     public String getColor() {
         return color;
     }

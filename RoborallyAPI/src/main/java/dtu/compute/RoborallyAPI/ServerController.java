@@ -25,7 +25,7 @@ public class ServerController {
 
     // Returns the game state of a game
     @GetMapping("/game/{id}/{playername}")
-    public ResponseEntity<String> getGameState(@PathVariable int id, @PathVariable String playername) {
+    public ResponseEntity<String> getPlayerState(@PathVariable int id, @PathVariable String playername) {
         return ResponseEntity.ok().body(gameService.getGameById(id, playername));
     }
 

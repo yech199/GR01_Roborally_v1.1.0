@@ -12,15 +12,15 @@ public class ServerController {
     private IGameService gameService;
 
     // Returns the game state of a game
-    @GetMapping("/game/{id}/{playername}")
-    public ResponseEntity<String> getPlayerState(@PathVariable int id, @PathVariable String playername) {
-        return ResponseEntity.ok().body(gameService.getGameById(id, playername));
+    @GetMapping("/game/{id}/{playerName}")
+    public ResponseEntity<String> getPlayerState(@PathVariable int id, @PathVariable String playerName) {
+        return ResponseEntity.ok().body(gameService.getGameById(id, playerName));
     }
 
     // Updates the game state of a game
-    @PutMapping("/game/{id}/{playername}/save")
-    public ResponseEntity<String> updateGameState(@PathVariable int id, @PathVariable String playername, @RequestBody String playerData) {
-        gameService.updateGame(id, playername, playerData);
+    @PutMapping("/game/{id}/{playerName}/save")
+    public ResponseEntity<String> updateGameState(@PathVariable int id, @PathVariable String playerName, @RequestBody String playerData) {
+        gameService.updateGame(id, playerName, playerData);
         return ResponseEntity.ok().body("OK");
     }
 

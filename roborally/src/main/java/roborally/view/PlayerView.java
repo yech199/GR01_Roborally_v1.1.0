@@ -21,7 +21,7 @@
  */
 package roborally.view;
 
-import designpatterns.observer.Subject;
+import designpatterns.Subject;
 import controller.GameController;
 import model.*;
 import javafx.geometry.Pos;

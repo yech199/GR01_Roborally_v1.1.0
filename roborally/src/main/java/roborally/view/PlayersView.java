@@ -21,10 +21,7 @@
  */
 package roborally.view;
 
-import designpatterns.observer.Subject;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
+import designpatterns.Subject;
 import controller.GameController;
 import model.Board;
 import model.Player;

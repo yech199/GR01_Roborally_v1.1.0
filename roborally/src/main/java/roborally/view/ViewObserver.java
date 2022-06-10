@@ -21,8 +21,8 @@
  */
 package roborally.view;
 
-import designpatterns.observer.Observer;
-import designpatterns.observer.Subject;
+import designpatterns.Observer;
+import designpatterns.Subject;
 import javafx.application.Platform;
 
 /**

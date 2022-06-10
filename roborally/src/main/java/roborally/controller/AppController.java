@@ -22,8 +22,8 @@
 package roborally.controller;
 
 import controller.GameController;
-import designpatterns.observer.Observer;
-import designpatterns.observer.Subject;
+import designpatterns.Observer;
+import designpatterns.Subject;
 import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
@@ -118,8 +118,8 @@ public class AppController implements Observer {
         return true;
     }
 
-    private void choosePlayerNames(int numberOfPlayers, Board board) {
-        for (int i = 0; i < numberOfPlayers; i++) {
+    private void choosePlayerNames(int numOfPlayers, Board board) {
+        for (int i = 0; i < numOfPlayers; i++) {
             TextInputDialog name = new TextInputDialog(board.getPlayer(i).getName());
             name.setTitle("Player name");
             name.setHeaderText("Write the name of the player");
@@ -505,10 +505,6 @@ public class AppController implements Observer {
         if (gameController == null || stopGame()) {
             Platform.exit();
         }
-    }
-
-    public boolean isGameRunning() {
-        return gameController != null;
     }
 
     @Override

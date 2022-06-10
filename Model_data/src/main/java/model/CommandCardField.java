@@ -21,7 +21,7 @@
  */
 package model;
 
-import designpatterns.observer.Subject;
+import designpatterns.Subject;
 
 /**
  * ...

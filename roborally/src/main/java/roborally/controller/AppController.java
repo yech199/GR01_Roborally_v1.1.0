@@ -41,10 +41,7 @@ import roborally.RoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -203,16 +200,27 @@ public class AppController implements Observer {
                 }
 
                 // Give Alert to player showing
-                Alert alert;
-                alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
-                alert.showAndWait();
+                if(board.getGameId() != null) {
+                    Alert alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
+                    alert.showAndWait();
+                    appState = AppState.SERVER_GAME;
+                } else {
+                    Alert alert = new Alert(AlertType.INFORMATION, "Returning to main menu. ", ButtonType.OK);
+                    alert.showAndWait();
+                    appState = AppState.UNDECIDED;
+                    return false;
+                }
 
-                appState = AppState.SERVER_GAME;
                 setupGameController(board);
                 return true;
             }
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(AlertType.ERROR, "You have to choose a name for your robot! Try again.", ButtonType.OK);
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(AlertType.ERROR, "Not a valid name! Try again.", ButtonType.OK);
+            alert.showAndWait();
+            appState = AppState.UNDECIDED;
+            return false;
+        } catch (NoSuchElementException e) {
+            Alert alert = new Alert(AlertType.INFORMATION, "Something went wrong. Returning to main menu.", ButtonType.OK);
             alert.showAndWait();
             appState = AppState.UNDECIDED;
             return false;
@@ -270,10 +278,10 @@ public class AppController implements Observer {
     public boolean joinGame() {
         appState = AppState.SERVER_GAME;
         Optional<String> resultName = null;
-        boolean nameNotAccepted = true;
+        boolean nameAccepted = false;
 
         // Check for proper name
-        while (nameNotAccepted)
+        while (!nameAccepted)
         {
             TextInputDialog name = new TextInputDialog();
             name.setTitle("Player name");
@@ -285,11 +293,12 @@ public class AppController implements Observer {
 
             // Check if name is acceptable
             if (resultName.isPresent()) {
-                if (!resultName.get().equals("") && !resultName.isEmpty()) {
+                if (!resultName.get().equals("")) {
                     // If not empty and not blank
-                    nameNotAccepted = false;
+                    nameAccepted = true;
                 }
-            } else{
+            } else {
+                appState = AppState.UNDECIDED;
                 return false;
             }
         }
@@ -347,8 +356,8 @@ public class AppController implements Observer {
             alert.showAndWait();
             appState = AppState.UNDECIDED;
             return false;
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(AlertType.INFORMATION, "Something went wrong, try again.", ButtonType.OK);
+        } catch (NumberFormatException | NoSuchElementException e) {
+            Alert alert = new Alert(AlertType.INFORMATION, "Something went wrong. Returning to main menu.", ButtonType.OK);
             alert.showAndWait();
             appState = AppState.UNDECIDED;
             return false;

@@ -45,7 +45,7 @@ public class ServerController {
     }
 
     // Add player to game players
-    @PostMapping("/game/join/{id}")
+    @PostMapping("/game/{id}")
     public ResponseEntity<String> joinGame(@PathVariable int id, @RequestBody String playerName) {
         String result = gameService.joinGame(id, playerName);
         if (result.equals("Game not found")) return ResponseEntity.badRequest().body("Game not found");

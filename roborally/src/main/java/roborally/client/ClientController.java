@@ -233,4 +233,8 @@ public class ClientController implements IGameService {
         }
         return result;
     }
+
+    public void setTargetIP(String newIP){
+        targetIP = newIP;
+    }
 }

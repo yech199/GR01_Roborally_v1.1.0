@@ -162,7 +162,7 @@ public class AppController implements Observer {
 
                 // Check if name is acceptable
                 if (resultName.isPresent()) {
-                    if (!resultName.get().equals("") && !resultName.isEmpty()) {
+                    if (!resultName.get().equals("")) {
                         // If not empty and not blank
                         nameNotAccepted = false;
                     }

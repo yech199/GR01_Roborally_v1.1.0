@@ -17,6 +17,9 @@ public class ClientController implements IGameService {
 
     ClientController(String myIP){
         this.myIP = myIP;
+        //this.myIP = "localhost"; // Works
+        //this.myIP = "127.0.0.1"; // Works
+        this.myIP = "0.0.0.0"; // Works
         targetIP = "";
     }
 
@@ -29,7 +32,7 @@ public class ClientController implements IGameService {
     public String getGameById(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
+                .uri(URI.create("http://"+myIP+":8080/game/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -52,7 +55,7 @@ public class ClientController implements IGameService {
     public String updateGame(int id, String playerName, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
-                .uri(URI.create("http://localhost:8080/game/join/" + id + "/" + playerName))
+                .uri(URI.create("http://"+myIP+":8080/game/join/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();
@@ -73,7 +76,7 @@ public class ClientController implements IGameService {
     public String createGame(String boardName, int numOfPlayers) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(numOfPlayers)))
-                .uri(URI.create("http://localhost:8080/game/" + boardName + "/" + numOfPlayers))
+                .uri(URI.create("http://"+myIP+":8080/game/" + boardName + "/" + numOfPlayers))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -95,7 +98,7 @@ public class ClientController implements IGameService {
     public String getListOfGames() {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/game"))
+                .uri(URI.create("http://"+myIP+":8080/game"))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -117,7 +120,7 @@ public class ClientController implements IGameService {
     public String getListOfBoards() {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/board"))
+                .uri(URI.create("http://"+myIP+":8080/board"))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -139,7 +142,7 @@ public class ClientController implements IGameService {
     public String getBoardState(int gameId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/board/" + gameId))
+                .uri(URI.create("http://"+myIP+":8080/board/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -162,7 +165,7 @@ public class ClientController implements IGameService {
     public String joinGame(int gameId, String playername) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playername)))
-                .uri(URI.create("http://localhost:8080/game/join/" + gameId))
+                .uri(URI.create("http://"+myIP+":8080/game/join/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -184,7 +187,7 @@ public class ClientController implements IGameService {
     public String leaveGame(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
-                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
+                .uri(URI.create("http://"+myIP+":8080/game/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
                 .build();
@@ -206,7 +209,7 @@ public class ClientController implements IGameService {
     public String setPlayerState(int id, String playername, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(playerData))
-                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playername))
+                .uri(URI.create("http://"+myIP+":8080/game/" + id + "/" + playername))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();

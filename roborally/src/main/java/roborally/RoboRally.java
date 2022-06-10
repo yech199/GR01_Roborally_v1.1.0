@@ -21,6 +21,7 @@
  */
 package roborally;
 
+import model.Globals;
 import roborally.controller.AppController;
 import controller.GameController;
 import roborally.view.BoardView;
@@ -37,9 +38,6 @@ import javafx.stage.Stage;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class RoboRally extends Application {
-
-    private static final int MIN_APP_WIDTH = 600;
-
     private Stage stage;
     private BorderPane boardRoot;
 
@@ -60,7 +58,7 @@ public class RoboRally extends Application {
         RoboRallyMenuBar menuBar = new RoboRallyMenuBar(appController);
         boardRoot = new BorderPane();
         VBox vbox = new VBox(menuBar, boardRoot);
-        vbox.setMinWidth(MIN_APP_WIDTH);
+        vbox.setMinWidth(Globals.MIN_APP_WIDTH);
         Scene primaryScene = new Scene(vbox);
 
         stage.setScene(primaryScene);

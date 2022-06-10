@@ -19,4 +19,7 @@ public class Globals {
     // Used by CardFieldView
     public static final int CARDFIELD_WIDTH = 65;
     public static final int CARDFIELD_HEIGHT = 100;
+
+    // Used by RoboRally
+    public static final int MIN_APP_WIDTH = 600;
 }

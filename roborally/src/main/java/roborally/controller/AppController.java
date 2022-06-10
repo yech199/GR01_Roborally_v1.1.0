@@ -86,7 +86,6 @@ public class AppController implements Observer {
                 // The UI should not allow this, but in case this happens anyway.
                 // TODO give the user the option to save the game or abort this operation!
                 if (!stopGame()) {
-
                     return false;
                 }
 
@@ -164,7 +163,6 @@ public class AppController implements Observer {
                 return false;
             }
 
-
             ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
             dialogL.setTitle("Select board");
             dialogL.setHeaderText("Select a board to load");
@@ -206,7 +204,6 @@ public class AppController implements Observer {
         //String json = SaveBoard.serializePlayer(gameController.board.getPlayer(client.playerName));
         //String playerJson = SaveBoard.serializePlayer(gameController.board.getPlayer(playerName));
         client.setPlayerState(id, gameController.board.getPlayer(client.playerName));
-
     }
 
     public void leaveServerGame() {
@@ -284,30 +281,32 @@ public class AppController implements Observer {
             String clean = Arrays.toString(extractionArray);
 
             String result = clean.replaceAll("\\D+", "");
+            String resultResponse = null;
             Board board;
             if (selectedGame.isPresent()) {
                 // Join the selected game
                 int gameId = Integer.parseInt(result);
                 // TODO Error check
-                String resultResponse = client.joinGame(gameId, playerName);
+                resultResponse = client.joinGame(gameId, playerName);
                 board = client.getGameState(gameId, client.playerName);
             } else {
                 board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
             }
+            if(resultResponse.equals("Game Full")) {
+                Alert alert = new Alert(AlertType.INFORMATION, "GAME IS FULL.", ButtonType.OK);
+                alert.showAndWait();
+                appState = AppState.UNDECIDED;
+                return false;
+            }
             setupGameController(board);
             appState = AppState.SERVER_GAME;
-            return true;
         } catch (IndexOutOfBoundsException e) {
             Alert alert = new Alert(AlertType.INFORMATION, "No active games.", ButtonType.OK);
             alert.showAndWait();
             appState = AppState.UNDECIDED;
             return false;
-        } catch (NullPointerException | NumberFormatException e) {
-            Alert alert = new Alert(AlertType.INFORMATION, "UNABLE TO JOIN. GAME IS FULL.", ButtonType.OK);
-            alert.showAndWait();
-            appState = AppState.UNDECIDED;
-            return false;
         }
+        return true;
     }
 
     public void submitPlayerCards() {

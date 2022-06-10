@@ -56,7 +56,7 @@ public class RoboRallyMenuBar extends MenuBar {
         this.appController = appController;
 
         // ---------------------------------LOCAL ACTIONS MENU-------------------------------
-        localMenu = new Menu("Local");
+        localMenu = new Menu("File");
         this.getMenus().add(localMenu);
 
         newGame = new MenuItem("New Game");
@@ -97,32 +97,24 @@ public class RoboRallyMenuBar extends MenuBar {
 
 
         // ---------------------------------SERVER ACTIONS MENU-------------------------------
-        serverMenu = new Menu("Server");
+        serverMenu = new Menu("Multiplayer");
         this.getMenus().add(serverMenu);
 
-        serverGame = new MenuItem("Create Server Game");
+        serverGame = new MenuItem("Create Game");
         serverGame.setOnAction(e -> {
             boolean isSuccessful = this.appController.createServerGame();
-            if (isSuccessful) {
-                update();
-            } else {
-                update();
-            }
+            if (isSuccessful) update();
         });
         serverMenu.getItems().add(serverGame);
 
         joinGame = new MenuItem("Join Game");
         joinGame.setOnAction(e -> {
             boolean isSuccessful = this.appController.joinGame();
-            if (isSuccessful) {
-                update();
-            } else {
-                update();
-            }
+            if (isSuccessful) update();
         });
         serverMenu.getItems().add(joinGame);
 
-        saveServerGame = new MenuItem("Save Server game");
+        saveServerGame = new MenuItem("Save game");
         saveServerGame.setOnAction(e -> {
             this.appController.saveServerGame();
             update();

@@ -260,7 +260,6 @@ public class GameController extends AGameController {
         if (rebootTokenSpace.getPlayer() != null) {
             cardController.moveForward(rebootTokenSpace.getPlayer(), rebootToken.getHeading());
         }
-        rebootToken.doAction(this, rebootTokenSpace);
         rebootTokenSpace.setPlayer(player);
     }
 }

@@ -64,7 +64,7 @@ public class ServerController {
      * @param id
      * @param playerName
      * @return Response code
-     * @author Mads Sørensen
+     * @author Mark Nielsen
      */
     @DeleteMapping("/game/{id}/{playerName}")
     public ResponseEntity<String> leaveGame(@PathVariable int id, @PathVariable String playerName) {

@@ -1,5 +1,7 @@
 package client_server;
 
+import java.util.concurrent.TimeoutException;
+
 public interface IGameService {
 
     String getGameById(int id, String playerName);
@@ -8,7 +10,7 @@ public interface IGameService {
 
     String createGame(String boardName, int numOfPlayers);
 
-    String getListOfGames();
+    String getListOfGames() throws TimeoutException;
 
     String getListOfBoards();
 

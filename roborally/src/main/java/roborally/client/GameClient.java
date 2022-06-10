@@ -4,8 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import model.Board;
 import model.Player;
+import roborally.controller.AppController;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeoutException;
 
 public class GameClient {
 
@@ -62,8 +66,6 @@ public class GameClient {
             String[] boardNames = gson.fromJson(data.get("boardNames"), String[].class);
             int[] activePlayers = gson.fromJson(data.get("activePlayers"), int[].class);
             int[] totalPlayers = gson.fromJson(data.get("maxNumberOfPlayers"), int[].class);
-
-
             for (int i = 0; i < gameID.length && i < boardNames.length; i++) {
                 if (activePlayers[i] != totalPlayers[i]) {
                     result.add("Name: " + boardNames[i].concat(" | Id: " + String.valueOf(gameID[i]).concat(" | Active: " + String.valueOf(activePlayers[i]))));

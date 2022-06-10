@@ -1,6 +1,8 @@
 package roborally.client;
 
 import client_server.IGameService;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -9,6 +11,7 @@ import java.time.Duration;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ClientController implements IGameService {
 
@@ -115,7 +118,12 @@ public class ClientController implements IGameService {
             result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
         } catch (IllegalArgumentException e) {
             result = null;
-        } catch (Exception e) {
+        } catch (TimeoutException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Server Timeout, Check IP-Settings", ButtonType.OK);
+            alert.showAndWait();
+            result = null;
+        }
+        catch (Exception e) {
             e.printStackTrace();
             result = null;
         }

@@ -15,11 +15,11 @@ public class ClientController implements IGameService {
     String targetIP;
 
 
-    ClientController(String myIP){
+    ClientController(String myIP) {
         this.myIP = myIP;
         //this.myIP = "localhost"; // Works
         //this.myIP = "127.0.0.1"; // Works
-        this.myIP = "0.0.0.0"; // Works
+        //this.myIP = "10.209.245.8"; // Works
         targetIP = "";
     }
 
@@ -55,7 +55,7 @@ public class ClientController implements IGameService {
     public String updateGame(int id, String playerName, String gameData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(gameData))
-                .uri(URI.create("http://"+myIP+":8080/game/join/" + id + "/" + playerName))
+                .uri(URI.create("http://" + myIP + ":8080/game/join/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();

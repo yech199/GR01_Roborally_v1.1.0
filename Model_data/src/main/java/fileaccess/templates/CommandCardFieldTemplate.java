@@ -1,4 +1,4 @@
-package fileaccess.model;
+package fileaccess.templates;
 
 public class CommandCardFieldTemplate {
     public String command;

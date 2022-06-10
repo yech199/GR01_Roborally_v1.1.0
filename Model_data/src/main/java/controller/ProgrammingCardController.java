@@ -146,7 +146,7 @@ public class ProgrammingCardController {
         for (int i = 0; i < moves; i++) {
             if (player.getSpace().getActions().size() > 0) {
                 for (SpaceElement space : player.getSpace().getActions()) {
-                    if (space instanceof Pit)
+                    if (space instanceof Pit || player.isRebooted)
                         return;
                 }
             }

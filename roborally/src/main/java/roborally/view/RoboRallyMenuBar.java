@@ -26,6 +26,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
+import java.net.UnknownHostException;
+
 /**
  * ...
  *
@@ -129,8 +131,14 @@ public class RoboRallyMenuBar extends MenuBar {
         });
         serverMenu.getItems().add(leaveGame);
 
-        updateServer = new MenuItem("Update server");
-        updateServer.setOnAction(e -> this.appController.updateTargetIP());
+        updateServer = new MenuItem("IP Setting");
+        updateServer.setOnAction(e -> {
+            try {
+                this.appController.updateTargetIP();
+            } catch (UnknownHostException ex) {
+                ex.printStackTrace();
+            }
+        });
         serverMenu.getItems().add(updateServer);
 
         exitApp = new MenuItem("Exit");

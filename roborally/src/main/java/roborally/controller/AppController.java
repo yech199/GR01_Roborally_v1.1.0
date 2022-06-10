@@ -41,10 +41,9 @@ import roborally.RoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -292,7 +291,7 @@ public class AppController implements Observer {
 
             // Check if name is acceptable
             if (resultName.isPresent()) {
-                if (!resultName.get().equals("") && !resultName.isEmpty()) {
+                if (!resultName.get().equals("")) {
                     // If not empty and not blank
                     nameNotAccepted = false;
                 }
@@ -300,7 +299,6 @@ public class AppController implements Observer {
                 return false;
             }
         }
-
 
         String playerName = "Player";
         if (resultName.isPresent()) {
@@ -422,7 +420,7 @@ public class AppController implements Observer {
         return true;
     }
 
-    public void updateTargetIP() {
+    public void updateTargetIP() throws UnknownHostException {
         Optional<String> resultName = null;
         TextInputDialog name = new TextInputDialog();
 
@@ -430,10 +428,26 @@ public class AppController implements Observer {
         name.setHeaderText("Connect to a server through IP address.");
         name.setContentText("IP ADDRESS: ");
 
-        // Update name to be the inputted name
         resultName = name.showAndWait();
-        if(isValid(resultName.get())) {
-            client.setTargetIP(resultName.get());
+        try {
+            while (!isValid(resultName.get())) {
+                resultName = name.showAndWait();
+                // Update name to be the inputted name
+                if (isValid(resultName.get())) {
+                    client.setTargetIP(resultName.get());
+                    Alert alert = new Alert(AlertType.CONFIRMATION, "GREAT SUCCESS, YOUR IP ADDRESS IS: ".concat(resultName.get()),
+                            ButtonType.OK);
+                    alert.showAndWait();
+                    return;
+                }
+                name.setTitle("Online Roborally");
+                name.setHeaderText("Not a valid IP address, please enter a again.");
+                name.setContentText("IP ADDRESS: ");
+
+            }
+        } catch (NoSuchElementException e) {
+            client.setTargetIP(InetAddress.getLocalHost().getHostAddress());
+            appState = AppState.UNDECIDED;
         }
     }
     public static boolean isValid(String IP) {

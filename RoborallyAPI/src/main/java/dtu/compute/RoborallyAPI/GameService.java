@@ -132,14 +132,12 @@ public class GameService implements IGameService {
             return "Game Full";
 
         gameBoard.getRobot().ifPresent(freePlayerIndex -> {
-            Player template = gameBoard.getPlayer(freePlayerIndex);
-            //gameBoard.getPlayers().set(freePlayerIndex, template);
-            String color = template.getColor();
+            Player dummy = gameBoard.getPlayer(freePlayerIndex);
 
             // Add new player and replace dummy player
-            Player player = new Player(game.board, color, playerName);
-            player.setSpace(template.getSpace());
-            player.setHeading(template.getHeading());
+            Player player = new Player(game.board, dummy.getColor(), playerName);
+            player.setSpace(dummy.getSpace());
+            player.setHeading(dummy.getHeading());
             player.active = true;
             gameBoard.setRobot(player);
 

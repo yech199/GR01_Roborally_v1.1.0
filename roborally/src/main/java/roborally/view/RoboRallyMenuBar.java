@@ -38,14 +38,15 @@ public class RoboRallyMenuBar extends MenuBar {
     private Menu serverMenu;
 
     private MenuItem newGame;
-    private MenuItem saveGame;
-    private MenuItem serverGame;
-    private MenuItem saveServerGame;
-    private MenuItem joinGame;
-    private MenuItem loadGame;
     private MenuItem stopGame;
-    private MenuItem leaveGame;
+    private MenuItem saveGame;
+    private MenuItem loadGame;
     private MenuItem exitApp;
+
+    private MenuItem serverGame;
+    private MenuItem joinGame;
+    private MenuItem saveServerGame;
+    private MenuItem leaveGame;
     private MenuItem update;
     private MenuItem finishProgramming;
 

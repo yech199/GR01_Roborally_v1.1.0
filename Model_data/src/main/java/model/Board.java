@@ -262,11 +262,7 @@ public class Board extends Subject {
     public int getAmountOfActivePlayers() {
         return amountOfActivePlayers;
     }
-
-    public void setAmountOfActivePlayers(int numberOfPlayers) {
-        this.amountOfActivePlayers = numberOfPlayers;
-    }
-
+    
     public void setMaxAmountOfPlayers(int maxAmountOfPlayers) {
         if (this.maxAmountOfPlayers == null) {
             this.maxAmountOfPlayers = maxAmountOfPlayers;

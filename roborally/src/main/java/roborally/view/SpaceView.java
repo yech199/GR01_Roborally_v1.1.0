@@ -21,7 +21,7 @@
  */
 package roborally.view;
 
-import designpatterns.observer.Subject;
+import designpatterns.Subject;
 import model.boardElements.*;
 import model.Heading;
 import model.Player;

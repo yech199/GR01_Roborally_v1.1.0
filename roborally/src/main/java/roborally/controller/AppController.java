@@ -22,8 +22,8 @@
 package roborally.controller;
 
 import controller.GameController;
-import designpatterns.observer.Observer;
-import designpatterns.observer.Subject;
+import designpatterns.Observer;
+import designpatterns.Subject;
 import fileaccess.IOUtil;
 import fileaccess.LoadBoard;
 import fileaccess.SaveBoard;
@@ -44,7 +44,6 @@ import javax.swing.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

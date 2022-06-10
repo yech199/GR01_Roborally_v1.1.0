@@ -150,9 +150,9 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String joinGame(int gameId, String playername) {
+    public String joinGame(int gameId, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playername)))
+                .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playerName)))
                 .uri(URI.create("http://localhost:8080/game/join/" + gameId))
                 .setHeader("User-Agent", "Game Client")
                 .header("Content-Type", "application/json")
@@ -194,10 +194,10 @@ public class ClientController implements IGameService {
     }
 
     @Override
-    public String setPlayerState(int id, String playername, String playerData) {
+    public String setPlayerState(int id, String playerName, String playerData) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(playerData))
-                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playername))
+                .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))
                 .setHeader("User-Agent", "Game Client")
                 .setHeader("Content-Type", "application/json")
                 .build();

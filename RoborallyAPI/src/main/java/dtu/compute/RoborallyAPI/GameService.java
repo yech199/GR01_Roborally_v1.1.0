@@ -51,7 +51,7 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public String updateGame(int id, String playername, String playerState) {
+    public String updateGame(int id, String playerName, String playerState) {
         GameController game = findGame(id);
         if (game == null) return "Game not found";
         LoadServer.deserializePlayer(new Gson().fromJson(playerState, PlayerTemplate.class), game.board);

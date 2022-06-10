@@ -42,8 +42,7 @@ import java.util.List;
 public class PlayerView extends Tab implements ViewObserver {
 
     private Player player;
-
-    private VBox top;
+    private GameController gameController;
 
     private Label programLabel;
     private GridPane programPane;
@@ -53,15 +52,13 @@ public class PlayerView extends Tab implements ViewObserver {
     private CardFieldView[] programCardViews;
     private CardFieldView[] cardViews;
 
+    private VBox top;
     private VBox buttonPanel;
+    private VBox playerInteractionPanel;
 
     private Button finishButton;
     private Button executeButton;
     private Button stepButton;
-
-    private VBox playerInteractionPanel;
-
-    private GameController gameController;
 
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
         super(player.getName());

@@ -46,6 +46,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * ...
@@ -59,6 +61,11 @@ public class AppController implements Observer {
 
     private GameController gameController;
     private AppState appState = AppState.UNDECIDED;
+
+    static String IPV4_PATTERN =
+            "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\\.(?!$)|$)){4}$";
+
+    static Pattern pattern = Pattern.compile(IPV4_PATTERN);
 
     public enum AppState {
         LOCAL_GAME,
@@ -425,12 +432,14 @@ public class AppController implements Observer {
 
         // Update name to be the inputted name
         resultName = name.showAndWait();
-
-        client.setTargetIP(resultName.get());
-
-
+        if(isValid(resultName.get())) {
+            client.setTargetIP(resultName.get());
+        }
     }
-
+    public static boolean isValid(String IP) {
+        Matcher matcher = pattern.matcher(IP);
+        return matcher.matches();
+    }
     private void setupGameController(Board board) {
         board.attach(this);
         gameController = new GameController(board);

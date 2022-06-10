@@ -21,17 +21,20 @@ import java.util.concurrent.ExecutionException;
 
 import static fileaccess.SaveBoard.serializeBoard;
 
+
 @Service
 public class GameService implements IGameService {
 
     // A game is a board with a set gameId and saved player cards/registers
     ArrayList<GameController> activeGames = new ArrayList<>();
     ArrayList<Board> modelBoards = new ArrayList<>();
-
     ArrayList<PlayerTemplate> playerData = new ArrayList<>();
-
     int id = 1;
 
+    /**
+     * Constructor:
+     * creates a list of names according to the saved boardstates in the server-side resourcefolder
+     */
     public GameService() {
         // Initialize board templates on server
         List<String> boardNames = IOUtil.getBoardFileNames();
@@ -41,6 +44,11 @@ public class GameService implements IGameService {
         }
     }
 
+    /**
+     * @param id: used to identify a single instance of an active game
+     * @param playerName: Unique playername which is used to identify a specific player
+     * @return The state of the game serialized as an JSON-string
+     */
     @Override
     public String getGameById(int id, String playerName) {
         Board boardGame = findGameBoard(id);
@@ -50,6 +58,16 @@ public class GameService implements IGameService {
         return SaveServer.serializePlayerState(boardGame, player);
     }
 
+    /**
+     * Currently unused: Updates entire gamestate of server to match a single client
+     *
+     * @param id: Used to identify the instance of a game on the server
+     * @param playername: Used to identify which player the state needs to be updated for
+     * @param playerState: State of player object of which the client connected has control over, as a JSON-string
+     *
+     * @return "Game not found", if the id does not match any games on the server
+     * @return "OK", if the id matches and deserialization is succesful.
+     */
     @Override
     public String updateGame(int id, String playername, String playerState) {
         GameController game = findGame(id);
@@ -58,6 +76,13 @@ public class GameService implements IGameService {
         return "OK";
     }
 
+    /**
+     * Creates a game on the server which other clients can join. Increments id for next call.
+     *
+     * @param boardName: The name of the boardState, hopefully matching on of the servers board resources
+     * @param numOfPlayers: The amount of players the game should support, chosen client-side
+     * @return: gameId, as a string.
+     */
     @Override
     public String createGame(String boardName, int numOfPlayers) {
         Board board = findBoard(boardName);
@@ -72,6 +97,17 @@ public class GameService implements IGameService {
         return String.valueOf(gameId);
     }
 
+    /**
+     * Creates ArrayLists of different game data into a Json-Object which it then returns.
+     *
+     * Information includes:
+     *  - listOfGames: list of all game id's on the server
+     *  - listOfBoardNames: list of all game names as described the resource folder of server
+     *  - listOfActivePlayers: List of how many active player said game has
+     *  - listOfTotalPlayers: list of the max amount of players said game allows
+     *
+     * @return JSON-String of object containing these lists of game information.
+     */
     @Override
     public String getListOfGames() {
         List<Integer> listOfGames = new ArrayList<>();
@@ -101,6 +137,9 @@ public class GameService implements IGameService {
         return new Gson().toJson(jsonObj);
     }
 
+    /**
+     * @return Json-String with the list of boards in the servers resource folder
+     */
     @Override
     public String getListOfBoards() {
         List<String> listOfBoards = new ArrayList<>();
@@ -109,6 +148,13 @@ public class GameService implements IGameService {
         return new Gson().toJson(listOfBoards);
     }
 
+    /**
+     * Gets the gamestate as a Json-String if the provided gameId is valid
+     *
+     * @param gameId: unique id of which the game can be searched for
+     * @return Json-String of board state
+     * @return null, if no game matches the id
+     */
     @Override
     public String getBoardState(int gameId) {
         for (GameController game : activeGames) {
@@ -119,6 +165,15 @@ public class GameService implements IGameService {
         return null;
     }
 
+    /**
+     * Attempts to join a game on the server. If possible, adds player to gameState.
+     * If the player joining reaches the max-capacity of the game it will start.
+     *
+     * @param id
+     * @param playerName
+     * @return Error Codes, String objects describing what went wrong
+     * @return id of game as a string object
+     */
     @Override
     public String joinGame(int id, String playerName) {
         GameController game = findGame(id);

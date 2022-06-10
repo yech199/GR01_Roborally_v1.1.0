@@ -36,9 +36,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class is responsible for reading(load) and writing(save) game state to and from json files.
+ * @author Mads Sørensen (S215805)
+ * @author Mark Nielsen
  */
 public class SaveBoard {
 
+    /**
+     * Serialize spaces and save them to the template for serialization
+     * @param board
+     * @return ArrayList of the SpaceTemplates
+     */
     private static ArrayList<SpaceTemplate> saveSpaces(Board board) {
         ArrayList<SpaceTemplate> spaceTemplates = new ArrayList<>();
         // Add all spaces
@@ -59,6 +66,11 @@ public class SaveBoard {
         return spaceTemplates;
     }
 
+    /**
+     * Serialize players and save them to the template for serialization
+     * @param players
+     * @return ArrayList of the Players
+     */
     private static ArrayList<PlayerTemplate> savePlayers(List<Player> players) {
         ArrayList<PlayerTemplate> playerTemplates = new ArrayList<>();
         int i = 0;
@@ -82,6 +94,10 @@ public class SaveBoard {
         return playerTemplates;
     }
 
+    /**
+     * Deserialize a json string with the state of the game and returns a board.
+     * @return board object with the game state
+     */
     private static ArrayList<CommandCardFieldTemplate> saveCommandCardFields(CommandCardField[] commandCardFields) {
         ArrayList<CommandCardFieldTemplate> newCards = new ArrayList<>();
         for (CommandCardField commandCardField : commandCardFields) {
@@ -105,7 +121,6 @@ public class SaveBoard {
 
     /**
      * Serialize a board with the game state to a json string
-     *
      * @param board the board to be serialized
      * @return json string of game state
      */

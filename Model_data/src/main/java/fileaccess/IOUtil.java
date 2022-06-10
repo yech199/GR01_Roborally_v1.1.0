@@ -124,6 +124,7 @@ public class IOUtil {
      *
      * @param gameName      Name of the file
      * @param jsonGameState json string of the game state
+     * @author Mads Sørensen (S215805)
      */
     public static void writeGame(String gameName, String jsonGameState) {
         String filename;
@@ -175,6 +176,7 @@ public class IOUtil {
      *
      * @param gameName name of game
      * @return json string of the game state
+     * @author Mads Sørensen (S215805)
      */
     public static String readGame(String gameName, boolean savedGame) {
         if (gameName == null) {

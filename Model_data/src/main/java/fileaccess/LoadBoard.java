@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class loads/deserialize different configurations of the board and game
+ * @author Mads Sørensen (S215805)
+ * @author Mark Nielsen
  */
 public class LoadBoard {
 
@@ -28,7 +30,7 @@ public class LoadBoard {
         }
     }
 
-    /**
+    /***
      * Load each player by copying Only used when loading a saved game. Not a new game
      */
     public static void loadPlayers(List<PlayerTemplate> players, Board board) {
@@ -51,6 +53,13 @@ public class LoadBoard {
         }
     }
 
+    /**
+     * Deserialize Command Card Fields and load into a player
+     * @param commandCardFields
+     * @param newPlayer
+     * @param size
+     * @return the loaded Command Card Fields
+     */
     private static CommandCardField[] loadCommandCardFields(ArrayList<CommandCardFieldTemplate> commandCardFields, Player newPlayer, int size) {
         int i = 0;
         CommandCardField[] newCards = new CommandCardField[size];
@@ -102,6 +111,11 @@ public class LoadBoard {
         return board;
     }
 
+    /**
+     * Deserialize a json string with the state of the board and returns a board.
+     *
+     * @return board object with the game state
+     */
     public static Board deserializeBoard(String jsonGameState, int numOfPlayers) {
         // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
@@ -135,10 +149,10 @@ public class LoadBoard {
     }
 
     /**
-     * Load the given board from a json file.
-     *
+     * Load the given game from a json file. Used as a helper method for different needs of loading
+     * to and from JSON ex. by a file name.
      * @param gameName name of the game board
-     * @return the new board
+     * @return the deserialized board
      */
     public static Board loadGame(String gameName, boolean saveGame) {
         String gameState = IOUtil.readGame(gameName, saveGame);
@@ -150,6 +164,8 @@ public class LoadBoard {
 
     /**
      * Load a board object given a json string
+     * @param jsonGameState gameState as JSON string
+     * @return the deserialized board
      */
     public static Board loadGameState(String jsonGameState) {
         //System.out.println("File: "+jsonGameState);
@@ -165,7 +181,7 @@ public class LoadBoard {
      * Create a new game by loading a gameboard from the predefined board configurations in resource folder
      *
      * @param boardName name of the game board
-     * @return the new board
+     * @return the deserialized board
      */
     public static Board newBoard(String boardName, int numOfPlayers) {
         String gameState = IOUtil.readGame(boardName, false);

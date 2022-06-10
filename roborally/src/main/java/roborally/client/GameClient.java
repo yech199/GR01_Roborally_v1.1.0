@@ -81,8 +81,8 @@ public class GameClient {
         return clientController.leaveGame(id, playerName);
     }
 
-    public void setPlayerState(int gameId, Player player) {
+    public void setPlayerState(int id, Player player) {
         String playerData = SaveBoard.serializePlayer(player);
-        clientController.setPlayerState(gameId, playerName, playerData);
+        clientController.setPlayerState(id, playerName, playerData);
     }
 }

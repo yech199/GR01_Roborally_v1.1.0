@@ -49,7 +49,7 @@ import java.util.*;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class AppController implements Observer {
-    private final List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
+
     private final RoboRally roboRally;
     private final GameClient client = new GameClient();
 
@@ -70,7 +70,7 @@ public class AppController implements Observer {
      * @return whether it was possible to create a new game or not
      */
     public boolean newGame() {
-        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(Globals.PLAYER_NUMBER_OPTIONS.get(0), Globals.PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
@@ -133,7 +133,7 @@ public class AppController implements Observer {
     }
 
     public boolean createServerGame() {
-        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(Globals.PLAYER_NUMBER_OPTIONS.get(0), Globals.PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> selectedNumOfPlayers = dialog.showAndWait();

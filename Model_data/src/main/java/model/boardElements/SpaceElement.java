@@ -29,7 +29,6 @@ import model.Space;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-@FunctionalInterface
 public interface SpaceElement {
 
     /**

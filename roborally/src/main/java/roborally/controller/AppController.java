@@ -177,18 +177,17 @@ public class AppController implements Observer {
                 board = client.getGameState(Integer.parseInt(gameId), client.playerName);
                 alertType = AlertType.CONFIRMATION;
             } else { // Should not happen
-                board = LoadBoard.newBoard(null, numOfPlayers);
-                result = "OK";
-                alertType = AlertType.WARNING;
+                return false;
+                //board = LoadBoard.newBoard(null, numOfPlayers); // boardName = Null, means loading of default board
+                //result = "OK";
+                //alertType = AlertType.WARNING;
             }
 
+            // Give Alert to player showing
             Alert alert;
-            if (result.equals("OK")) {
-                alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
-            } else {
-                alert = new Alert(alertType, result, ButtonType.OK);
-            }
+            alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
             alert.showAndWait();
+
 
             appState = AppState.SERVER_GAME;
             setupGameController(board);

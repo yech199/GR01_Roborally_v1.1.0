@@ -105,7 +105,7 @@ public class ServerController {
     }
 
     /**
-     * Updates the player state
+     * Updates the player state given the client player data
      * @author Mads Sørensen
      */
     @PutMapping("game/{id}/{playername}")

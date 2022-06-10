@@ -14,6 +14,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Used to handle responses and JSON files and communication to the server
+ *
+ * @author Mads Sørensen (S215805)
+ * @author Mark Nielsen
+ */
 public class GameClient {
 
     ClientController clientController;
@@ -51,6 +57,10 @@ public class GameClient {
         clientController.updateGame(id, playerName, jsonGameState);
     }
 
+    /**
+     * Returns a list of games
+     * @return ArrayList of list of games
+     */
     public ArrayList<String> getListOfGames() {
         Gson gson = new Gson();
         String games = clientController.getListOfGames();
@@ -75,6 +85,10 @@ public class GameClient {
         return result;
     }
 
+    /**
+     * Get list of boardNames
+     * @return
+     */
     public List<String> getListOfBoards() {
         Gson gson = new Gson();
         String boards = clientController.getListOfBoards();
@@ -106,6 +120,5 @@ public class GameClient {
 
     public void setTargetIP(String newIP){
         clientController.setTargetIP(newIP);
-
     }
 }

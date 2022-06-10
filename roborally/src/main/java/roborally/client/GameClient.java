@@ -29,7 +29,7 @@ public class GameClient {
     }
 
     public Board getGameState(int id, String playerName) {
-        String json = clientController.getGameById(id, playerName);
+        String json = clientController.getPlayerStateByGameId(id, playerName);
         return LoadBoard.loadGameState(json);
     }
 

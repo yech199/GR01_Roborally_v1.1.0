@@ -19,7 +19,7 @@ public class ClientController implements IGameService {
             .build();
 
     @Override
-    public String getGameById(int id, String playerName) {
+    public String getPlayerStateByGameId(int id, String playerName) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://localhost:8080/game/" + id + "/" + playerName))

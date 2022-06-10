@@ -2,7 +2,7 @@ package client_server;
 
 public interface IGameService {
 
-    String getGameById(int id, String playerName);
+    String getPlayerStateByGameId(int id, String playerName);
 
     String updateGame(int id, String playerName, String playerState);
 

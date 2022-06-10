@@ -42,7 +42,7 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public String getGameById(int id, String playerName) {
+    public String getPlayerStateByGameId(int id, String playerName) {
         Board boardGame = findGameBoard(id);
         if (boardGame == null) return "Game not found";
         Player player = boardGame.getPlayer(playerName);

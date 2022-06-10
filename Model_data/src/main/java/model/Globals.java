@@ -15,4 +15,8 @@ public class Globals {
     // Used by SpaceView
     public static final int SPACE_HEIGHT = 60; // 75;
     public static final int SPACE_WIDTH = 60; // 75;
+
+    // Used by CardFieldView
+    public static final int CARDFIELD_WIDTH = 65;
+    public static final int CARDFIELD_HEIGHT = 100;
 }

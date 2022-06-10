@@ -45,9 +45,6 @@ public class CardFieldView extends GridPane implements ViewObserver {
     // programs which can copy/paste Strings.
     final public static DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
 
-    final public static int CARDFIELD_WIDTH = 65;
-    final public static int CARDFIELD_HEIGHT = 100;
-
     final public static Border BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2)));
 
     final public static Background BG_DEFAULT = new Background(new BackgroundFill(Color.WHITE, null, null));
@@ -57,9 +54,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
     final public static Background BG_ACTIVE = new Background(new BackgroundFill(Color.YELLOW, null, null));
     final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW, null, null));
 
-    private CommandCardField field;
-
     private Label label;
+
+    private CommandCardField field;
 
     private GameController gameController;
 
@@ -73,12 +70,12 @@ public class CardFieldView extends GridPane implements ViewObserver {
         this.setBorder(BORDER);
         this.setBackground(BG_DEFAULT);
 
-        this.setPrefWidth(CARDFIELD_WIDTH);
-        this.setMinWidth(CARDFIELD_WIDTH);
-        this.setMaxWidth(CARDFIELD_WIDTH);
-        this.setPrefHeight(CARDFIELD_HEIGHT);
-        this.setMinHeight(CARDFIELD_HEIGHT);
-        this.setMaxHeight(CARDFIELD_HEIGHT);
+        this.setPrefWidth(Globals.CARDFIELD_WIDTH);
+        this.setMinWidth(Globals.CARDFIELD_WIDTH);
+        this.setMaxWidth(Globals.CARDFIELD_WIDTH);
+        this.setPrefHeight(Globals.CARDFIELD_HEIGHT);
+        this.setMinHeight(Globals.CARDFIELD_HEIGHT);
+        this.setMaxHeight(Globals.CARDFIELD_HEIGHT);
 
         label = new Label("This is a slightly longer text");
         label.setWrapText(true);

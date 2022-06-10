@@ -25,7 +25,6 @@ package model;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public enum Heading {
     SOUTH, WEST, NORTH, EAST;

@@ -14,7 +14,8 @@ public class ProgrammingCardController {
 
     /**
      * Moves the player in the direction of the heading if possible
-     * @param player being moved
+     *
+     * @param player        being moved
      * @param moveDirection of the player or of the spaceElement moving you
      */
     public void moveForward(@NotNull Player player, Heading moveDirection) {
@@ -41,9 +42,7 @@ public class ProgrammingCardController {
             else if (target.getPlayer() != null) {
                 boolean isValid = checkIfMoveToTargetWithPlayerIsValid(player, target);
                 if (!isValid) throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
-            }
-
-            else {
+            } else {
                 if (player.getSpace().hasWallPointing(moveDirection) || target.hasWallPointing(moveDirection.next().next())) {
                     throw new ImpossibleMoveException(player, player.getSpace(), moveDirection);
                 }
@@ -78,7 +77,6 @@ public class ProgrammingCardController {
     }
 
     /**
-     *
      * @param player who wants to push another player
      * @param target the space of the player being pushed
      * @return Whether the push is a valid move

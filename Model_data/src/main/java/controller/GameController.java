@@ -51,6 +51,7 @@ public class GameController extends AGameController {
         //   - the counter of moves in the game should be increased by one
         //     if the player is moved
 
+        /*
         if (space != null && space.board == board) {
             Player currentPlayer = board.getCurrentPlayer();
             if (currentPlayer != null && space.getPlayer() == null) {
@@ -59,6 +60,7 @@ public class GameController extends AGameController {
                 board.setCurrentPlayer(board.getPlayer(playerNumber));
             }
         }
+         */
     }
 
     /**

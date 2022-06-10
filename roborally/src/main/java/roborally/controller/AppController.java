@@ -41,10 +41,7 @@ import roborally.RoboRally;
 import roborally.client.GameClient;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -143,56 +140,90 @@ public class AppController implements Observer {
         Optional<Integer> selectedNumOfPlayers = dialog.showAndWait();
         int numOfPlayers;
 
-        if (selectedNumOfPlayers.isPresent()) {
-            numOfPlayers = selectedNumOfPlayers.get();
+        try {
+            if (selectedNumOfPlayers.isPresent()) {
+                numOfPlayers = selectedNumOfPlayers.get();
 
-            List<String> games = client.getListOfBoards();
+                List<String> games = client.getListOfBoards();
 
-            TextInputDialog name = new TextInputDialog();
-            name.setTitle("Player name");
-            name.setHeaderText("Write the name of your player");
-            name.setContentText("Name: ");
-            Optional<String> resultName = name.showAndWait();
+            Optional<String> resultName = null;
+            boolean nameNotAccepted = true;
 
-            client.playerName = "Player";
-            if (!resultName.isEmpty()) {
-                client.playerName = resultName.get();
-            } else {
-                Alert alert = new Alert(AlertType.INFORMATION, "Returning to main menu...", ButtonType.OK);
-                alert.showAndWait();
-                return false;
+            // Check for proper name
+            while (nameNotAccepted)
+            {
+                TextInputDialog name = new TextInputDialog();
+                name.setTitle("Player name");
+                name.setHeaderText("Write the name of your player");
+                name.setContentText("Name: ");
+
+                // Update name to be the inputted name
+                resultName = name.showAndWait();
+
+                // Check if name is acceptable
+                if (resultName.isPresent()) {
+                    if (!resultName.get().equals("") && !resultName.isEmpty()) {
+                        // If not empty and not blank
+                        nameNotAccepted = false;
+                    }
+                } else{
+                    return false;
+                }
             }
 
-            ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
-            dialogL.setTitle("Select board");
-            dialogL.setHeaderText("Select a board to load");
-            Optional<String> selectedBoard = dialogL.showAndWait();
+                client.playerName = "Player";
+                if (!resultName.isEmpty()) {
+                    client.playerName = resultName.get();
+                } else {
+                    Alert alert = new Alert(AlertType.INFORMATION, "Returning to main menu...", ButtonType.OK);
+                    alert.showAndWait();
+                    return false;
+                }
 
-            Board board;
-            String result;
-            AlertType alertType;
-            if (selectedBoard.isPresent()) {
-                String gameId = client.createGame(selectedBoard.get(), numOfPlayers);
-                result = client.joinGame(Integer.parseInt(gameId), client.playerName);
-                board = client.getGameState(Integer.parseInt(gameId), client.playerName);
-                alertType = AlertType.CONFIRMATION;
-            } else { // Should not happen
-                board = LoadBoard.newBoard(null, numOfPlayers);
-                result = "OK";
-                alertType = AlertType.WARNING;
-            }
+                ChoiceDialog<String> dialogL = new ChoiceDialog<>(games.get(0), games);
+                dialogL.setTitle("Select board");
+                dialogL.setHeaderText("Select a board to load");
+                Optional<String> selectedBoard = dialogL.showAndWait();
 
-            Alert alert;
-            if (result.equals("OK")) {
-                alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
-            } else {
-                alert = new Alert(alertType, result, ButtonType.OK);
+                Board board;
+                String result;
+                AlertType alertType;
+                if (selectedBoard.isPresent()) {
+                    String gameId = client.createGame(selectedBoard.get(), numOfPlayers);
+                    result = client.joinGame(Integer.parseInt(gameId), client.playerName);
+                    board = client.getGameState(Integer.parseInt(gameId), client.playerName);
+                    alertType = AlertType.CONFIRMATION;
+                } else { // Should not happen
+                    board = LoadBoard.newBoard(null, numOfPlayers);
+                    result = "OK";
+                    alertType = AlertType.WARNING;
+                }
+
+                // Give Alert to player showing
+                if(board.getGameId() != null) {
+                    Alert alert = new Alert(alertType, "Game created succesfully. Your game ID is: " + board.getGameId(), ButtonType.OK);
+                    alert.showAndWait();
+                    appState = AppState.SERVER_GAME;
+                } else {
+                    Alert alert = new Alert(AlertType.INFORMATION, "Returning to main menu. ", ButtonType.OK);
+                    alert.showAndWait();
+                    appState = AppState.UNDECIDED;
+                    return false;
+                }
+
+                setupGameController(board);
+                return true;
             }
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(AlertType.ERROR, "Not a valid name! Try again.", ButtonType.OK);
             alert.showAndWait();
-
-            appState = AppState.SERVER_GAME;
-            setupGameController(board);
-            return true;
+            appState = AppState.UNDECIDED;
+            return false;
+        } catch (NoSuchElementException e) {
+            Alert alert = new Alert(AlertType.INFORMATION, "Something went wrong. Returning to main menu.", ButtonType.OK);
+            alert.showAndWait();
+            appState = AppState.UNDECIDED;
+            return false;
         }
         return false;
     }
@@ -246,12 +277,32 @@ public class AppController implements Observer {
 
     public boolean joinGame() {
         appState = AppState.SERVER_GAME;
-        TextInputDialog name = new TextInputDialog();
-        name.setTitle("Player name");
-        name.setHeaderText("Write the name of your player");
-        name.setContentText("Name: ");
+        Optional<String> resultName = null;
+        boolean nameAccepted = false;
 
-        Optional<String> resultName = name.showAndWait();
+        // Check for proper name
+        while (!nameAccepted)
+        {
+            TextInputDialog name = new TextInputDialog();
+            name.setTitle("Player name");
+            name.setHeaderText("Write the name of your player");
+            name.setContentText("Name: ");
+
+            // Update name to be the inputted name
+            resultName = name.showAndWait();
+
+            // Check if name is acceptable
+            if (resultName.isPresent()) {
+                if (!resultName.get().equals("")) {
+                    // If not empty and not blank
+                    nameAccepted = true;
+                }
+            } else {
+                appState = AppState.UNDECIDED;
+                return false;
+            }
+        }
+
 
         String playerName = "Player";
         if (resultName.isPresent()) {
@@ -292,7 +343,7 @@ public class AppController implements Observer {
             } else {
                 board = LoadBoard.newBoard(null, Globals.MAX_NO_PLAYERS);
             }
-            if(resultResponse.equals("Game Full")) {
+            if (resultResponse.equals("Game Full")) {
                 Alert alert = new Alert(AlertType.INFORMATION, "GAME IS FULL.", ButtonType.OK);
                 alert.showAndWait();
                 appState = AppState.UNDECIDED;
@@ -302,6 +353,11 @@ public class AppController implements Observer {
             appState = AppState.SERVER_GAME;
         } catch (IndexOutOfBoundsException e) {
             Alert alert = new Alert(AlertType.INFORMATION, "No active games.", ButtonType.OK);
+            alert.showAndWait();
+            appState = AppState.UNDECIDED;
+            return false;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            Alert alert = new Alert(AlertType.INFORMATION, "Something went wrong. Returning to main menu.", ButtonType.OK);
             alert.showAndWait();
             appState = AppState.UNDECIDED;
             return false;

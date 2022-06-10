@@ -28,7 +28,6 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class BoardTemplate {
 

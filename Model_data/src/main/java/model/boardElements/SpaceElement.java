@@ -28,7 +28,6 @@ import model.Space;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 @FunctionalInterface
 public interface SpaceElement {
@@ -38,7 +37,7 @@ public interface SpaceElement {
      * that the GameController associated with the game is passed to this method.
      *
      * @param gameController the gameController of the respective game
-     * @param space the space this action should be executed for
+     * @param space          the space this action should be executed for
      */
     void doAction(AGameController gameController, Space space);
 }

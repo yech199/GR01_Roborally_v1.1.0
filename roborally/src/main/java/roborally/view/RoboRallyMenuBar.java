@@ -97,7 +97,7 @@ public class RoboRallyMenuBar extends MenuBar {
 
 
         // ---------------------------------SERVER ACTIONS MENU-------------------------------
-        serverMenu = new Menu("Multiplayer");
+        serverMenu = new Menu("Online");
         this.getMenus().add(serverMenu);
 
         serverGame = new MenuItem("Create Game");

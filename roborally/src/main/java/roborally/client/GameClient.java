@@ -103,4 +103,8 @@ public class GameClient {
         }
         return result;
     }
+
+    public void setTargetIP(String newIP){
+        clientController.setTargetIP(newIP);
+    }
 }

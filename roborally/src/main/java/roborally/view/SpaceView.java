@@ -22,6 +22,7 @@
 package roborally.view;
 
 import designpatterns.Subject;
+import model.Globals;
 import model.boardElements.*;
 import model.Heading;
 import model.Player;
@@ -40,25 +41,22 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SpaceView extends StackPane implements ViewObserver {
     private int tileAngle = 0;
-    final public static int SPACE_HEIGHT = 60; // 75;
-    final public static int SPACE_WIDTH = 60; // 75;
-
     public final Space space;
 
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
         // XXX the following styling should better be done with styles
-        this.setPrefWidth(SPACE_WIDTH);
-        this.setMinWidth(SPACE_WIDTH);
-        this.setMaxWidth(SPACE_WIDTH);
+        this.setPrefWidth(Globals.SPACE_WIDTH);
+        this.setMinWidth(Globals.SPACE_WIDTH);
+        this.setMaxWidth(Globals.SPACE_WIDTH);
 
-        this.setPrefHeight(SPACE_HEIGHT);
-        this.setMinHeight(SPACE_HEIGHT);
-        this.setMaxHeight(SPACE_HEIGHT);
+        this.setPrefHeight(Globals.SPACE_HEIGHT);
+        this.setMinHeight(Globals.SPACE_HEIGHT);
+        this.setMaxHeight(Globals.SPACE_HEIGHT);
 
         this.setStyle("-fx-background-image: url('graphics/DefaultTile.png'); -fx-background-size: "
-                + SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                + Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + ";");
 
         if (space.getActions().size() > 0 && space.getActions().get(0) instanceof ConveyorBelt conveyorBelt) {
             if (conveyorBelt.getConveyorBeltColor() == ConveyorBelt.ConveyorBeltColor.GREEN) {
@@ -69,7 +67,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                     case EAST -> 270;
                 };
                 this.setStyle("-fx-background-image: url('graphics/ConveyerBelt_Green.png'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
+                        Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
             } else {
                 this.tileAngle = switch (conveyorBelt.getHeading()) {
                     case SOUTH -> 0;
@@ -78,15 +76,15 @@ public class SpaceView extends StackPane implements ViewObserver {
                     case EAST -> 270;
                 };
                 this.setStyle("-fx-background-image: url('graphics/ConveyorBelt_Blue.png'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
+                        Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
             }
 
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Gear gear) {
             switch (gear.getDirection()) {
                 case LEFT -> this.setStyle("-fx-background-image: url('graphics/GearLeft.PNG'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                        Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + ";");
                 case RIGHT -> this.setStyle("-fx-background-image: url('graphics/GearRight.PNG'); -fx-background-size: " +
-                        SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                        Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + ";");
             }
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Antenna antenna) {
             this.tileAngle = switch (antenna.getHeading()) {
@@ -96,7 +94,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 case SOUTH -> 270;
             };
             this.setStyle("-fx-background-image: url('graphics/Antenna.png'); -fx-background-size: " +
-                    SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
+                    Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof PushPanel pushPanel) {
             this.tileAngle = switch (pushPanel.getHeading()) {
                 case SOUTH -> 0;
@@ -107,13 +105,13 @@ public class SpaceView extends StackPane implements ViewObserver {
 
             int[] registers = pushPanel.getPushPanelLabels();
             this.setStyle("-fx-background-image: url('graphics/PushPanel" + registers[0] + "-" + registers[1] + ".png');" +
-                    " -fx-background-size: " + SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
+                    " -fx-background-size: " + Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Pit pit) {
             this.setStyle("-fx-background-image: url('graphics/Pit.png'); -fx-background-size: " +
-                    SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                    Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + ";");
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof Checkpoint checkpoint) {
             this.setStyle("-fx-background-image: url('graphics/Checkpoint" + checkpoint.getCheckpointNumber() + ".png'); -fx-background-size: " +
-                    SPACE_HEIGHT + " " + SPACE_WIDTH + ";");
+                    Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + ";");
         } else if (space.getActions().size() > 0 && space.getActions().get(0) instanceof RebootToken rebootToken) {
             this.tileAngle = switch (rebootToken.getHeading()) {
                 case SOUTH -> 0;
@@ -122,7 +120,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 case EAST -> 270;
             };
             this.setStyle("-fx-background-image: url('graphics/RespawnToken.png'); -fx-background-size: " +
-                    SPACE_HEIGHT + " " + SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
+                    Globals.SPACE_HEIGHT + " " + Globals.SPACE_WIDTH + "; -fx-rotate: " + tileAngle + ";");
         }
 
         // This space view should listen to changes of the space
@@ -142,7 +140,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (player != null) {
             //Polygon arrow = new Polygon(0.0, 0.0, 10.0, 20.0, 20.0, 0.0);
             ImagePattern playerImage = new ImagePattern(new Image("graphics/robots/" + player.getColor() + ".png"));
-            Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+            Rectangle rectangle = new Rectangle(0.0, 0.0, Globals.SPACE_WIDTH, Globals.SPACE_HEIGHT);
             try {
                 //arrow.setFill(Color.valueOf(player.getColor()));
                 rectangle.setFill(playerImage);
@@ -171,7 +169,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         for (Heading wallHeading : this.space.getWalls()) {
             Rectangle rectangle =
-                    new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+                    new Rectangle(0.0, 0.0, Globals.SPACE_WIDTH, Globals.SPACE_HEIGHT);
             rectangle.setFill(wall);
 
             int angle = switch (wallHeading) {

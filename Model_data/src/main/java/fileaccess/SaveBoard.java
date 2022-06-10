@@ -87,7 +87,7 @@ public class SaveBoard {
         for (CommandCardField commandCardField : commandCardFields) {
             CommandCardFieldTemplate cardFieldTemplate = new CommandCardFieldTemplate();
 
-            if (commandCardField !=null) {
+            if (commandCardField != null) {
                 if (commandCardField.getCard() == null) {
                     cardFieldTemplate.command = "";
                     cardFieldTemplate.visible = true;

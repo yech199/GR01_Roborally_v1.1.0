@@ -41,8 +41,7 @@ public interface ViewObserver extends Observer {
         // done in the updateView() method;
         if (Platform.isFxApplicationThread()) {
             updateView(subject);
-        }
-        else {
+        } else {
             Platform.runLater(() -> updateView(subject));
         }
     }

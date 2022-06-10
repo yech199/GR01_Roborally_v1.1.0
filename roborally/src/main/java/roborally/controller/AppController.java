@@ -44,6 +44,7 @@ import javax.swing.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,6 +60,7 @@ public class AppController implements Observer {
 
     private GameController gameController;
     private AppState appState = AppState.UNDECIDED;
+    Timer timer = new Timer(); //Used for updating game state in thread automatically
 
     static String IPV4_PATTERN =
             "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\\.(?!$)|$)){4}$";
@@ -73,6 +75,7 @@ public class AppController implements Observer {
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
+        Updater.appController = this;
     }
 
     /**
@@ -363,6 +366,8 @@ public class AppController implements Observer {
     public void submitPlayerCards() {
         int id = client.gameId;
         client.setPlayerState(id, gameController.board.getPlayer(client.playerName));
+        // TODO Execute automatic updating of game state. Dont work properly with the new at this moment
+        //timer.schedule(new Updater(), 0, 5000);
     }
 
     public void saveGame() {
@@ -560,5 +565,9 @@ public class AppController implements Observer {
 
     public AppState getAppState() {
         return appState;
+    }
+
+    public GameController getGameController() {
+        return gameController;
     }
 }

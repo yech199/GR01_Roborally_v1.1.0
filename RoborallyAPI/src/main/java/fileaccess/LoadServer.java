@@ -25,9 +25,12 @@ public class LoadServer {
         }
     }
 
-    public static void loadPlayers(List<PlayerTemplate> players, Board board) {
+    public static void loadPlayers(List<PlayerTemplate> players, Board board, int numOfPlayers) {
         // Loading players
-        for (PlayerTemplate player : players) {
+        // for (PlayerTemplate player : players) {
+        for (int i = 0; i < numOfPlayers; i++) {
+            PlayerTemplate player = players.get(i);
+
             Player newPlayer = new Player(board, player.color, player.name);
             newPlayer.setSpace(board.getSpace(player.spaceX, player.spaceY));
             newPlayer.setHeading(Heading.valueOf(player.heading));
@@ -41,9 +44,9 @@ public class LoadServer {
                 newPlayer.active = player.active;
                 board.getRobot().ifPresent(integer -> board.getPlayers().set(integer, newPlayer));
             } else {
-                for (int i = 0; i < board.getPlayers().size(); i++) {
-                    if (board.getPlayers().get(i).getName().equals(newPlayer.getName())) {
-                        board.getPlayers().set(i, newPlayer);
+                for (int j = 0; j < board.getPlayers().size(); j++) {
+                    if (board.getPlayers().get(j).getName().equals(newPlayer.getName())) {
+                        board.getPlayers().set(j, newPlayer);
                     }
                 }
             }
@@ -84,7 +87,7 @@ public class LoadServer {
         Board board = new Board(template.width, template.height, template.checkPointAmount, template.boardName);
 
         loadSpaces(template, board);
-        loadPlayers(template.players, board);
+        loadPlayers(template.players, board, template.players.size());
 
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));
@@ -109,7 +112,7 @@ public class LoadServer {
         Board board = new Board(template.width, template.height, template.checkPointAmount, template.boardName);
 
         loadSpaces(template, board);
-        loadPlayers(template.players, board);
+        loadPlayers(template.players, board, numOfPlayers);
 
         board.setCurrentPlayer(board.getPlayer(template.currentPlayer));
         board.setPhase(Phase.valueOf(template.phase));

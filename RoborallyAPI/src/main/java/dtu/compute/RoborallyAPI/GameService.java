@@ -247,11 +247,11 @@ public class GameService implements IGameService {
 
     /**
      * Set the player state and execute cards if all client cards have been received.
-     * @param id
-     * @param playerName
-     * @param playerData
+     * @param id gameId
+     * @param playerName works as id of the player. Two names in the same game can't be the same
+     * @param playerData json
      * @return response status code
-     * @Mads Sørensen
+     * @author Mads Sørensen
      */
     @Override
     public String setPlayerState(int id, String playerName, String playerData) {
@@ -278,7 +278,7 @@ public class GameService implements IGameService {
         return "ok";
     }
 
-    public GameController findGame(int id) {
+    private GameController findGame(int id) {
         for (GameController game : activeGames) {
             if (game.board.getGameId() == id) {
                 return game;
@@ -287,7 +287,7 @@ public class GameService implements IGameService {
         return null;
     }
 
-    public Board findGameBoard(int id) {
+    private Board findGameBoard(int id) {
         for (GameController game : activeGames) {
             if (game.board.getGameId() == id) {
                 return game.board;

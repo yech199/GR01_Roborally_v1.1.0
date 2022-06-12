@@ -434,20 +434,13 @@ public class AppController implements Observer {
 
         resultName = name.showAndWait();
         try {
-            while (!isValid(resultName.get())) {
+            if (isValid(resultName.get())) {
                 resultName = name.showAndWait();
-                // Update name to be the inputted name
-                if (isValid(resultName.get())) {
                     client.setTargetIP(resultName.get());
                     Alert alert = new Alert(AlertType.CONFIRMATION, "GREAT SUCCESS, YOUR IP ADDRESS IS: ".concat(resultName.get()),
                             ButtonType.OK);
                     alert.showAndWait();
                     return;
-                }
-                name.setTitle("Online Roborally");
-                name.setHeaderText("Not a valid IP address, please enter a again.");
-                name.setContentText("IP ADDRESS: ");
-
             }
         } catch (NoSuchElementException e) {
             client.setTargetIP(InetAddress.getLocalHost().getHostAddress());
